@@ -10,6 +10,7 @@
     "node": ">=4.0.0"
   },
   "scripts": {
+    "build": "webpack --progress",
     "lint": "eslint .",
     "test": "npm run lint"
   },
@@ -18,6 +19,7 @@
   "dependencies": {
     "babel-cli": "6.16.0",
     "babel-core": "6.17.0",
+    "babel-eslint": "7.0.0",
     "babel-loader": "6.2.5",
     "babel-plugin-transform-class-properties": "6.16.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.16.0",

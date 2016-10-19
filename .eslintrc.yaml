@@ -6,6 +6,8 @@
   parserOptions:
     ecmaFeatures:
       jsx: true
+  env:
+    node: true
   rules:
     # extra/overriden values
     array-bracket-spacing: 2
