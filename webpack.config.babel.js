@@ -1,4 +1,6 @@
 import path from 'path';
+import autoprefixer from 'autoprefixer';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 export default {
   entry: [
@@ -8,9 +10,9 @@ export default {
   output: {
     path: path.join(__dirname, '/dist/'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: 'static/js/bundle.js',
     chunkFilename: null,
-    sourceMapFilename: 'bundle.js.map'
+    sourceMapFilename: 'static/js/bundle.js.map'
   },
   module: {
     loaders: [
@@ -20,16 +22,31 @@ export default {
         exclude: /node_modules/,
         query: {cacheDirectory: true}
       },
-      {test: /\.css$/, loader: 'style!css'},
-      {test: /\.less$/, loader: 'style!css!less'},
-      {test: /\.(gif|png|jpg)$/, loader: 'file'},
-      {test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'}
+      {
+        test: /\.css$/,
+        loader: 'style!css!postcss'
+      },
+      {
+        test: /\.less$/,
+        loader: 'style!css!postcss!less'
+      },
+      {
+        test: /\.(gif|png|jpg)$/,
+        loader: 'file',
+        query: {name: 'static/media/[name].[hash:8].[ext]'}
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file',
+        query: {name: 'static/media/[name].[hash:8].[ext]'}
+      }
     ]
   },
-  plugins: [],
-  devtool: 'cheap-module-source-map',
-  watchOptions: {
-    aggregateTimeout: 300,
-    poll: 1000
-  }
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    })
+  ],
+  postcss: () => [autoprefixer],
+  devtool: 'cheap-module-source-map'
 };
