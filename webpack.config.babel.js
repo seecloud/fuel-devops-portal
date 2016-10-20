@@ -1,6 +1,7 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export default {
   entry: [
@@ -11,8 +12,7 @@ export default {
     path: path.join(__dirname, '/dist/'),
     publicPath: '/',
     filename: 'static/js/bundle.js',
-    chunkFilename: null,
-    sourceMapFilename: 'static/js/bundle.js.map'
+    chunkFilename: null
   },
   module: {
     loaders: [
@@ -23,12 +23,12 @@ export default {
         query: {cacheDirectory: true}
       },
       {
-        test: /\.css$/,
-        loader: 'style!css!postcss'
-      },
-      {
         test: /\.less$/,
         loader: 'style!css!postcss!less'
+      },
+      {
+        test: /\/layout\.less$/,
+        loader: ExtractTextPlugin.extract('style', 'css!postcss!less')
       },
       {
         test: /\.(gif|png|jpg)$/,
@@ -45,7 +45,8 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
+    }),
+    new ExtractTextPlugin('static/styles/layout.css', {allChunks: true})
   ],
   postcss: () => [autoprefixer],
   devtool: 'cheap-module-source-map'

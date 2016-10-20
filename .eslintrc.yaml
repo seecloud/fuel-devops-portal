@@ -8,6 +8,7 @@
       jsx: true
   env:
     node: true
+    browser: true
   rules:
     # extra/overriden values
     array-bracket-spacing: 2

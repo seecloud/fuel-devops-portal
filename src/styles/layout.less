@@ -1,0 +1,35 @@
+@import 'colors.less';
+
+html, body {
+  background-color: @body-bg;
+  color: @text-color;
+}
+
+@keyframes rotate {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+}
+
+@loading-animation-size: 98px;
+
+#loading:before {
+  content: "";
+  display: block;
+  width: @loading-animation-size;
+  height: @loading-animation-size;
+  overflow: hidden;
+  margin: 200px auto 0;
+  background: url(../media/loader-bg.svg);
+  animation: rotate 6s linear infinite;
+}
+
+#loading:after {
+  content: "";
+  display: block;
+  width: @loading-animation-size;
+  height: @loading-animation-size;
+  margin: -124px auto 0;
+  position: relative;
+  z-index: 9999;
+  background: url(../media/loader-logo.svg);
+}
