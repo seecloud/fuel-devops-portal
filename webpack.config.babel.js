@@ -44,7 +44,8 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      favicon: 'src/media/favicon.ico',
     }),
     new ExtractTextPlugin('static/styles/layout.css', {allChunks: true})
   ],
