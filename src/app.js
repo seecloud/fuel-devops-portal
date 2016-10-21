@@ -4,9 +4,12 @@ import './styles/main.less';
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, Redirect, Link, withRouter, browserHistory} from 'react-router';
+import {observable} from 'mobx';
+import {observer} from 'mobx-react';
 import {get} from 'lodash';
 
 class UIState {
+  @observable
   authenticated = true;
 }
 
@@ -25,8 +28,10 @@ class App extends Component {
   }
 }
 
+@observer
 class Navbar extends Component {
   render() {
+    if (!uiState.authenticated) return null;
     return (
       <nav className='navbar navbar-default'>
         <div className='container'>
@@ -78,12 +83,16 @@ class InfrastructureManagementPage extends Component {
 }
 
 @withRouter
+@observer
 class LoginPage extends Component {
+  @observable actionInProgress = false
+
   onSubmit = (e) => {
     e.preventDefault();
-    uiState.authenticated = true;
+    this.actionInProgress = true;
     const {router, location} = this.props;
     setTimeout(() => {
+      uiState.authenticated = true;
       router.replace(get(location, 'state.nextPathname', '/'));
     }, 500);
   }
