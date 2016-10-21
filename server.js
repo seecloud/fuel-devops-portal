@@ -21,7 +21,6 @@ if (hotReload) {
 }
 
 let devServerConfig = {
-  contentBase: 'ui',
   hot: hotReload,
   stats: {
     colors: true,
@@ -31,7 +30,7 @@ let devServerConfig = {
     chunks: false
   },
   historyApiFallback: true,
-  proxy: [{path: '/', target: ceagleUrl}]
+  proxy: [{path: '/api', target: ceagleUrl}]
 };
 
 new WebpackDevServer(webpack(webpackConfig), devServerConfig).listen(

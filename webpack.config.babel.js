@@ -27,7 +27,7 @@ export default {
         loader: 'style!css!postcss!less'
       },
       {
-        test: /\/layout\.less$/,
+        test: /\/loading\.less$/,
         loader: ExtractTextPlugin.extract('style', 'css!postcss!less')
       },
       {
