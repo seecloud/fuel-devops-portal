@@ -3,7 +3,14 @@ import './styles/main.less';
 
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute, Redirect, Link, browserHistory} from 'react-router';
+import {Router, Route, IndexRoute, Redirect, Link, withRouter, browserHistory} from 'react-router';
+import {get} from 'lodash';
+
+class UIState {
+  authenticated = true;
+}
+
+const uiState = new UIState();
 
 class App extends Component {
   render() {
@@ -26,12 +33,11 @@ class Navbar extends Component {
           <div className='navbar-header'>
             <Link to='/' className='navbar-brand'>{'Here loes logo'}</Link>
           </div>
-          <div className='collapse navbar-collapse'>
-            <ul className='nav navbar-nav'>
-              <li><Link to='/cloud-status'>{'Cloud Status'}</Link></li>
-              <li><Link to='/infrastructure-management'>{'Infrastructure Management'}</Link></li>
-            </ul>
-          </div>
+          <ul className='nav navbar-nav'>
+            <li><Link to='/cloud-status'>{'Cloud Status'}</Link></li>
+            <li><Link to='/infrastructure-management'>{'Infrastructure Management'}</Link></li>
+            <li><Link to='/logout'>{'Log out'}</Link></li>
+          </ul>
         </div>
       </nav>
     );
@@ -71,12 +77,112 @@ class InfrastructureManagementPage extends Component {
   }
 }
 
+@withRouter
+class LoginPage extends Component {
+  onSubmit = (e) => {
+    e.preventDefault();
+    uiState.authenticated = true;
+    const {router, location} = this.props;
+    setTimeout(() => {
+      router.replace(get(location, 'state.nextPathname', '/'));
+    }, 500);
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>{'Login'}</h1>
+        <form className='form-horizontal' onSubmit={this.onSubmit}>
+          <div className='form-group'>
+            <div className='col-xs-6 col-xs-offset-3'>
+              <input
+                className='form-control input-sm'
+                type='text'
+                name='username'
+                ref='username'
+                placeholder={'Username'}
+                onChange={this.onChange}
+              />
+            </div>
+          </div>
+          <div className='form-group'>
+            <div className='col-xs-6 col-xs-offset-3'>
+              <input
+                className='form-control input-sm'
+                type='password'
+                name='password'
+                ref='password'
+                placeholder={'Password'}
+                onChange={this.onChange}
+              />
+            </div>
+          </div>
+          <div className='form-group'>
+            <div className='col-xs-12 text-center'>
+              <button
+                type='submit'
+                className={'btn btn-success'}
+                disabled={this.actionInProgress}
+              >
+                {'Log In'}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
+  }
+}
+
+class Logout extends Component {
+  static onEnter(nextState, replace) {
+    uiState.authenticated = false;
+    replace('/login');
+  }
+
+  render = () => null;
+}
+
+function requireAuthHook(nextState, replace) {
+  if (!uiState.authenticated) {
+    replace({
+      pathname: '/login',
+      state: {nextPathname: nextState.location.pathname}
+    });
+  }
+}
+
+function prohibitAuthHook(nextState, replace) {
+  if (uiState.authenticated) replace('/');
+}
+
 ReactDOM.render(
   <Router history={browserHistory}>
-    <Route path='/' component={App}>
-      <IndexRoute component={HomePage} />
-      <Route path='cloud-status' component={CloudStatusPage} />
-      <Route path='infrastructure-management' component={InfrastructureManagementPage} />
+    <Route path='/' component={App} re>
+      <IndexRoute
+        component={HomePage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='login'
+        component={LoginPage}
+        onEnter={prohibitAuthHook}
+      />
+      <Route
+        path='logout'
+        component={Logout}
+        onEnter={Logout.onEnter}
+      />
+      <Route
+        path='cloud-status'
+        component={CloudStatusPage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='infrastructure-management'
+        component={InfrastructureManagementPage}
+        onEnter={requireAuthHook}
+      />
       <Redirect from='*' to='/' />
     </Route>
   </Router>,

@@ -25,6 +25,7 @@
     no-spaced-func: 2
     no-undef: 2
     no-unexpected-multiline: 2
+    no-use-before-define: 0
     object-curly-spacing: 2
     operator-linebreak: [2, after, {overrides: {'?': ignore, ':': ignore}}]
     padded-blocks: [2, never]
