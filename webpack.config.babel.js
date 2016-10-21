@@ -1,7 +1,10 @@
+import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 export default {
   entry: [
@@ -43,12 +46,22 @@ export default {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify(NODE_ENV)}),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       favicon: 'src/media/favicon.ico',
     }),
-    new ExtractTextPlugin('static/styles/layout.css', {allChunks: true})
+    new ExtractTextPlugin('static/styles/layout.css', {allChunks: true}),
+    ...(
+      NODE_ENV === 'production' ? [
+        new webpack.optimize.UglifyJsPlugin({
+          sourceMap: true,
+          mangle: false,
+          compress: {warnings: false}
+        })
+      ] : []
+    )
   ],
   postcss: () => [autoprefixer],
-  devtool: 'cheap-module-source-map'
+  devtool: NODE_ENV === 'production' ? 'source-map' : 'cheap-module-source-map'
 };

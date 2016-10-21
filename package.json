@@ -10,7 +10,7 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "build": "rimraf dist && webpack --progress",
+    "build": "rimraf dist && NODE_ENV=production webpack --progress",
     "start": "babel-node ./server.js",
     "lint": "eslint .",
     "test": "npm run lint"
