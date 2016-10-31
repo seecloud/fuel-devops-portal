@@ -13,8 +13,8 @@
     "build": "rimraf dist && NODE_ENV=production webpack --progress",
     "start": "babel-node ./server.js",
     "lint": "eslint .",
-    "test": "npm run lint",
-    "test:unit": "karma start"
+    "test:unit": "karma start",
+    "test": "npm run lint; npm run test:unit"
   },
   "author": "",
   "license": "Apache-2.0",
