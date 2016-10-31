@@ -1,4 +1,5 @@
 import webpackConfig from './webpack.config.babel';
+import tapDiff from 'tap-diff';
 
 export default (config) => {
   config.set({
@@ -27,7 +28,7 @@ export default (config) => {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['tap-pretty'],
 
     // web server port
     port: 9876,
@@ -53,7 +54,15 @@ export default (config) => {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
+    concurrency: 1,
+
+    client: {
+      captureConsole: false
+    },
+
+    tapReporter: {
+      prettify: tapDiff
+    },
 
     webpack: {
       ...webpackConfig,
