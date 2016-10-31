@@ -36,11 +36,17 @@ class Navbar extends Component {
       <nav className='navbar navbar-default'>
         <div className='container'>
           <div className='navbar-header'>
-            <Link to='/' className='navbar-brand'>{'Here loes logo'}</Link>
+            <Link to='/' className='navbar-brand'>{'Logo'}</Link>
           </div>
-          <ul className='nav navbar-nav'>
+          <ul className='nav navbar-nav navbar-left'>
             <li><Link to='/cloud-status'>{'Cloud Status'}</Link></li>
-            <li><Link to='/infrastructure-management'>{'Infrastructure Management'}</Link></li>
+            <li><Link to='/cloud-intelligence'>{'Cloud Intelligence'}</Link></li>
+            <li><Link to='/capacity-management'>{'Capacity Management'}</Link></li>
+            <li><Link to='/resource-optimization'>{'Resource Optimization'}</Link></li>
+            <li><Link to='/security-monitoring'>{'Security Monitoring'}</Link></li>
+            <li><Link to='/infrastructure'>{'Infrastructure'}</Link></li>
+          </ul>
+          <ul className='nav navbar-nav navbar-right'>
             <li><Link to='/logout'>{'Log out'}</Link></li>
           </ul>
         </div>
@@ -71,12 +77,56 @@ class CloudStatusPage extends Component {
   }
 }
 
-class InfrastructureManagementPage extends Component {
+class CloudIntelligencePage extends Component {
   render() {
     return (
       <div>
-        <h1>{'Infrastructure Management Page'}</h1>
-        {'This is an infrastructure management page.'}
+        <h1>{'Cloud Intelligence Page'}</h1>
+        {'This is a cloud intelligence page.'}
+      </div>
+    );
+  }
+}
+
+class CapacityManagementPage extends Component {
+  render() {
+    return (
+      <div>
+        <h1>{'Capacity Management Page'}</h1>
+        {'This is a capacity management page.'}
+      </div>
+    );
+  }
+}
+
+class ResourceOptimizationPage extends Component {
+  render() {
+    return (
+      <div>
+        <h1>{'Resource Optimization Page'}</h1>
+        {'This is a resource optimization page.'}
+      </div>
+    );
+  }
+}
+
+class SecurityMonitoringPage extends Component {
+  render() {
+    return (
+      <div>
+        <h1>{'Security Monitoring Page'}</h1>
+        {'This is a security monitoring page.'}
+      </div>
+    );
+  }
+}
+
+class InfrastructurePage extends Component {
+  render() {
+    return (
+      <div>
+        <h1>{'Infrastructure Page'}</h1>
+        {'This is an infrastructure page.'}
       </div>
     );
   }
@@ -167,11 +217,12 @@ function prohibitAuthHook(nextState, replace) {
 
 ReactDOM.render(
   <Router history={browserHistory}>
-    <Route path='/' component={App} re>
+    <Route path='/' component={App}>
       <IndexRoute
         component={HomePage}
         onEnter={requireAuthHook}
       />
+
       <Route
         path='login'
         component={LoginPage}
@@ -182,14 +233,35 @@ ReactDOM.render(
         component={Logout}
         onEnter={Logout.onEnter}
       />
+
       <Route
         path='cloud-status'
         component={CloudStatusPage}
         onEnter={requireAuthHook}
       />
       <Route
-        path='infrastructure-management'
-        component={InfrastructureManagementPage}
+        path='cloud-intelligence'
+        component={CloudIntelligencePage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='capacity-management'
+        component={CapacityManagementPage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='resource-optimization'
+        component={ResourceOptimizationPage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='security-monitoring'
+        component={SecurityMonitoringPage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='infrastructure'
+        component={InfrastructurePage}
         onEnter={requireAuthHook}
       />
       <Redirect from='*' to='/' />
