@@ -7,6 +7,7 @@ import {Router, Route, IndexRoute, Redirect, Link, withRouter, browserHistory} f
 import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 import {get} from 'lodash';
+import cx from 'classnames';
 
 class UIState {
   @observable
@@ -28,9 +29,20 @@ class App extends Component {
   }
 }
 
+@withRouter
 @observer
 class Navbar extends Component {
+  navs = [
+    ['/cloud-status', 'Cloud Status'],
+    ['/cloud-intelligence', 'Cloud Intelligence'],
+    ['/capacity-management', 'Capacity Management'],
+    ['/resource-optimization', 'Resource Optimization'],
+    ['/security-monitoring', 'Security Monitoring'],
+    ['/infrastructure', 'Infrastructure'],
+  ]
+
   render() {
+    const {router} = this.props;
     if (!uiState.authenticated) return null;
     return (
       <nav className='navbar navbar-default'>
@@ -39,12 +51,13 @@ class Navbar extends Component {
             <Link to='/' className='navbar-brand'>{'Logo'}</Link>
           </div>
           <ul className='nav navbar-nav navbar-left'>
-            <li><Link to='/cloud-status'>{'Cloud Status'}</Link></li>
-            <li><Link to='/cloud-intelligence'>{'Cloud Intelligence'}</Link></li>
-            <li><Link to='/capacity-management'>{'Capacity Management'}</Link></li>
-            <li><Link to='/resource-optimization'>{'Resource Optimization'}</Link></li>
-            <li><Link to='/security-monitoring'>{'Security Monitoring'}</Link></li>
-            <li><Link to='/infrastructure'>{'Infrastructure'}</Link></li>
+            {this.navs.map(([url, title]) => {
+              return (
+                <li key={url} className={cx({active: router.isActive(url)})}>
+                  <Link to={url}>{title}</Link>
+                </li>
+              );
+            })}
           </ul>
           <ul className='nav navbar-nav navbar-right'>
             <li><Link to='/logout'>{'Log out'}</Link></li>
@@ -88,12 +101,61 @@ const DashboardPageLink = ({to, title}) => {
   );
 };
 
-class CloudStatusPage extends Component {
+@withRouter
+class CloudStatusOverviewNav extends Component {
+  navs = [
+    ['/cloud-status', 'Overview'],
+    ['/cloud-status/availability', 'Availability'],
+    ['/cloud-status/health', 'Health']
+  ]
+
+  render() {
+    const {router} = this.props;
+    return (
+      <ul className='nav nav-pills'>
+        {this.navs.map(([url, title]) => {
+          return (
+            <li key={url} className={cx({active: router.isActive(url)})}>
+              <Link to={url}>{title}</Link>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+}
+
+class CloudStatusOverviewPage extends Component {
   render() {
     return (
       <div>
-        <h1>{'Cloud Status Page'}</h1>
-        {'This is a cloud status page.'}
+        <CloudStatusOverviewNav />
+        <h1>{'Cloud Status Overview Page'}</h1>
+        {'This is a cloud status overview page.'}
+      </div>
+    );
+  }
+}
+
+class CloudStatusAvailabilityPage extends Component {
+  render() {
+    return (
+      <div>
+        <CloudStatusOverviewNav />
+        <h1>{'Cloud Status Availability Page'}</h1>
+        {'This is a cloud status availability page.'}
+      </div>
+    );
+  }
+}
+
+class CloudStatusHealthPage extends Component {
+  render() {
+    return (
+      <div>
+        <CloudStatusOverviewNav />
+        <h1>{'Cloud Status Health Page'}</h1>
+        {'This is a cloud status health page.'}
       </div>
     );
   }
@@ -258,7 +320,17 @@ ReactDOM.render(
 
       <Route
         path='cloud-status'
-        component={CloudStatusPage}
+        component={CloudStatusOverviewPage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='cloud-status/availability'
+        component={CloudStatusAvailabilityPage}
+        onEnter={requireAuthHook}
+      />
+      <Route
+        path='cloud-status/health'
+        component={CloudStatusHealthPage}
         onEnter={requireAuthHook}
       />
       <Route
