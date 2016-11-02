@@ -14,7 +14,7 @@
     "start": "babel-node ./server.js",
     "lint": "eslint .",
     "test:unit": "NODE_ENV=test karma start",
-    "test": "npm run lint; npm run test:unit"
+    "test": "npm run lint && npm run test:unit"
   },
   "author": "",
   "license": "Apache-2.0",
