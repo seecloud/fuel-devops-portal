@@ -46,6 +46,7 @@
     "minimist": "1.2.0",
     "mobx": "2.6.0",
     "mobx-react": "3.5.8",
+    "open-sans-fontface": "1.4.0",
     "postcss": "5.2.4",
     "postcss-loader": "1.0.0",
     "react": "15.3.2",
