@@ -115,7 +115,7 @@ class CloudStatusOverviewNav extends Component {
       <ul className='nav nav-pills'>
         {this.navs.map(([url, title]) => {
           return (
-            <li key={url} className={cx({active: router.isActive(url)})}>
+            <li key={url} className={cx({active: router.isActive(url, true)})}>
               <Link to={url}>{title}</Link>
             </li>
           );
@@ -125,11 +125,21 @@ class CloudStatusOverviewNav extends Component {
   }
 }
 
-class CloudStatusOverviewPage extends Component {
+class CloudStatusPage extends Component {
   render() {
     return (
       <div>
         <CloudStatusOverviewNav />
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+class CloudStatusOverviewPage extends Component {
+  render() {
+    return (
+      <div>
         <h1>{'Cloud Status Overview Page'}</h1>
         {'This is a cloud status overview page.'}
       </div>
@@ -141,7 +151,6 @@ class CloudStatusAvailabilityPage extends Component {
   render() {
     return (
       <div>
-        <CloudStatusOverviewNav />
         <h1>{'Cloud Status Availability Page'}</h1>
         {'This is a cloud status availability page.'}
       </div>
@@ -153,7 +162,6 @@ class CloudStatusHealthPage extends Component {
   render() {
     return (
       <div>
-        <CloudStatusOverviewNav />
         <h1>{'Cloud Status Health Page'}</h1>
         {'This is a cloud status health page.'}
       </div>
@@ -320,19 +328,21 @@ ReactDOM.render(
 
       <Route
         path='cloud-status'
-        component={CloudStatusOverviewPage}
+        component={CloudStatusPage}
         onEnter={requireAuthHook}
-      />
-      <Route
-        path='cloud-status/availability'
-        component={CloudStatusAvailabilityPage}
-        onEnter={requireAuthHook}
-      />
-      <Route
-        path='cloud-status/health'
-        component={CloudStatusHealthPage}
-        onEnter={requireAuthHook}
-      />
+      >
+        <IndexRoute
+          component={CloudStatusOverviewPage}
+        />
+        <Route
+          path='availability'
+          component={CloudStatusAvailabilityPage}
+        />
+        <Route
+          path='health'
+          component={CloudStatusHealthPage}
+        />
+      </Route>
       <Route
         path='cloud-intelligence'
         component={CloudIntelligencePage}
