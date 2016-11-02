@@ -4,6 +4,10 @@
 
 @font-family-sans-serif: 'Open Sans', sans-serif;
 
+html {
+  font-size: 14px;
+}
+
 body {
   overflow-y: scroll;
 }
@@ -11,38 +15,83 @@ body {
 @font-face {
   font-family: 'Teko';
   font-style: normal;
+  font-weight: 300;
+  src: local('Teko Light'), local('Teko-Light'),
+       url('../media/teko-v5-latin-300.woff2') format('woff2'),
+       url('../media/teko-v5-latin-300.woff') format('woff');
+}
+@font-face {
+  font-family: 'Teko';
+  font-style: normal;
   font-weight: 400;
   src: local('Teko Regular'), local('Teko-Regular'),
-       url('../media/teko-v5-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../media/teko-v5-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('../media/teko-v5-latin-regular.woff2') format('woff2'),
+       url('../media/teko-v5-latin-regular.woff') format('woff');
+}
+
+.container {
+  width: 100%;
+  h1, h2, h3, h4 {
+    font-family: 'Teko';
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 30px;
+  }
 }
 
 .navbar {
   font-family: 'Teko';
-  font-weight: 500;
+  font-weight: 300;
   text-transform: uppercase;
-  font-size: 21px;
+  font-size: 20px;
+  height: 70px;
+  margin: 0;
+  .navbar-nav {
+    li {
+      margin: 18px 2px 0 0;
+      a {
+        padding: 6px 12px;
+        &:hover {
+          border-radius: 4px;
+        }
+      }
+      &.active {
+        a {
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+  .navbar-header {
+    .navbar-brand {
+      width: 82px;
+      height: 50px;
+      padding: 0;
+      margin: 6px 40px 0 0;
+      background-image: url('../media/fuel-devops-logo.svg');
+    }
+  }
 }
 
 .dashboard-page-link {
   width: 100%;
   min-height: 150px;
-  background-color: white;
-  color: gray;
+  background-color: #ffffff;
+  border: 1px solid #E2E2E2;
   border-radius: 6px;
-  margin-bottom: 30px;
-  padding: 16px;
+  margin-bottom: 10px;
+  padding: 16px 20px;
   box-sizing: border-box;
   h3 {
     margin-top: 0;
-    font-family: 'Teko';
     font-weight: 500;
     font-size: 24px;
   }
   .btn {
-    font-family: 'Teko';
-    font-size: 20px;
+    font-size: 12px;
     margin-top: 10px;
+    font-weight: 600;
     text-transform: uppercase;
   }
 }

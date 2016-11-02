@@ -48,7 +48,7 @@ class Navbar extends Component {
       <nav className='navbar navbar-default'>
         <div className='container'>
           <div className='navbar-header'>
-            <Link to='/' className='navbar-brand'>{'Logo'}</Link>
+            <Link to='/' className='navbar-brand' />
           </div>
           <ul className='nav navbar-nav navbar-left'>
             {this.navs.map(([url, title]) => {
@@ -88,7 +88,7 @@ class DashboardPage extends Component {
 
 const DashboardPageLink = ({to, title}) => {
   return (
-    <div className='col-xs-4'>
+    <div className='col-xs-3'>
       <div className='dashboard-page-link'>
         <h3>{title}</h3>
         <div>
