@@ -6,6 +6,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+const filenameTemplate = '[name].[hash:8].[ext]';
+
 export default {
   entry: [
     'whatwg-fetch',
@@ -27,21 +29,23 @@ export default {
       },
       {
         test: /\.less$/,
-        loader: 'style!css!postcss!less'
+        loaders: ['style', 'css', 'postcss', 'less']
       },
       {
         test: /\/loading\.less$/,
-        loader: ExtractTextPlugin.extract('style', 'css!postcss!less')
+        loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'less'])
       },
       {
         test: /\.(gif|png|jpg)$/,
-        loader: 'file',
-        query: {name: 'static/media/[name].[hash:8].[ext]'}
+        loader: `file?name=static/media/${filenameTemplate}`
       },
       {
         test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file',
-        query: {name: 'static/media/[name].[hash:8].[ext]'}
+        loader: `file?name=static/media/${filenameTemplate}`
+      },
+      {
+        test: /\.svg\?fill=/,
+        loaders: [`file?name=static/media/${filenameTemplate}`, 'svg-fill']
       }
     ]
   },
