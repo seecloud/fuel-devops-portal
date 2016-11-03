@@ -29,11 +29,21 @@ body {
        url('../media/teko-v5-latin-regular.woff') format('woff');
 }
 
+.btn {
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 12px;
+  text-rendering: optimizeLegibility;
+  text-transform: uppercase;
+}
+
 .container {
   width: 100%;
   h1, h2, h3, h4 {
     font-family: 'Teko';
     text-transform: uppercase;
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
   }
   h1 {
     font-size: 30px;
@@ -44,21 +54,33 @@ body {
   font-family: 'Teko';
   font-weight: 300;
   text-transform: uppercase;
+  text-rendering: optimizeLegibility;
+  letter-spacing: .2px;
   font-size: 20px;
   height: 70px;
   margin: 0;
+  border-radius: 0;
   .navbar-nav {
     li {
       margin: 18px 2px 0 0;
       a {
         padding: 6px 12px;
+        background: none;
         &:hover {
           border-radius: 4px;
+          color: @navbar-default-bg;
+          background-color: @nav-link-bg;
         }
       }
       &.active {
         a {
           border-radius: 4px;
+          color: @navbar-default-bg;
+          background-color: @nav-link-hover-bg;
+          &:hover {
+            color: @navbar-default-bg;
+            background-color: @nav-link-bg;
+          }
         }
       }
     }
@@ -84,22 +106,18 @@ body {
 .dashboard-page-link {
   width: 100%;
   min-height: 150px;
-  background-color: #ffffff;
-  border: 1px solid #E2E2E2;
+  background-color: @item-block-bg;
+  border: 1px solid @item-block-border;
   border-radius: 6px;
   margin-bottom: 10px;
   padding: 16px 20px;
   box-sizing: border-box;
   h3 {
     margin-top: 0;
-    font-weight: 500;
     font-size: 24px;
   }
   .btn {
-    font-size: 12px;
     margin-top: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
   }
 }
 
@@ -113,24 +131,96 @@ body {
 .region-list {
   .make-row(10px);
   .region-container {
+    margin-bottom: 10px;
+    overflow: hidden;
+    .region {
+      padding: 10px;
+      background-color: @item-block-bg;
+      border: 1px solid @item-block-border;
+      border-radius: 6px;
+      h3 {
+        text-align: center;
+        display: block;
+        height: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 0;
+        font-family: 'open sans';
+        text-transform: lowercase;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .sla, .availability, .health, .performance {
+        width: 100%;
+        height: 28px;
+        border-top: 1px solid @item-block-border - 30%;
+        color: @item-block-border - 60%;
+        .name {
+          width: 70%;
+          display: block;
+          font-size: 9px;
+          text-transform: uppercase;
+          float: left;
+          margin-top: 8px;
+        }
+        .param {
+          display: block;
+          float: right;
+          font-family: 'teko';
+          font-size: 20px;
+          line-height: 26px;
+        }
+      }
+      .performance {
+        border-bottom: 1px solid @item-block-border - 30%;
+      }
+    }
     &.region-small {
-      .make-xs-column(1, 10px);
+      .make-xs-column(0.5, 1px);
+      margin-bottom: 1px;
+      h3 {
+        display: none;
+      }
+      .availability, .health, .performance {
+        display: none;
+      }
+      .sla {
+        border: none;
+        .name {
+          display: none;
+        }
+        .param {
+          width: 100%;
+          text-align: center;
+          line-height: 28px;
+          font-size: 1.1vw;
+        }
+      }
     }
     &.region-medium {
-      .make-xs-column(2, 10px);
+      .make-xs-column(1.5, 10px);
     }
     &.region-large {
       .make-xs-column(3, 10px);
     }
-    margin-bottom: 10px;
-    .region {
-      padding: 10px;
-      background-color: #ffffff;
-      border: 1px solid #E2E2E2;
-      border-radius: 6px;
-      h3 {
-        margin-top: 0;
-      }
-    }
   }
+}
+// Icons
+
+.icon-box {
+  width: 28px;
+  height: 28px;
+  margin: 2px 10px 0 0;
+}
+
+.user-icon {
+  background-image: url('../media/user-icon.svg');
+}
+
+.notification-icon {
+  background-image: url('../media/notification-icon.svg');
+}
+
+.logout-icon {
+  background-image: url('../media/logout-icon.svg');
 }

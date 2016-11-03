@@ -60,7 +60,9 @@ class Navbar extends Component {
             })}
           </ul>
           <ul className='nav navbar-nav navbar-right'>
-            <li><Link to='/logout'>{'Log out'}</Link></li>
+            <li><div className='icon-box user-icon' /></li>
+            <li><div className='icon-box notification-icon' /></li>
+            <li><Link to='/logout'><div className='icon-box logout-icon' /></Link></li>
           </ul>
         </div>
       </nav>
@@ -95,7 +97,7 @@ const DashboardPageLink = ({to, title}) => {
           {'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}
           {'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}
         </div>
-        <Link to={to} className='btn btn-default'>{'Launch'}</Link>
+        <Link to={to} className='btn btn-primary'>{'Launch'}</Link>
       </div>
     </div>
   );
@@ -198,8 +200,23 @@ class Region extends Component {
     return (
       <div className={cx('region-container', 'region-' + this.props.size)}>
         <div className='region'>
-          <h3>{'Region name'}</h3>
-          {'Here goes region info'}
+          <h3>{'west-1.hooli.net.blablablabla'}</h3>
+          <div className='sla'>
+            <div className='name'>{'SLA'}</div>
+            <div className='param text-success'>{'100%'}</div>
+          </div>
+          <div className='availability'>
+            <div className='name'>{'Availability'}</div>
+            <div className='param text-warning'>{'100%'}</div>
+          </div>
+          <div className='health'>
+            <div className='name'>{'Health (FCI)'}</div>
+            <div className='param'>{'100%'}</div>
+          </div>
+          <div className='performance'>
+            <div className='name'>{'Performance'}</div>
+            <div className='param text-danger'>{'100%'}</div>
+          </div>
         </div>
       </div>
     );
