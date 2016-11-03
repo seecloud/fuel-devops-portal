@@ -74,6 +74,13 @@ body {
   }
 }
 
+.dashboard-page-links {
+  .make-row(10px);
+  .dashboard-page-link-container {
+    .make-xs-column(3, 10px);
+  }
+}
+
 .dashboard-page-link {
   width: 100%;
   min-height: 150px;
@@ -101,4 +108,23 @@ body {
   text-transform: uppercase;
   font-size: 20px;
   padding: 7px 10px 0;
+}
+
+.region-list {
+  .make-row(10px);
+  .region-container {
+    &.region-large {
+      .make-xs-column(3, 10px);
+    }
+    margin-bottom: 10px;
+    .region {
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #E2E2E2;
+      border-radius: 6px;
+      h3 {
+        margin-top: 0;
+      }
+    }
+  }
 }

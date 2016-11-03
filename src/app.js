@@ -73,7 +73,7 @@ class DashboardPage extends Component {
     return (
       <div>
         <h1>{'Welcome to Fuel DevOps Portal'}</h1>
-        <div className='row'>
+        <div className='dashboard-page-links'>
           <DashboardPageLink to='/cloud-status' title='Cloud Status' />
           <DashboardPageLink to='/cloud-intelligence' title='Cloud Intelligence' />
           <DashboardPageLink to='/capacity-management' title='Capacity Management' />
@@ -88,7 +88,7 @@ class DashboardPage extends Component {
 
 const DashboardPageLink = ({to, title}) => {
   return (
-    <div className='col-xs-3'>
+    <div className='dashboard-page-link-container'>
       <div className='dashboard-page-link'>
         <h3>{title}</h3>
         <div>
@@ -147,9 +147,9 @@ class CloudStatusOverviewPage extends Component {
             {'Total: X Error: X'}
           </div>
           <div className='btn-group pull-right'>
-            <button className='btn btn-default active'>{'S'}</button>
+            <button className='btn btn-default'>{'S'}</button>
             <button className='btn btn-default'>{'M'}</button>
-            <button className='btn btn-default'>{'L'}</button>
+            <button className='btn btn-default active'>{'L'}</button>
             <button className='btn btn-default'>{'XL'}</button>
           </div>
           <div className='btn-group pull-right'>
@@ -163,6 +163,26 @@ class CloudStatusOverviewPage extends Component {
           </div>
         </div>
         <hr />
+        <div className='region-list'>
+          <Region />
+          <Region />
+          <Region />
+          <Region />
+          <Region />
+        </div>
+      </div>
+    );
+  }
+}
+
+class Region extends Component {
+  render() {
+    return (
+      <div className='region-container region-large'>
+        <div className='region'>
+          <h3>{'Region name'}</h3>
+          {'Here goes region info'}
+        </div>
       </div>
     );
   }
