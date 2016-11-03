@@ -136,7 +136,15 @@ class CloudStatusPage extends Component {
   }
 }
 
+@observer
 class CloudStatusOverviewPage extends Component {
+  @observable regionSize = 'large'
+  regionSizes = ['small', 'medium', 'large']
+
+  changeRegionSize = (newSize) => {
+    this.regionSize = newSize;
+  }
+
   render() {
     return (
       <div>
@@ -147,10 +155,20 @@ class CloudStatusOverviewPage extends Component {
             {'Total: X Error: X'}
           </div>
           <div className='btn-group pull-right'>
-            <button className='btn btn-default'>{'S'}</button>
-            <button className='btn btn-default'>{'M'}</button>
-            <button className='btn btn-default active'>{'L'}</button>
-            <button className='btn btn-default'>{'XL'}</button>
+            {this.regionSizes.map((size) => {
+              return (
+                <button
+                  key={size}
+                  className={cx({
+                    'btn btn-default': true,
+                    active: this.regionSize === size
+                  })}
+                  onClick={() => this.changeRegionSize(size)}
+                >
+                  {size[0].toUpperCase()}
+                </button>
+              );
+            })}
           </div>
           <div className='btn-group pull-right'>
             <button className='btn btn-default active'>{'All'}</button>
@@ -164,11 +182,11 @@ class CloudStatusOverviewPage extends Component {
         </div>
         <hr />
         <div className='region-list'>
-          <Region />
-          <Region />
-          <Region />
-          <Region />
-          <Region />
+          <Region size={this.regionSize} />
+          <Region size={this.regionSize} />
+          <Region size={this.regionSize} />
+          <Region size={this.regionSize} />
+          <Region size={this.regionSize} />
         </div>
       </div>
     );
@@ -178,7 +196,7 @@ class CloudStatusOverviewPage extends Component {
 class Region extends Component {
   render() {
     return (
-      <div className='region-container region-large'>
+      <div className={cx('region-container', 'region-' + this.props.size)}>
         <div className='region'>
           <h3>{'Region name'}</h3>
           {'Here goes region info'}
