@@ -141,7 +141,28 @@ class CloudStatusOverviewPage extends Component {
     return (
       <div>
         <h1>{'Cloud Status Overview Page'}</h1>
-        {'This is a cloud status overview page.'}
+        <hr />
+        <div className='btn-toolbar'>
+          <div className='pull-left cloud-overview-summary'>
+            {'Total: X Error: X'}
+          </div>
+          <div className='btn-group pull-right'>
+            <button className='btn btn-default active'>{'S'}</button>
+            <button className='btn btn-default'>{'M'}</button>
+            <button className='btn btn-default'>{'L'}</button>
+            <button className='btn btn-default'>{'XL'}</button>
+          </div>
+          <div className='btn-group pull-right'>
+            <button className='btn btn-default active'>{'All'}</button>
+            <button className='btn btn-default'>{'Errors'}</button>
+          </div>
+          <div className='btn-group pull-right'>
+            <button className='btn btn-default active'>{'Day'}</button>
+            <button className='btn btn-default'>{'Week'}</button>
+            <button className='btn btn-default'>{'Month'}</button>
+          </div>
+        </div>
+        <hr />
       </div>
     );
   }
