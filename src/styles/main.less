@@ -38,7 +38,7 @@ body {
   text-transform: uppercase;
 }
 
-.container {
+.container, .container-fluid {
   width: 100%;
   h1, h2, h3, h4 {
     font-family: 'Teko';
@@ -48,6 +48,9 @@ body {
   }
   h1 {
     font-size: 30px;
+  }
+  &.container-fluid {
+    padding-left: 85px;
   }
 }
 
@@ -93,6 +96,17 @@ body {
       padding: 0;
       margin: 6px 40px 0 0;
       background-image: url('../media/fuel-devops-logo.svg');
+    }
+  }
+  .navbar-right {
+    li {
+      a {
+        margin: 0;
+        padding: 0;
+        &:hover {
+          background: none;
+        }
+      }
     }
   }
 }
@@ -187,7 +201,7 @@ body {
         border-top: 1px solid @item-block-border - 30%;
         color: @item-block-border - 60%;
         .name {
-          width: 70%;
+          width: 30%;
           display: block;
           font-size: 9px;
           text-transform: uppercase;
@@ -200,6 +214,15 @@ body {
           font-family: 'teko';
           font-size: 20px;
           line-height: 26px;
+        }
+        .graph {
+          display: block;
+          border: 1px solid #dadada;
+          width: 52%;
+          float: left;
+          margin-top: 2px;
+          font-size: 8px;
+          padding: 4px 20px;
         }
       }
       .performance {
@@ -220,6 +243,9 @@ body {
         .name {
           display: none;
         }
+        .graph {
+          display: none;
+        }
         .param {
           width: 100%;
           text-align: center;
@@ -230,22 +256,92 @@ body {
     }
     &.region-medium {
       .make-xs-column(1.5, 10px);
+      .sla, .availability, .health, .performance {
+        .name {
+          width: 60%;
+        }
+        .graph {
+          display: none;
+        }
+      }
     }
     &.region-large {
       .make-xs-column(3, 10px);
     }
   }
 }
+
+.sub-nav {
+  position: absolute;
+  top: 70px;
+  left: 0px;
+  width: 70px;
+  height: 100%;
+  display: block;
+  background-color: @sub-nav-bg;
+  z-index: 999;
+  overflow: hidden;
+  -webkit-transition: all 0.25s ease-out;
+  -moz-transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
+  &:hover {
+    width: 200px;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      display: block;
+      overflow: hidden;
+      height: 42px;
+      margin-bottom: 10px;
+      a {
+        display: block;
+        width: 100%;
+        color: @nav-link-hover-bg;
+        .icon-box {
+          display: inline-block;
+          margin: 7px 10px 0px 21px;
+        }
+        span {
+          display: inline-block;
+          font-family: 'Teko';
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 20px;
+          margin-top: 10px;
+          vertical-align: top;
+          text-transform: uppercase;
+        }
+      }
+      &.active {
+        background-color: @body-bg;
+        a {
+          color: @text-color;
+        }
+        .icon-box {
+          background-color: @nav-link-bg;
+        }
+      }
+    }
+  }
+}
+
 // Icons
 
 .icon-box {
   width: 28px;
   height: 28px;
   margin: 2px 10px 0 0;
+  background-color: @nav-link-hover-bg;
+  border-radius: 14px;
+  &:hover {
+    background-color: @nav-link-hover-bg - 50%;
+  }
 }
 
 .user-icon {
-  background-image: url('../media/user-icon.svg');
+  background-image: url('../media/user-icon.svg?fill=%234C748E');
 }
 
 .notification-icon {
@@ -254,4 +350,16 @@ body {
 
 .logout-icon {
   background-image: url('../media/logout-icon.svg');
+}
+
+.overview-icon {
+  background-image: url('../media/overview-icon.svg?fill=%234C748E');
+}
+
+.availability-icon {
+  background-image: url('../media/availability-icon.svg?fill=%234C748E');
+}
+
+.health-icon {
+  background-image: url('../media/health-icon.svg?fill=%234C748E');
 }
