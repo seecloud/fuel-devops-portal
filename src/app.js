@@ -299,7 +299,7 @@ class CloudStatusHealthPage extends Component {
                 {this.charts.map(({title, key}) => {
                   return (
                     <div key={title} className='col-md-3 col-xs-12 text-center'>
-                      <div className='charts-title'>{title}</div>
+                      <div className='chart-title'>{title}</div>
                       <LineChart
                         className='ct-major-twelfth'
                         data={{
