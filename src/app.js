@@ -22,7 +22,13 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        <div className='container'>
+        <div className='sub-nav'>
+          <ul className=''>
+            <li className='active'><a href='/cloud-status'><div className='icon-box overview-icon' /><span>{'Overview'}</span></a></li>
+            <li className=''><a href='/cloud-status/availability'><div className='icon-box availability-icon' /><span>{'Availability'}</span></a></li>
+            <li className=''><a href='/cloud-status/health'><div className='icon-box health-icon' /><span>{'Health'}</span></a></li></ul>
+        </div>
+        <div className='container-fluid'>
           {this.props.children}
         </div>
       </div>
@@ -204,18 +210,22 @@ class Region extends Component {
           <h3>{'west-1.hooli.net.blablablabla'}</h3>
           <div className='sla'>
             <div className='name'>{'SLA'}</div>
+            <div className='graph'>{'graph'}</div>
             <div className='param text-success'>{'100%'}</div>
           </div>
           <div className='availability'>
             <div className='name'>{'Availability'}</div>
+            <div className='graph'>{'graph'}</div>
             <div className='param text-warning'>{'100%'}</div>
           </div>
           <div className='health'>
             <div className='name'>{'Health (FCI)'}</div>
-            <div className='param'>{'100%'}</div>
+            <div className='graph'>{'graph'}</div>
+            <div className='param'>{'N/A'}</div>
           </div>
           <div className='performance'>
             <div className='name'>{'Performance'}</div>
+            <div className='graph'>{'graph'}</div>
             <div className='param text-danger'>{'100%'}</div>
           </div>
         </div>
