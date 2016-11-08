@@ -223,6 +223,14 @@ class Region extends Component {
   }
 }
 
+class LineChart extends Component {
+  render() {
+    return (
+      <div>{'Here goes graph'}</div>
+    );
+  }
+}
+
 class CloudStatusAvailabilityPage extends Component {
   render() {
     return (
@@ -235,11 +243,35 @@ class CloudStatusAvailabilityPage extends Component {
 }
 
 class CloudStatusHealthPage extends Component {
+  services = ['Keystone', 'Nova', 'Glance', 'Cinder', 'Newtron']
+
   render() {
     return (
       <div>
         <h1>{'Cloud Status Health Page'}</h1>
-        {'This is a cloud status health page.'}
+        <p>{'API Health is based on HTTP requests response metrics: codes, duration and size.'}</p>
+        <p>{'FCI score is ratio of successful codes (2xx, 3xx, 4xx) to all http codes.'}</p>
+        {this.services.map((serviceName) => {
+          return (
+            <div key={serviceName} className='service-status'>
+              <div className='row'>
+                <div className='col-md-3 col-xs-12 text-center'>
+                  <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
+                  <div className='service-fci-score text-success'>{'100%'}</div>
+                </div>
+                <div className='col-md-3 col-xs-12 text-center'>
+                  <LineChart />
+                </div>
+                <div className='col-md-3 col-xs-12 text-center'>
+                  <LineChart />
+                </div>
+                <div className='col-md-3 col-xs-12 text-center'>
+                  <LineChart />
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }
