@@ -1,6 +1,7 @@
 @import '~bootstrap/less/bootstrap.less';
 @import 'colors.less';
 @import '~open-sans-fontface/open-sans.less';
+@import '~chartist/dist/chartist.css';
 
 @font-family-sans-serif: 'Open Sans', sans-serif;
 
@@ -129,11 +130,25 @@ body {
   border-radius: 6px;
   .service-name {
     font-family: 'Teko';
-    font-size: 24px;
+    font-size: 28px;
   }
   .service-fci-score {
     font-family: 'Teko';
-    font-size: 28px;
+    font-size: 36px;
+  }
+  .chart-title {
+    font-family: 'Teko';
+    font-size: 18px;
+  }
+  .ct-chart {
+    .ct-line {
+      stroke: black;
+      stroke-width: 3px;
+    }
+    .ct-point {
+      stroke: black;
+      stroke-width: 6px;
+    }
   }
 }
 
