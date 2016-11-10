@@ -1,21 +1,21 @@
 import React from 'react';
 import {Router, Route, IndexRoute, Redirect, browserHistory} from 'react-router';
 
-import {requireAuthHook, prohibitAuthHook} from './router_hooks';
-import uiState from './stores/ui_state';
+import {requireAuthHook, prohibitAuthHook} from './routerHooks';
+import uiState from './stores/uiState';
 
-import App from './components/app';
-import LoginPage from './components/login_page';
-import DashboardPage from './components/dashboard_page';
-import CloudStatusSidebar from './components/cloud_status_sidebar';
-import CloudStatusOverviewPage from './components/cloud_status_overview_page';
-import CloudStatusAvailabilityPage from './components/cloud_status_availability_page';
-import CloudStatusHealthPage from './components/cloud_status_health_page';
-import CloudIntelligencePage from './components/cloud_intelligence_page';
-import CapacityManagementPage from './components/capacity_management_page';
-import ResourceOptimizationPage from './components/resource_optimization_page';
-import SecurityMonitoringPage from './components/security_monitoring_page';
-import InfrastructurePage from './components/infrastructure_page';
+import App from './components/App';
+import LoginPage from './components/LoginPage';
+import DashboardPage from './components/DashboardPage';
+import CloudStatusSidebar from './components/cloudStatusSidebar';
+import CloudStatusOverviewPage from './components/CloudStatusOverviewPage';
+import CloudStatusAvailabilityPage from './components/CloudStatusAvailabilityPage';
+import CloudStatusHealthPage from './components/CloudStatusHealthPage';
+import CloudIntelligencePage from './components/CloudIntelligencePage';
+import CapacityManagementPage from './components/CapacityManagementPage';
+import ResourceOptimizationPage from './components/ResourceOptimizationPage';
+import SecurityMonitoringPage from './components/SecurityMonitoringPage';
+import InfrastructurePage from './components/InfrastructurePage';
 
 export default (
   <Router history={browserHistory}>

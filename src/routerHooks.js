@@ -1,4 +1,4 @@
-import uiState from './stores/ui_state';
+import uiState from './stores/uiState';
 
 export function requireAuthHook(nextState, replace) {
   if (!uiState.authenticated) {

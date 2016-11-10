@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SideNavbar from './side_navbar';
+import SideNavbar from './SideNavbar';
 
 export default function CloudStatusSidebar() {
   return (

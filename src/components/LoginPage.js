@@ -4,7 +4,7 @@ import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 import {get} from 'lodash';
 
-import uiState from '../stores/ui_state';
+import uiState from '../stores/uiState';
 
 @withRouter
 @observer

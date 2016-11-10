@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {times} from 'lodash';
 
-import LineChart from './line_chart';
+import LineChart from './LineChart';
 
 export default class CloudStatusHealthPage extends Component {
   charts = [
