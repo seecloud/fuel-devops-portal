@@ -271,18 +271,16 @@ body {
   }
 }
 
-.sub-nav {
+.side-navbar {
   position: absolute;
   top: 70px;
   left: 0px;
   width: 70px;
   height: 100%;
   display: block;
-  background-color: @sub-nav-bg;
+  background-color: @side-navbar-bg;
   z-index: 999;
   overflow: hidden;
-  -webkit-transition: all 0.25s ease-out;
-  -moz-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out;
   &:hover {
     width: 200px;
@@ -340,26 +338,31 @@ body {
   }
 }
 
+.background-image-svg-fill(@url, @color: '') {
+  @escaped-color: escape(@color);
+  background-image: ~"url('@{url}?fill=@{escaped-color}')";
+}
+
 .user-icon {
-  background-image: url('../media/user-icon.svg?fill=%234C748E');
+  .background-image-svg-fill('../media/user-icon.svg', @color: @side-navbar-bg);
 }
 
 .notification-icon {
-  background-image: url('../media/notification-icon.svg');
+  .background-image-svg-fill('../media/notification-icon.svg');
 }
 
 .logout-icon {
-  background-image: url('../media/logout-icon.svg');
+  .background-image-svg-fill('../media/logout-icon.svg');
 }
 
 .overview-icon {
-  background-image: url('../media/overview-icon.svg?fill=%234C748E');
+  .background-image-svg-fill('../media/overview-icon.svg', @side-navbar-bg);
 }
 
 .availability-icon {
-  background-image: url('../media/availability-icon.svg?fill=%234C748E');
+  .background-image-svg-fill('../media/availability-icon.svg', @side-navbar-bg);
 }
 
 .health-icon {
-  background-image: url('../media/health-icon.svg?fill=%234C748E');
+  .background-image-svg-fill('../media/health-icon.svg', @side-navbar-bg);
 }

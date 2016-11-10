@@ -22,14 +22,9 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        <div className='sub-nav'>
-          <ul className=''>
-            <li className='active'><a href='/cloud-status'><div className='icon-box overview-icon' /><span>{'Overview'}</span></a></li>
-            <li className=''><a href='/cloud-status/availability'><div className='icon-box availability-icon' /><span>{'Availability'}</span></a></li>
-            <li className=''><a href='/cloud-status/health'><div className='icon-box health-icon' /><span>{'Health'}</span></a></li></ul>
-        </div>
+        {this.props.sidebar}
         <div className='container-fluid'>
-          {this.props.children}
+          {this.props.main}
         </div>
       </div>
     );
@@ -39,17 +34,19 @@ class App extends Component {
 @withRouter
 @observer
 class Navbar extends Component {
-  navs = [
-    ['/cloud-status', 'Cloud Status'],
-    ['/cloud-intelligence', 'Cloud Intelligence'],
-    ['/capacity-management', 'Capacity Management'],
-    ['/resource-optimization', 'Resource Optimization'],
-    ['/security-monitoring', 'Security Monitoring'],
-    ['/infrastructure', 'Infrastructure'],
-  ]
+  static defaultProps = {
+    navigationItems: [
+      {url: '/cloud-status', title: 'Cloud Status'},
+      {url: '/cloud-intelligence', title: 'Cloud Intelligence'},
+      {url: '/capacity-management', title: 'Capacity Management'},
+      {url: '/resource-optimization', title: 'Resource Optimization'},
+      {url: '/security-monitoring', title: 'Security Monitoring'},
+      {url: '/infrastructure', title: 'Infrastructure'}
+    ]
+  }
 
   render() {
-    const {router} = this.props;
+    const {router, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
     return (
       <nav className='navbar navbar-default'>
@@ -58,7 +55,7 @@ class Navbar extends Component {
             <Link to='/' className='navbar-brand' />
           </div>
           <ul className='nav navbar-nav navbar-left'>
-            {this.navs.map(([url, title]) => {
+            {navigationItems.map(({url, title}) => {
               return (
                 <li key={url} className={cx({active: router.isActive(url)})}>
                   <Link to={url}>{title}</Link>
@@ -73,6 +70,33 @@ class Navbar extends Component {
           </ul>
         </div>
       </nav>
+    );
+  }
+}
+
+@withRouter
+class SideNavbar extends Component {
+  static defaultProps = {
+    navigationItems: []
+  }
+
+  render() {
+    const {router, navigationItems} = this.props;
+    return (
+      <div className='side-navbar'>
+        <ul>
+          {navigationItems.map(({url, title, iconClassName}) => {
+            return (
+              <li key={url} className={cx({active: router.isActive(url, true)})}>
+                <Link to={url}>
+                  <div className={cx('icon-box', iconClassName)} />
+                  <span>{title}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     );
   }
 }
@@ -110,40 +134,23 @@ const DashboardPageLink = ({to, title}) => {
   );
 };
 
-@withRouter
-class CloudStatusOverviewNav extends Component {
-  navs = [
-    ['/cloud-status', 'Overview'],
-    ['/cloud-status/availability', 'Availability'],
-    ['/cloud-status/health', 'Health']
-  ]
-
-  render() {
-    const {router} = this.props;
-    return (
-      <ul className='nav nav-pills'>
-        {this.navs.map(([url, title]) => {
-          return (
-            <li key={url} className={cx({active: router.isActive(url, true)})}>
-              <Link to={url}>{title}</Link>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}
-
 class CloudStatusPage extends Component {
   render() {
     return (
       <div>
-        <CloudStatusOverviewNav />
         {this.props.children}
       </div>
     );
   }
 }
+
+const CloudStatusSidebar = () => <SideNavbar
+  navigationItems={[
+    {url: '/cloud-status', title: 'Overview', iconClassName: 'overview-icon'},
+    {url: '/cloud-status/availability', title: 'Availability', iconClassName: 'availability-icon'},
+    {url: '/cloud-status/health', title: 'Health', iconClassName: 'health-icon'}
+  ]}
+/>;
 
 @observer
 class CloudStatusOverviewPage extends Component {
@@ -210,22 +217,18 @@ class Region extends Component {
           <h3>{'west-1.hooli.net.blablablabla'}</h3>
           <div className='sla'>
             <div className='name'>{'SLA'}</div>
-            <div className='graph'>{'graph'}</div>
             <div className='param text-success'>{'100%'}</div>
           </div>
           <div className='availability'>
             <div className='name'>{'Availability'}</div>
-            <div className='graph'>{'graph'}</div>
             <div className='param text-warning'>{'100%'}</div>
           </div>
           <div className='health'>
             <div className='name'>{'Health (FCI)'}</div>
-            <div className='graph'>{'graph'}</div>
             <div className='param'>{'N/A'}</div>
           </div>
           <div className='performance'>
             <div className='name'>{'Performance'}</div>
-            <div className='graph'>{'graph'}</div>
             <div className='param text-danger'>{'100%'}</div>
           </div>
         </div>
@@ -505,13 +508,13 @@ ReactDOM.render(
   <Router history={browserHistory}>
     <Route path='/' component={App}>
       <IndexRoute
-        component={DashboardPage}
+        components={{main: DashboardPage}}
         onEnter={requireAuthHook}
       />
 
       <Route
         path='login'
-        component={LoginPage}
+        components={{main: LoginPage}}
         onEnter={prohibitAuthHook}
       />
       <Route
@@ -522,7 +525,7 @@ ReactDOM.render(
 
       <Route
         path='cloud-status'
-        component={CloudStatusPage}
+        components={{main: CloudStatusPage, sidebar: CloudStatusSidebar}}
         onEnter={requireAuthHook}
       >
         <IndexRoute
@@ -539,27 +542,27 @@ ReactDOM.render(
       </Route>
       <Route
         path='cloud-intelligence'
-        component={CloudIntelligencePage}
+        components={{main: CloudIntelligencePage}}
         onEnter={requireAuthHook}
       />
       <Route
         path='capacity-management'
-        component={CapacityManagementPage}
+        components={{main: CapacityManagementPage}}
         onEnter={requireAuthHook}
       />
       <Route
         path='resource-optimization'
-        component={ResourceOptimizationPage}
+        components={{main: ResourceOptimizationPage}}
         onEnter={requireAuthHook}
       />
       <Route
         path='security-monitoring'
-        component={SecurityMonitoringPage}
+        components={{main: SecurityMonitoringPage}}
         onEnter={requireAuthHook}
       />
       <Route
         path='infrastructure'
-        component={InfrastructurePage}
+        components={{main: InfrastructurePage}}
         onEnter={requireAuthHook}
       />
       <Redirect from='*' to='/' />
