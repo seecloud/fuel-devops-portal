@@ -11,7 +11,7 @@ const filenameTemplate = '[name].[hash:8].[ext]';
 export default {
   entry: [
     'whatwg-fetch',
-    './src/app.js'
+    './src/index.js'
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
