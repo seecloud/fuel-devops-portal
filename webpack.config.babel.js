@@ -28,8 +28,21 @@ export default {
         query: {cacheDirectory: true}
       },
       {
-        test: /\.less$/,
+        test: /\.css$/,
+        loaders: ['style', 'css', 'postcss']
+      },
+      {
+        test: /^((?!\.module).)*less$/,
         loaders: ['style', 'css', 'postcss', 'less']
+      },
+      {
+        test: /\.module\.less$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:8]',
+          'postcss',
+          'less'
+        ]
       },
       {
         test: /\/loading\.less$/,
