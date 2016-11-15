@@ -7,7 +7,7 @@ import {requireAuthHook, prohibitAuthHook, logoutHook} from './routerHooks';
 import App from './components/App';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
-import CloudStatusSidebar from './components/cloudStatusSidebar';
+import CloudStatusSidebar from './components/CloudStatusSidebar';
 import CloudStatusOverviewPage from './components/CloudStatusOverviewPage';
 import CloudStatusAvailabilityPage from './components/CloudStatusAvailabilityPage';
 import CloudStatusHealthPage from './components/CloudStatusHealthPage';
@@ -16,6 +16,8 @@ import CapacityManagementPage from './components/CapacityManagementPage';
 import ResourceOptimizationPage from './components/ResourceOptimizationPage';
 import SecurityMonitoringPage from './components/SecurityMonitoringPage';
 import InfrastructurePage from './components/InfrastructurePage';
+import InfrastructureSidebar from './components/InfrastructureSidebar';
+import InfrastructureServicePage from './components/InfrastructureServicePage';
 
 export default function createRoutes(stores) {
   return (
@@ -74,9 +76,18 @@ export default function createRoutes(stores) {
       />
       <Route
         path='infrastructure'
-        components={{main: InfrastructurePage}}
+        components={{main: ({children}) => children, sidebar: InfrastructureSidebar}}
         onEnter={partial(requireAuthHook, stores)}
-      />
+      >
+        <IndexRoute
+          component={InfrastructurePage}
+        />
+        <Route
+          path=':serviceId'
+          component={InfrastructureServicePage}
+          onEnter={partial(InfrastructureServicePage.onEnter, stores)}
+        />
+      </Route>
       <Redirect from='*' to='/' />
     </Route>
   );
