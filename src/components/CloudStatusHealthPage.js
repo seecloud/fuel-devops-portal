@@ -59,14 +59,14 @@ export default class CloudStatusHealthPage extends Component {
         {this.services.map((serviceName) => {
           return (
             <div key={serviceName} className='service-status'>
-              <div className='row'>
-                <div className='col-md-3 col-xs-12 text-center'>
+              <div className='service-status-container'>
+                <div className='service-status-link text-center'>
                   <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
                   <div className='service-fci-score text-success'>{'100%'}</div>
                 </div>
                 {this.charts.map(({title, key}) => {
                   return (
-                    <div key={title} className='col-md-3 col-xs-12 text-center'>
+                    <div key={title} className='service-status-link text-center'>
                       <div className='chart-title'>{title}</div>
                       <LineChart
                         className='ct-major-twelfth'
