@@ -111,7 +111,10 @@ body {
 .dashboard-page-links {
   .make-row(10px);
   .dashboard-page-link-container {
-    .make-xs-column(3, 10px);
+    .make-xs-column(12, 10px);
+    .make-sm-column(6, 10px);
+    .make-md-column(4, 10px);
+    .make-lg-column(3, 10px);
   }
 }
 
@@ -139,13 +142,22 @@ body {
   background-color: @item-block-bg;
   border: 1px solid @item-block-border;
   border-radius: 6px;
+  .service-status-container {
+    .make-row(10px);
+    .service-status-link {
+      .make-xs-column(12, 10px);
+      .make-md-column(6, 10px);
+      .make-lg-column(3, 10px);
+    }
+  }
   .service-name {
-    font-family: 'Teko';
-    font-size: 28px;
+    font-family: 'open sans';
+    font-size: 20px;
+    margin: 15px 0 0;
   }
   .service-fci-score {
     font-family: 'Teko';
-    font-size: 36px;
+    font-size: 50px;
   }
   .chart-title {
     font-family: 'Teko';
@@ -153,11 +165,11 @@ body {
   }
   .ct-chart {
     .ct-line {
-      stroke: black;
+      stroke: @brand-primary;
       stroke-width: 3px;
     }
     .ct-point {
-      stroke: black;
+      stroke: @brand-primary;
       stroke-width: 6px;
     }
   }
