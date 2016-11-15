@@ -1,8 +1,6 @@
 import {observable} from 'mobx';
 
-export class UIState {
+export default class UIState {
   @observable
   authenticated = true;
 }
-
-export default new UIState();

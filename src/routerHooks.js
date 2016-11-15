@@ -1,6 +1,4 @@
-import uiState from './stores/uiState';
-
-export function requireAuthHook(nextState, replace) {
+export function requireAuthHook({uiState}, nextState, replace) {
   if (!uiState.authenticated) {
     replace({
       pathname: '/login',
@@ -9,6 +7,11 @@ export function requireAuthHook(nextState, replace) {
   }
 }
 
-export function prohibitAuthHook(nextState, replace) {
+export function prohibitAuthHook({uiState}, nextState, replace) {
   if (uiState.authenticated) replace('/');
+}
+
+export function logoutHook({uiState}, nextState, replace) {
+  uiState.authenticated = false;
+  replace('/login');
 }

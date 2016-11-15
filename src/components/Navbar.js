@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import cx from 'classnames';
 
-import uiState from '../stores/uiState';
-
 @withRouter
+@inject('uiState')
 @observer
 export default class Navbar extends Component {
   static defaultProps = {
@@ -20,7 +19,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {router, navigationItems} = this.props;
+    const {uiState, router, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
     return (
       <nav className='navbar navbar-default'>

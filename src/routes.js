@@ -1,8 +1,8 @@
 import React from 'react';
-import {Router, Route, IndexRoute, Redirect, browserHistory} from 'react-router';
+import {Route, IndexRoute, Redirect} from 'react-router';
+import {partial} from 'lodash';
 
-import {requireAuthHook, prohibitAuthHook} from './routerHooks';
-import uiState from './stores/uiState';
+import {requireAuthHook, prohibitAuthHook, logoutHook} from './routerHooks';
 
 import App from './components/App';
 import LoginPage from './components/LoginPage';
@@ -17,31 +17,28 @@ import ResourceOptimizationPage from './components/ResourceOptimizationPage';
 import SecurityMonitoringPage from './components/SecurityMonitoringPage';
 import InfrastructurePage from './components/InfrastructurePage';
 
-export default (
-  <Router history={browserHistory}>
+export default function createRoutes(stores) {
+  return (
     <Route path='/' component={App}>
       <IndexRoute
         components={{main: DashboardPage}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       />
 
       <Route
         path='login'
         components={{main: LoginPage}}
-        onEnter={prohibitAuthHook}
+        onEnter={partial(prohibitAuthHook, stores)}
       />
       <Route
         path='logout'
-        onEnter={(nextState, replace) => {
-          uiState.authenticated = false;
-          replace('/login');
-        }}
+        onEnter={partial(logoutHook, stores)}
       />
 
       <Route
         path='cloud-status'
         components={{main: ({children}) => children, sidebar: CloudStatusSidebar}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       >
         <IndexRoute
           component={CloudStatusOverviewPage}
@@ -58,29 +55,29 @@ export default (
       <Route
         path='cloud-intelligence'
         components={{main: CloudIntelligencePage}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       />
       <Route
         path='capacity-management'
         components={{main: CapacityManagementPage}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       />
       <Route
         path='resource-optimization'
         components={{main: ResourceOptimizationPage}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       />
       <Route
         path='security-monitoring'
         components={{main: SecurityMonitoringPage}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       />
       <Route
         path='infrastructure'
         components={{main: InfrastructurePage}}
-        onEnter={requireAuthHook}
+        onEnter={partial(requireAuthHook, stores)}
       />
       <Redirect from='*' to='/' />
     </Route>
-  </Router>
-);
+  );
+}

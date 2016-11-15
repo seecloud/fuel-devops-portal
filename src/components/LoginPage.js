@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {observable} from 'mobx';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {get} from 'lodash';
 
-import uiState from '../stores/uiState';
-
 @withRouter
+@inject('uiState')
 @observer
 export default class LoginPage extends Component {
   @observable actionInProgress = false
@@ -14,7 +13,7 @@ export default class LoginPage extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     this.actionInProgress = true;
-    const {router, location} = this.props;
+    const {router, location, uiState} = this.props;
     setTimeout(() => {
       uiState.authenticated = true;
       router.replace(get(location, 'state.nextPathname', '/'));
