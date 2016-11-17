@@ -51,6 +51,25 @@ body {
   }
 }
 
+.data-fetching-progress {
+  position: absolute;
+  height: 5px;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  opacity: 1;
+  transition: opacity 0.2s linear 0.2s;
+  .data-fetching-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: @body-bg;
+    box-shadow: 0 0 8px @body-bg;
+    transition: width 0.35s ease;
+  }
+}
+
 .navbar {
   font-family: 'Teko';
   font-weight: 300;

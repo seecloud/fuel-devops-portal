@@ -12,7 +12,7 @@ export default class InfrastructurePage extends Component {
           new InfrastructureService({id: 'stacklight', name: 'StackLight', url: '/stacklight'})
         ];
         resolve();
-      }, 500);
+      }, 2000);
     });
   }
 
