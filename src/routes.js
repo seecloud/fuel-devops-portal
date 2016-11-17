@@ -1,6 +1,5 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
-import {partial} from 'lodash';
 
 import {requireAuthHook, prohibitAuthHook, logoutHook} from './routerHooks';
 
@@ -24,23 +23,23 @@ export default function createRoutes(stores) {
     <Route path='/' component={App}>
       <IndexRoute
         components={{main: DashboardPage}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       />
 
       <Route
         path='login'
         components={{main: LoginPage}}
-        onEnter={partial(prohibitAuthHook, stores)}
+        onEnter={prohibitAuthHook.bind(null, stores)}
       />
       <Route
         path='logout'
-        onEnter={partial(logoutHook, stores)}
+        onEnter={logoutHook.bind(null, stores)}
       />
 
       <Route
         path='cloud-status'
         components={{main: ({children}) => children, sidebar: CloudStatusSidebar}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       >
         <IndexRoute
           component={CloudStatusOverviewPage}
@@ -57,27 +56,27 @@ export default function createRoutes(stores) {
       <Route
         path='cloud-intelligence'
         components={{main: CloudIntelligencePage}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       />
       <Route
         path='capacity-management'
         components={{main: CapacityManagementPage}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       />
       <Route
         path='resource-optimization'
         components={{main: ResourceOptimizationPage}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       />
       <Route
         path='security-monitoring'
         components={{main: SecurityMonitoringPage}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       />
       <Route
         path='infrastructure'
         components={{main: ({children}) => children, sidebar: InfrastructureSidebar}}
-        onEnter={partial(requireAuthHook, stores)}
+        onEnter={requireAuthHook.bind(null, stores)}
       >
         <IndexRoute
           component={InfrastructurePage}
@@ -85,7 +84,7 @@ export default function createRoutes(stores) {
         <Route
           path=':serviceId'
           component={InfrastructureServicePage}
-          onEnter={partial(InfrastructureServicePage.onEnter, stores)}
+          onEnter={InfrastructureServicePage.onEnter.bind(null, stores)}
         />
       </Route>
       <Redirect from='*' to='/' />
