@@ -1,6 +1,21 @@
 import React, {Component} from 'react';
 
+import {InfrastructureService} from '../stores/InfrastructureServices';
+
 export default class InfrastructurePage extends Component {
+  static async fetchData({infrastructureServices}) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        infrastructureServices.items = [
+          new InfrastructureService({id: 'jenkins', name: 'Jenkins', url: '/jenkins'}),
+          new InfrastructureService({id: 'kibana', name: 'Kibana', url: '/kibana'}),
+          new InfrastructureService({id: 'stacklight', name: 'StackLight', url: '/stacklight'})
+        ];
+        resolve();
+      }, 500);
+    });
+  }
+
   render() {
     return (
       <div>

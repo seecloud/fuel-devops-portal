@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
 
-import {requireAuthHook, prohibitAuthHook, logoutHook} from './routerHooks';
+import {requireAuthHook, prohibitAuthHook, logoutHook, fetchDataHook} from './routerHooks';
 
 import App from './components/App';
 import LoginPage from './components/LoginPage';
@@ -80,6 +80,7 @@ export default function createRoutes(stores) {
       >
         <IndexRoute
           component={InfrastructurePage}
+          onEnter={fetchDataHook.bind(null, stores, InfrastructurePage.fetchData)}
         />
         <Route
           path=':serviceId'

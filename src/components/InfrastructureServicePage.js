@@ -6,19 +6,21 @@ import {inject} from 'mobx-react';
 @withRouter
 @inject('infrastructureServices')
 export default class InfrastructureServicePage extends Component {
-  static onEnter({infrastructureServices}, {params}, replace) {
-    if (!infrastructureServices.items.some((infrastructureService) => {
+  static getActiveService(infrastructureServices, params) {
+    return infrastructureServices.items.find((infrastructureService) => {
       return infrastructureService.id === params.serviceId;
-    })) {
+    });
+  }
+
+  static onEnter({infrastructureServices}, {params}, replace) {
+    if (!InfrastructureServicePage.getActiveService(infrastructureServices, params)) {
       replace('/infrastructure');
     }
   }
 
   @computed get activeService() {
     const {params, infrastructureServices} = this.props;
-    return infrastructureServices.items.find((infrastructureService) => {
-      return infrastructureService.id === params.serviceId;
-    });
+    return InfrastructureServicePage.getActiveService(infrastructureServices, params);
   }
 
   render() {
