@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {observable} from 'mobx';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import cx from 'classnames';
 
+@inject('regions')
 @observer
 export default class CloudStatusOverviewPage extends Component {
   @observable regionSize = 'large'
@@ -19,7 +20,10 @@ export default class CloudStatusOverviewPage extends Component {
         <hr />
         <div className='btn-toolbar'>
           <div className='pull-left cloud-overview-summary'>
-            {'Total: X Error: X'}
+            {'Total: '}
+            {this.props.regions.items.length}
+            {' '}
+            {'Error: X'}
           </div>
           <div className='btn-group pull-right'>
             {this.regionSizes.map((size) => {
@@ -49,11 +53,13 @@ export default class CloudStatusOverviewPage extends Component {
         </div>
         <hr />
         <div className='region-list'>
-          <Region size={this.regionSize} />
-          <Region size={this.regionSize} />
-          <Region size={this.regionSize} />
-          <Region size={this.regionSize} />
-          <Region size={this.regionSize} />
+          {this.props.regions.items.map((region) => {
+            return <Region
+              key={region.id}
+              region={region}
+              size={this.regionSize}
+            />;
+          })}
         </div>
       </div>
     );
@@ -65,7 +71,7 @@ export class Region extends Component {
     return (
       <div className={cx('region-container', 'region-' + this.props.size)}>
         <div className='region'>
-          <h3>{'west-1.hooli.net.blablablabla'}</h3>
+          <h3>{this.props.region.name}</h3>
           <div className='sla'>
             <div className='name'>{'SLA'}</div>
             <div className='param text-success'>{'100%'}</div>

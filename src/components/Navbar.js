@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
 import {observer, inject} from 'mobx-react';
+import {observable} from 'mobx';
 import cx from 'classnames';
 
 @withRouter
-@inject('uiState')
+@inject('uiState', 'regions')
 @observer
 export default class Navbar extends Component {
   static defaultProps = {
@@ -18,6 +19,12 @@ export default class Navbar extends Component {
     ]
   }
 
+  @observable regionMenuOpen = false
+
+  toggleRegionMenu = () => {
+    this.regionMenuOpen = !this.regionMenuOpen;
+  }
+
   render() {
     const {uiState, router, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
@@ -28,6 +35,25 @@ export default class Navbar extends Component {
             <Link to='/' className='navbar-brand' />
           </div>
           <ul className='nav navbar-nav navbar-left'>
+            <li key='regions' className={cx('dropdown', {open: this.regionMenuOpen})}>
+              <button className='dropdown-toggle' onClick={this.toggleRegionMenu}>
+                {'All regions'}
+                <span className='caret' />
+              </button>
+              <ul className='dropdown-menu'>
+                <li key='all'>
+                  <a href='#'>{'All regions'}</a>
+                </li>
+                <li key='divider' className='divider' />
+                {this.props.regions.items.map((region) => {
+                  return (
+                    <li key={region.id}>
+                      <a href='#'>{region.name}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
             {navigationItems.map(({url, title}) => {
               return (
                 <li key={url} className={cx({active: router.isActive(url)})}>
