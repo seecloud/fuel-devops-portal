@@ -14,9 +14,6 @@ import CloudIntelligencePage from './components/CloudIntelligencePage';
 import CapacityManagementPage from './components/CapacityManagementPage';
 import ResourceOptimizationPage from './components/ResourceOptimizationPage';
 import SecurityMonitoringPage from './components/SecurityMonitoringPage';
-import InfrastructurePage from './components/InfrastructurePage';
-import InfrastructureSidebar from './components/InfrastructureSidebar';
-import InfrastructureServicePage from './components/InfrastructureServicePage';
 
 export default function createRoutes(stores) {
   return (
@@ -77,21 +74,6 @@ export default function createRoutes(stores) {
         components={{main: SecurityMonitoringPage}}
         onEnter={requireAuthHook.bind(null, stores)}
       />
-      <Route
-        path='infrastructure'
-        components={{main: ({children}) => children, sidebar: InfrastructureSidebar}}
-        onEnter={requireAuthHook.bind(null, stores)}
-      >
-        <IndexRoute
-          component={InfrastructurePage}
-          onEnter={fetchDataHook.bind(null, stores, InfrastructurePage.fetchData)}
-        />
-        <Route
-          path=':serviceId'
-          component={InfrastructureServicePage}
-          onEnter={InfrastructureServicePage.onEnter.bind(null, stores)}
-        />
-      </Route>
       <Redirect from='*' to='/' />
     </Route>
   );

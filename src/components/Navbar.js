@@ -15,7 +15,6 @@ export default class Navbar extends Component {
       {url: '/capacity-management', title: 'Capacity Management'},
       {url: '/resource-optimization', title: 'Resource Optimization'},
       {url: '/security-monitoring', title: 'Security Monitoring'},
-      {url: '/infrastructure', title: 'Infrastructure'}
     ]
   }
 

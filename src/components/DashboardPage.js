@@ -12,7 +12,6 @@ export default class DashboardPage extends Component {
           <DashboardPageLink to='/capacity-management' title='Capacity Management' />
           <DashboardPageLink to='/resource-optimization' title='Resource Optimization' />
           <DashboardPageLink to='/security-monitoring' title='Security Monitoring' />
-          <DashboardPageLink to='/infrastructure' title='Infrastructure' />
         </div>
       </div>
     );
