@@ -8,10 +8,12 @@ import {Provider} from 'mobx-react';
 
 import createRoutes from './routes';
 import UIState from './stores/UIState';
+import Regions from './stores/Regions';
 import InfrastructureServices from './stores/InfrastructureServices';
 
 const stores = {
   uiState: new UIState(),
+  regions: new Regions(),
   infrastructureServices: new InfrastructureServices()
 };
 

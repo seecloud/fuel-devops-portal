@@ -2,8 +2,17 @@ import React, {Component} from 'react';
 
 import Navbar from './Navbar';
 import DataFetchingProgressBar from './DataFetchingProgressBar';
+import {Region} from '../stores/Regions';
 
 export default class App extends Component {
+  static async fetchData({regions}) {
+    regions.items = [
+      new Region({id: 1, name: 'Region One'}),
+      new Region({id: 2, name: 'Region Two'}),
+      new Region({id: 3, name: 'Region Three'})
+    ];
+  }
+
   render() {
     return (
       <div>

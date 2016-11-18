@@ -20,7 +20,11 @@ import InfrastructureServicePage from './components/InfrastructureServicePage';
 
 export default function createRoutes(stores) {
   return (
-    <Route path='/' component={App}>
+    <Route
+      path='/'
+      component={App}
+      onEnter={fetchDataHook.bind(null, stores, App.fetchData)}
+    >
       <IndexRoute
         components={{main: DashboardPage}}
         onEnter={requireAuthHook.bind(null, stores)}
