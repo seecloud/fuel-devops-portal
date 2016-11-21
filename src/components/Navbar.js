@@ -27,12 +27,12 @@ export default class Navbar extends Component {
   render() {
     const {uiState, regions, router, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
-    const {activeRegionId} = uiState;
-    const urlPrefix = activeRegionId ? `/region/${activeRegionId}/` : '/all-regions/';
+    const {activeRegionName} = uiState;
+    const urlPrefix = activeRegionName ? `/region/${activeRegionName}/` : '/all-regions/';
     const activeNavigationItemUrl = navigationItems
       .map((navigationItem) => navigationItem.url)
       .find((navigationItemUrl) => router.isActive(urlPrefix + navigationItemUrl));
-    const activeRegion = regions.items.find((region) => region.id === activeRegionId);
+    const activeRegion = regions.items.find((region) => region.name === activeRegionName);
     const defaultNavigationItemUrl = navigationItems[0].url;
 
     return (
@@ -61,9 +61,9 @@ export default class Navbar extends Component {
                 <li key='divider' className='divider' />
                 {regions.items.map((region) => {
                   return (
-                    <li key={region.id}>
+                    <li key={region.name}>
                       <Link
-                        to={`/region/${region.id}/${
+                        to={`/region/${region.name}/${
                           activeNavigationItemUrl || defaultNavigationItemUrl
                         }`}
                         onClick={this.toggleRegionMenu}

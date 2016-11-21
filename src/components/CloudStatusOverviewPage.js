@@ -59,7 +59,7 @@ export default class CloudStatusOverviewPage extends Component {
           <div className='region-list'>
             {this.props.regions.items.map((region) => {
               return <Region
-                key={region.id}
+                key={region.name}
                 region={region}
                 size={this.regionSize}
               />;

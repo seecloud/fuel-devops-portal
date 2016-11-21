@@ -39,19 +39,19 @@ export default function createRoutes(stores) {
       />
 
       <Route
-        path='region/:regionId'
+        path='region/:regionName'
         onEnter={composeEnterHooks(
           requireAuthHook.bind(null, stores),
           (nextState, replace, callback) => {
-            const regionId = Number(nextState.params.regionId);
-            const region = stores.regions.items.find((region) => region.id === regionId);
+            const regionName = nextState.params.regionName;
+            const region = stores.regions.items.find((region) => region.name === regionName);
             if (!region) replace('/');
-            stores.uiState.activeRegionId = regionId;
+            stores.uiState.activeRegionName = regionName;
             callback();
           }
         )}
         onLeave={() => {
-          stores.uiState.activeRegionId = null;
+          stores.uiState.activeRegionName = null;
         }}
       >
         <Route path='cloud-status'>
