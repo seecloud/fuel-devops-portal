@@ -10,11 +10,11 @@ import cx from 'classnames';
 export default class Navbar extends Component {
   static defaultProps = {
     navigationItems: [
-      {url: '/cloud-status', title: 'Cloud Status'},
-      {url: '/cloud-intelligence', title: 'Cloud Intelligence'},
-      {url: '/capacity-management', title: 'Capacity Management'},
-      {url: '/resource-optimization', title: 'Resource Optimization'},
-      {url: '/security-monitoring', title: 'Security Monitoring'},
+      {url: 'cloud-status', title: 'Cloud Status'},
+      {url: 'cloud-intelligence', title: 'Cloud Intelligence'},
+      {url: 'capacity-management', title: 'Capacity Management'},
+      {url: 'resource-optimization', title: 'Resource Optimization'},
+      {url: 'security-monitoring', title: 'Security Monitoring'},
     ]
   }
 
@@ -25,8 +25,16 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {uiState, router, navigationItems} = this.props;
+    const {uiState, regions, router, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
+    const {activeRegionId} = uiState;
+    const urlPrefix = activeRegionId ? `/region/${activeRegionId}/` : '/all-regions/';
+    const activeNavigationItemUrl = navigationItems
+      .map((navigationItem) => navigationItem.url)
+      .find((navigationItemUrl) => router.isActive(urlPrefix + navigationItemUrl));
+    const activeRegion = regions.items.find((region) => region.id === activeRegionId);
+    const defaultNavigationItemUrl = navigationItems[0].url;
+
     return (
       <nav className='navbar navbar-default'>
         <div className='container'>
@@ -36,18 +44,32 @@ export default class Navbar extends Component {
           <ul className='nav navbar-nav navbar-left'>
             <li key='regions' className={cx('dropdown', {open: this.regionMenuOpen})}>
               <button className='dropdown-toggle' onClick={this.toggleRegionMenu}>
-                {'All regions'}
+                {activeRegion ? activeRegion.name : 'All regions'}
                 <span className='caret' />
               </button>
               <ul className='dropdown-menu'>
                 <li key='all'>
-                  <a href='#'>{'All regions'}</a>
+                  <Link
+                    to={`/all-regions/${
+                      activeNavigationItemUrl || defaultNavigationItemUrl
+                    }`}
+                    onClick={this.toggleRegionMenu}
+                  >
+                    {'All regions'}
+                  </Link>
                 </li>
                 <li key='divider' className='divider' />
-                {this.props.regions.items.map((region) => {
+                {regions.items.map((region) => {
                   return (
                     <li key={region.id}>
-                      <a href='#'>{region.name}</a>
+                      <Link
+                        to={`/region/${region.id}/${
+                          activeNavigationItemUrl || defaultNavigationItemUrl
+                        }`}
+                        onClick={this.toggleRegionMenu}
+                      >
+                        {region.name}
+                      </Link>
                     </li>
                   );
                 })}
@@ -55,8 +77,8 @@ export default class Navbar extends Component {
             </li>
             {navigationItems.map(({url, title}) => {
               return (
-                <li key={url} className={cx({active: router.isActive(url)})}>
-                  <Link to={url}>{title}</Link>
+                <li key={url} className={cx({active: url === activeNavigationItemUrl})}>
+                  <Link to={urlPrefix + url}>{title}</Link>
                 </li>
               );
             })}

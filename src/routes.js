@@ -1,12 +1,13 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
 
-import {requireAuthHook, prohibitAuthHook, logoutHook, fetchDataHook} from './routerHooks';
+import {
+  requireAuthHook, prohibitAuthHook, logoutHook, fetchDataHook, composeEnterHooks
+} from './routerHooks';
 
 import App from './components/App';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
-import CloudStatusSidebar from './components/CloudStatusSidebar';
 import CloudStatusOverviewPage from './components/CloudStatusOverviewPage';
 import CloudStatusAvailabilityPage from './components/CloudStatusAvailabilityPage';
 import CloudStatusHealthPage from './components/CloudStatusHealthPage';
@@ -23,13 +24,13 @@ export default function createRoutes(stores) {
       onEnter={fetchDataHook.bind(null, stores, App.fetchData)}
     >
       <IndexRoute
-        components={{main: DashboardPage}}
+        component={DashboardPage}
         onEnter={requireAuthHook.bind(null, stores)}
       />
 
       <Route
         path='login'
-        components={{main: LoginPage}}
+        component={LoginPage}
         onEnter={prohibitAuthHook.bind(null, stores)}
       />
       <Route
@@ -38,42 +39,89 @@ export default function createRoutes(stores) {
       />
 
       <Route
-        path='cloud-status'
-        components={{main: ({children}) => children, sidebar: CloudStatusSidebar}}
-        onEnter={requireAuthHook.bind(null, stores)}
+        path='region/:regionId'
+        onEnter={composeEnterHooks(
+          requireAuthHook.bind(null, stores),
+          (nextState, replace, callback) => {
+            const regionId = Number(nextState.params.regionId);
+            const region = stores.regions.items.find((region) => region.id === regionId);
+            if (!region) replace('/');
+            stores.uiState.activeRegionId = regionId;
+            callback();
+          }
+        )}
+        onLeave={() => {
+          stores.uiState.activeRegionId = null;
+        }}
       >
-        <IndexRoute
-          component={CloudStatusOverviewPage}
+        <Route path='cloud-status'>
+          <IndexRoute
+            component={CloudStatusOverviewPage}
+          />
+          <Route
+            path='availability'
+            component={CloudStatusAvailabilityPage}
+          />
+          <Route
+            path='health'
+            component={CloudStatusHealthPage}
+          />
+        </Route>
+        <Route
+          path='cloud-intelligence'
+          component={CloudIntelligencePage}
         />
         <Route
-          path='availability'
-          component={CloudStatusAvailabilityPage}
+          path='capacity-management'
+          component={CapacityManagementPage}
         />
         <Route
-          path='health'
-          component={CloudStatusHealthPage}
+          path='resource-optimization'
+          component={ResourceOptimizationPage}
+        />
+        <Route
+          path='security-monitoring'
+          component={SecurityMonitoringPage}
         />
       </Route>
+
       <Route
-        path='cloud-intelligence'
-        components={{main: CloudIntelligencePage}}
+        path='all-regions'
         onEnter={requireAuthHook.bind(null, stores)}
-      />
-      <Route
-        path='capacity-management'
-        components={{main: CapacityManagementPage}}
-        onEnter={requireAuthHook.bind(null, stores)}
-      />
-      <Route
-        path='resource-optimization'
-        components={{main: ResourceOptimizationPage}}
-        onEnter={requireAuthHook.bind(null, stores)}
-      />
-      <Route
-        path='security-monitoring'
-        components={{main: SecurityMonitoringPage}}
-        onEnter={requireAuthHook.bind(null, stores)}
-      />
+      >
+        <Route
+          path='cloud-status'
+        >
+          <IndexRoute
+            component={CloudStatusOverviewPage}
+          />
+          <Route
+            path='availability'
+            component={CloudStatusAvailabilityPage}
+          />
+          <Route
+            path='health'
+            component={CloudStatusHealthPage}
+          />
+        </Route>
+        <Route
+          path='cloud-intelligence'
+          component={CloudIntelligencePage}
+        />
+        <Route
+          path='capacity-management'
+          component={CapacityManagementPage}
+        />
+        <Route
+          path='resource-optimization'
+          component={ResourceOptimizationPage}
+        />
+        <Route
+          path='security-monitoring'
+          component={SecurityMonitoringPage}
+        />
+      </Route>
+
       <Redirect from='*' to='/' />
     </Route>
   );

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class CapacityManagementPage extends Component {
   render() {
     return (
-      <div>
+      <div className='container-fluid'>
         <h1>{'Capacity Management Page'}</h1>
         {'This is a capacity management page.'}
       </div>

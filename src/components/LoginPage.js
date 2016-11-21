@@ -22,7 +22,7 @@ export default class LoginPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className='container-fluid'>
         <h1>{'Login'}</h1>
         <form className='form-horizontal' onSubmit={this.onSubmit}>
           <div className='form-group'>

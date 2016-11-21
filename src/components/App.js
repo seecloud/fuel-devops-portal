@@ -20,10 +20,7 @@ export default class App extends Component {
       <div>
         <DataFetchingProgressBar />
         <Navbar />
-        {this.props.sidebar}
-        <div className='container-fluid'>
-          {this.props.main}
-        </div>
+        {this.props.children}
       </div>
     );
   }
