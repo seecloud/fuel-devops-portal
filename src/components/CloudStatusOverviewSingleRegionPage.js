@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {observable} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {times} from 'lodash';
-import cx from 'classnames';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import LineChart from './LineChart';
