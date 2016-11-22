@@ -7,7 +7,7 @@ import LineChart from './LineChart';
 import {generateAvailability} from '../fakeDataUtils';
 
 @inject('uiState', 'regions')
-export default class CloudStatusAvailabilitySingleRegionPage extends Component {
+export default class CloudStatusAvailabilityMultiRegionPage extends Component {
   charts = [
     {title: 'Availability', key: 'availability'}
   ]
@@ -55,7 +55,7 @@ export default class CloudStatusAvailabilitySingleRegionPage extends Component {
                       <div key={title} className='service-status-entry-large'>
                         <div className='chart-title'>{title}</div>
                         <LineChart
-                          className='ct-major-twelfth'
+                          className='ct-double-octave'
                           data={{
                             labels: times(10).map((n) => `${n + 1}:00`),
                             series: [this.healthData[region.name][key]]
