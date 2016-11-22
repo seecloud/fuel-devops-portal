@@ -64,7 +64,7 @@ export default class CloudStatusOverviewPage extends Component {
                       className='ct-major-twelfth'
                       data={{
                         labels: times(10).map((n) => `${n + 1}:00`),
-                        series: [this.healthData[key]]
+                        series: [this.healthData[key] || []]
                       }}
                     />
                   </div>
