@@ -10,7 +10,10 @@ import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
 import CloudStatusOverviewSingleRegionPage from './components/CloudStatusOverviewSingleRegionPage';
 import CloudStatusOverviewMultiRegionPage from './components/CloudStatusOverviewMultiRegionPage';
-import CloudStatusAvailabilityPage from './components/CloudStatusAvailabilityPage';
+import CloudStatusAvailabilitySingleRegionPage from
+  './components/CloudStatusAvailabilitySingleRegionPage';
+import CloudStatusAvailabilityMultiRegionPage from
+  './components/CloudStatusAvailabilityMultiRegionPage';
 import CloudStatusHealthSingleRegionPage from './components/CloudStatusHealthSingleRegionPage';
 import CloudStatusHealthMultiRegionPage from './components/CloudStatusHealthMultiRegionPage';
 import CloudIntelligencePage from './components/CloudIntelligencePage';
@@ -62,7 +65,7 @@ export default function createRoutes(stores) {
           />
           <Route
             path='availability'
-            component={CloudStatusAvailabilityPage}
+            component={CloudStatusAvailabilitySingleRegionPage}
           />
           <Route
             path='health'
@@ -99,7 +102,7 @@ export default function createRoutes(stores) {
           />
           <Route
             path='availability'
-            component={CloudStatusAvailabilityPage}
+            component={CloudStatusAvailabilityMultiRegionPage}
           />
           <Route
             path='health'
