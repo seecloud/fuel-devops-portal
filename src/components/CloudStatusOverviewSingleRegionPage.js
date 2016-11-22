@@ -29,6 +29,10 @@ export default class CloudStatusOverviewPage extends Component {
     this.generateFakeData();
   }
 
+  componentWillReceiveProps() {
+    this.generateFakeData();
+  }
+
   generateFakeData() {
     this.healthData = {
       fciScore: generateFCIScore(),
