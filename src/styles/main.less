@@ -14,20 +14,21 @@ body {
 }
 
 @font-face {
-  font-family: 'Teko';
+  font-family: 'Open Sans Condensed';
   font-style: normal;
   font-weight: 300;
-  src: local('Teko Light'), local('Teko-Light'),
-       url('../media/teko-v5-latin-300.woff2') format('woff2'),
-       url('../media/teko-v5-latin-300.woff') format('woff');
+  src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'),
+       url('../media/open-sans-condensed-v10-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../media/open-sans-condensed-v10-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
+
 @font-face {
-  font-family: 'Teko';
+  font-family: 'Open Sans Condensed';
   font-style: normal;
-  font-weight: 400;
-  src: local('Teko Regular'), local('Teko-Regular'),
-       url('../media/teko-v5-latin-regular.woff2') format('woff2'),
-       url('../media/teko-v5-latin-regular.woff') format('woff');
+  font-weight: 700;
+  src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'),
+       url('../media/open-sans-condensed-v10-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../media/open-sans-condensed-v10-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 .btn {
@@ -50,6 +51,15 @@ h1 {
 
 .container, .container-fluid {
   width: 100%;
+  h1, h2, h3, h4 {
+    font-family: 'Open Sans Condensed';
+    text-transform: uppercase;
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
+  }
+  h1 {
+    font-size: 26px;
+  }
 }
 
 .data-fetching-progress {
@@ -72,12 +82,11 @@ h1 {
 }
 
 .navbar {
-  font-family: 'Teko';
+  font-family: 'Open Sans Condensed';
   font-weight: 300;
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
-  letter-spacing: .2px;
-  font-size: 20px;
+  font-size: 18px;
   height: 70px;
   margin: 0;
   border-radius: 0;
@@ -85,7 +94,7 @@ h1 {
     > li {
       margin: 18px 2px 0 0;
       a {
-        padding: 6px 12px;
+        padding: 6px 12px 7px;
         background: none;
         &:hover {
           border-radius: 4px;
@@ -102,6 +111,37 @@ h1 {
             color: @navbar-default-bg;
             background-color: @nav-link-bg;
           }
+        }
+      }
+    }
+    .dropdown {
+      button {
+        box-sizing: border-box;
+        background-color: @navbar-default-bg;
+        border-radius: 4px;
+        border: 1px solid @navbar-default-bg;
+        margin-right: 10px;
+        text-transform: uppercase;
+        color: @nav-link-bg;
+        padding: 3px 12px;
+        &:hover {
+          border: 1px solid white;
+        }
+        .caret {
+          margin-left: 6px;
+        }
+      }
+      .dropdown-menu {
+        padding: 0;
+        font-family: 'open sans';
+        text-transform: none;
+        li {
+          a {
+            border-radius: 0;
+          }
+        }
+        .divider {
+          margin: 0;
         }
       }
     }
@@ -149,7 +189,7 @@ h1 {
   box-sizing: border-box;
   h3 {
     margin-top: 0;
-    font-size: 24px;
+    font-size: 20px;
   }
   .btn {
     margin-top: 10px;
@@ -188,12 +228,14 @@ h1 {
     margin: 15px 0 0;
   }
   .service-score {
-    font-family: 'Teko';
+    font-family: 'Open Sans Condensed';
     font-size: 50px;
+    font-weight: 700;
   }
   .chart-title {
-    font-family: 'Teko';
-    font-size: 16px;
+    font-family: 'Open Sans Condensed';
+    font-size: 14px;
+    font-weight: 700;
   }
 }
 
@@ -235,9 +277,11 @@ h1 {
         .param {
           display: block;
           float: right;
-          font-family: 'teko';
-          font-size: 20px;
-          line-height: 26px;
+          font-family: 'Open Sans Condensed';
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 1;
+          margin-top: 5px;
         }
         .graph {
           display: block;
@@ -254,7 +298,9 @@ h1 {
       }
     }
     &.region-small {
-      .make-xs-column(0.5, 1px);
+      .make-xs-column(2, 1px);
+      .make-sm-column(1,1px);
+      .make-lg-column(0.6,1px);
       margin-bottom: 1px;
       h3 {
         display: none;
@@ -264,6 +310,7 @@ h1 {
       }
       .sla {
         border: none;
+        height: auto;
         .name {
           display: none;
         }
@@ -272,9 +319,15 @@ h1 {
         }
         .param {
           width: 100%;
+          display: block;
           text-align: center;
-          line-height: 28px;
-          font-size: 1.1vw;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 5%;
+          margin-bottom: 5%;
+          font-size: 100%;
+          clear: both;
+          float: none;
         }
       }
     }
@@ -326,11 +379,11 @@ h1 {
         }
         span {
           display: inline-block;
-          font-family: 'Teko';
-          font-size: 20px;
+          font-family: 'Open Sans Condensed';
+          font-size: 18px;
           font-weight: 400;
           line-height: 20px;
-          margin-top: 10px;
+          margin-top: 11px;
           vertical-align: top;
           text-transform: uppercase;
         }
@@ -399,7 +452,7 @@ h1 {
   padding: 4px 0;
   margin: 0px 5px;
   .cloud-overview-summary {
-    font-family: 'Teko';
+    font-family: 'Open Sans Condensed';
     text-transform: uppercase;
     font-size: 20px;
   }
