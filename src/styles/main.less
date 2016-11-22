@@ -156,6 +156,17 @@ h1 {
   }
 }
 
+.ct-chart {
+  .ct-line {
+    stroke: @brand-primary;
+    stroke-width: 2px;
+  }
+  .ct-point {
+    stroke: @brand-primary;
+    stroke-width: 2px;
+  }
+}
+
 .service-status {
   padding: 10px;
   margin-bottom: 10px;
@@ -164,7 +175,8 @@ h1 {
   border-radius: 6px;
   .service-status-container {
     .make-row(10px);
-    .service-status-link {
+    .service-status-entry {
+      .text-center;
       .make-xs-column(12, 10px);
       .make-md-column(6, 10px);
       .make-lg-column(3, 10px);
@@ -175,23 +187,13 @@ h1 {
     font-size: 20px;
     margin: 15px 0 0;
   }
-  .service-fci-score {
+  .service-score {
     font-family: 'Teko';
     font-size: 50px;
   }
   .chart-title {
     font-family: 'Teko';
     font-size: 16px;
-  }
-  .ct-chart {
-    .ct-line {
-      stroke: @brand-primary;
-      stroke-width: 2px;
-    }
-    .ct-point {
-      stroke: @brand-primary;
-      stroke-width: 2px;
-    }
   }
 }
 

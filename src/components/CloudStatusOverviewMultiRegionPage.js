@@ -20,8 +20,7 @@ export default class CloudStatusOverviewPage extends Component {
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Status Overview Page'}</h1>
-          <hr />
+          <h1>{'Cloud Status Overview: All Regions'}</h1>
           <div className='btn-toolbar'>
             <div className='pull-left cloud-overview-summary'>
               {'Total: '}

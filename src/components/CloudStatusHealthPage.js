@@ -3,6 +3,7 @@ import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import LineChart from './LineChart';
+import {generateFCIScore, generateResponseTime, generateResponseSize} from '../fakeDataUtils';
 
 export default class CloudStatusHealthPage extends Component {
   charts = [
@@ -17,35 +18,15 @@ export default class CloudStatusHealthPage extends Component {
 
   constructor() {
     super();
-    this.generateHealthData();
-    this.interval = setInterval(() => {
-      this.generateHealthData();
-      this.forceUpdate();
-    }, 2000);
+    this.generateFakeData();
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  generateFCIScore() {
-    return times(10, Math.random);
-  }
-
-  generateResponseTime() {
-    return times(10, () => Math.random() * 2000);
-  }
-
-  generateResponseSize() {
-    return times(10, () => Math.random() * 10000);
-  }
-
-  generateHealthData() {
+  generateFakeData() {
     this.healthData = this.services.reduce((result, serviceName) => {
       result[serviceName] = {
-        fciScore: this.generateFCIScore(),
-        responseTime: this.generateResponseTime(),
-        responseSize: this.generateResponseSize()
+        fciScore: generateFCIScore(),
+        responseTime: generateResponseTime(),
+        responseSize: generateResponseSize()
       };
       return result;
     }, {});
@@ -65,13 +46,13 @@ export default class CloudStatusHealthPage extends Component {
             return (
               <div key={serviceName} className='service-status'>
                 <div className='service-status-container'>
-                  <div className='service-status-link text-center'>
+                  <div className='service-status-entry'>
                     <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
-                    <div className='service-fci-score text-success'>{'100%'}</div>
+                    <div className='service-score text-success'>{'100%'}</div>
                   </div>
                   {this.charts.map(({title, key}) => {
                     return (
-                      <div key={title} className='service-status-link text-center'>
+                      <div key={title} className='service-status-entry'>
                         <div className='chart-title'>{title}</div>
                         <LineChart
                           className='ct-major-twelfth'

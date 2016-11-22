@@ -8,7 +8,8 @@ import {
 import App from './components/App';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
-import CloudStatusOverviewPage from './components/CloudStatusOverviewPage';
+import CloudStatusOverviewSingleRegionPage from './components/CloudStatusOverviewSingleRegionPage';
+import CloudStatusOverviewMultiRegionPage from './components/CloudStatusOverviewMultiRegionPage';
 import CloudStatusAvailabilityPage from './components/CloudStatusAvailabilityPage';
 import CloudStatusHealthPage from './components/CloudStatusHealthPage';
 import CloudIntelligencePage from './components/CloudIntelligencePage';
@@ -56,7 +57,7 @@ export default function createRoutes(stores) {
       >
         <Route path='cloud-status'>
           <IndexRoute
-            component={CloudStatusOverviewPage}
+            component={CloudStatusOverviewSingleRegionPage}
           />
           <Route
             path='availability'
@@ -93,7 +94,7 @@ export default function createRoutes(stores) {
           path='cloud-status'
         >
           <IndexRoute
-            component={CloudStatusOverviewPage}
+            component={CloudStatusOverviewMultiRegionPage}
           />
           <Route
             path='availability'
