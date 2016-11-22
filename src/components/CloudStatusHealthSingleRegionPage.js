@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import {inject} from 'mobx-react';
 import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import LineChart from './LineChart';
 import {generateFCIScore, generateResponseTime, generateResponseSize} from '../fakeDataUtils';
 
-export default class CloudStatusHealthPage extends Component {
+@inject('uiState', 'regions')
+export default class CloudStatusHealthSingleRegionPage extends Component {
   charts = [
     {title: 'FCI score', key: 'fciScore'},
     {title: 'Response Time (ms)', key: 'responseTime'},
@@ -33,15 +35,21 @@ export default class CloudStatusHealthPage extends Component {
   }
 
   render() {
+    const regionName = this.props.uiState.activeRegionName;
+
     return (
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Status Health Page'}</h1>
-          <p>
-            {'API Health is based on HTTP requests response metrics: codes, duration and size. '}
-            {'FCI score is ratio of successful codes (2xx, 3xx, 4xx) to all http codes.'}
-          </p>
+          <h1>{'Cloud Status Health: ' + regionName}</h1>
+          <div className='btn-toolbar'>
+            <div className='btn-group pull-right'>
+              <button className='btn btn-default active'>{'Day'}</button>
+              <button className='btn btn-default'>{'Week'}</button>
+              <button className='btn btn-default'>{'Month'}</button>
+            </div>
+          </div>
+          <hr />
           {this.services.map((serviceName) => {
             return (
               <div key={serviceName} className='service-status'>

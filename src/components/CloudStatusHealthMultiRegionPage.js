@@ -1,29 +1,29 @@
 import React, {Component} from 'react';
+import {inject} from 'mobx-react';
 import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import LineChart from './LineChart';
 import {generateFCIScore, generateResponseTime, generateResponseSize} from '../fakeDataUtils';
 
-export default class CloudStatusHealthPage extends Component {
+@inject('uiState', 'regions')
+export default class CloudStatusHealthMultiRegionPage extends Component {
   charts = [
     {title: 'FCI score', key: 'fciScore'},
     {title: 'Response Time (ms)', key: 'responseTime'},
     {title: 'Response Size (bytes)', key: 'responseSize'}
   ]
 
-  services = ['Keystone', 'Nova', 'Glance', 'Cinder', 'Newtron']
-
   healthData = {}
 
-  constructor() {
+  constructor({regions}) {
     super();
-    this.generateFakeData();
+    this.generateFakeData(regions);
   }
 
-  generateFakeData() {
-    this.healthData = this.services.reduce((result, serviceName) => {
-      result[serviceName] = {
+  generateFakeData(regions) {
+    this.healthData = regions.items.reduce((result, region) => {
+      result[region.name] = {
         fciScore: generateFCIScore(),
         responseTime: generateResponseTime(),
         responseSize: generateResponseSize()
@@ -37,17 +37,21 @@ export default class CloudStatusHealthPage extends Component {
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Status Health Page'}</h1>
-          <p>
-            {'API Health is based on HTTP requests response metrics: codes, duration and size. '}
-            {'FCI score is ratio of successful codes (2xx, 3xx, 4xx) to all http codes.'}
-          </p>
-          {this.services.map((serviceName) => {
+          <h1>{'Cloud Status Health: All Regions'}</h1>
+          <div className='btn-toolbar'>
+            <div className='btn-group pull-right'>
+              <button className='btn btn-default active'>{'Day'}</button>
+              <button className='btn btn-default'>{'Week'}</button>
+              <button className='btn btn-default'>{'Month'}</button>
+            </div>
+          </div>
+          <hr />
+          {this.props.regions.items.map((region) => {
             return (
-              <div key={serviceName} className='service-status'>
+              <div key={region.name} className='service-status'>
                 <div className='service-status-container'>
                   <div className='service-status-entry'>
-                    <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
+                    <div className='service-name'>{region.name}</div>
                     <div className='service-score text-success'>{'100%'}</div>
                   </div>
                   {this.charts.map(({title, key}) => {
@@ -58,7 +62,7 @@ export default class CloudStatusHealthPage extends Component {
                           className='ct-major-twelfth'
                           data={{
                             labels: times(10).map((n) => `${n + 1}:00`),
-                            series: [this.healthData[serviceName][key]]
+                            series: [this.healthData[region.name][key]]
                           }}
                         />
                       </div>

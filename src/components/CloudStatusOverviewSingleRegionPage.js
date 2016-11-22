@@ -12,7 +12,7 @@ import {
 
 @inject('uiState', 'regions')
 @observer
-export default class CloudStatusOverviewPage extends Component {
+export default class CloudStatusOverviewSingleRegionPage extends Component {
   charts = [
     {title: 'FCI score', key: 'fciScore'},
     {title: 'Availability', key: 'availability'},

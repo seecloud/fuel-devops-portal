@@ -7,7 +7,7 @@ import CloudStatusSidebar from './CloudStatusSidebar';
 
 @inject('regions')
 @observer
-export default class CloudStatusOverviewPage extends Component {
+export default class CloudStatusOverviewMultiRegionPage extends Component {
   @observable regionSize = 'large'
   regionSizes = ['small', 'medium', 'large']
 
