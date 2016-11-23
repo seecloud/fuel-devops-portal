@@ -23,6 +23,10 @@ export default class CloudStatusHealthSingleRegionPage extends Component {
     this.generateFakeData();
   }
 
+  componentWillReceiveProps() {
+    this.generateFakeData();
+  }
+
   generateFakeData() {
     this.healthData = this.services.reduce((result, serviceName) => {
       result[serviceName] = {

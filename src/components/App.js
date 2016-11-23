@@ -16,14 +16,11 @@ export default class App extends Component {
   }
 
   render() {
-    const {children, location, params} = this.props;
+    const {children, location} = this.props;
     return (
       <div>
         <DataFetchingProgressBar />
-        <Navbar
-          activeRegionName={params.regionName || null}
-          location={location}
-        />
+        <Navbar location={location} />
         {children}
       </div>
     );
