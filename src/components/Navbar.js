@@ -25,10 +25,11 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {uiState, regions, router, navigationItems} = this.props;
+    const {uiState, activeRegionName, regions, router, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
-    const {activeRegionName} = uiState;
-    const urlPrefix = activeRegionName ? `/region/${activeRegionName}/` : '/all-regions/';
+    const urlPrefix = activeRegionName ?
+      `/region/${encodeURIComponent(activeRegionName)}/` :
+      '/all-regions/';
     const activeNavigationItemUrl = navigationItems
       .map((navigationItem) => navigationItem.url)
       .find((navigationItemUrl) => router.isActive(urlPrefix + navigationItemUrl));
@@ -63,7 +64,7 @@ export default class Navbar extends Component {
                   return (
                     <li key={region.name}>
                       <Link
-                        to={`/region/${region.name}/${
+                        to={`/region/${encodeURIComponent(region.name)}/${
                           activeNavigationItemUrl || defaultNavigationItemUrl
                         }`}
                         onClick={this.toggleRegionMenu}

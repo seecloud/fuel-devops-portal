@@ -7,7 +7,9 @@ import SideNavbar from './SideNavbar';
 export default class CloudStatusSidebar extends Component {
   render() {
     const activeRegionName = this.props.uiState.activeRegionName;
-    const urlPrefix = activeRegionName ? `/region/${activeRegionName}/` : '/all-regions/';
+    const urlPrefix = activeRegionName ?
+      `/region/${encodeURIComponent(activeRegionName)}/` :
+      '/all-regions/';
 
     return (
       <SideNavbar
