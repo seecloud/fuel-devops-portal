@@ -57,7 +57,6 @@ export default class CloudStatusOverviewSingleRegionPage extends Component {
               <button className='btn btn-default'>{'Month'}</button>
             </div>
           </div>
-          <hr />
           <div className='service-status'>
             <div className='service-status-container'>
               {this.charts.map(({title, key}) => {

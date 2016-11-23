@@ -45,7 +45,6 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
               <button className='btn btn-default'>{'Month'}</button>
             </div>
           </div>
-          <hr />
           {this.props.regions.items.map((region) => {
             return (
               <div key={region.name} className='service-status'>

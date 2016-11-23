@@ -54,7 +54,6 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
               <button className='btn btn-default'>{'Month'}</button>
             </div>
           </div>
-          <hr />
           <div className='region-list'>
             {this.props.regions.items.map((region) => {
               return <Region
