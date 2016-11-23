@@ -81,7 +81,7 @@ export class Region extends Component {
           </div>
           <div className='availability'>
             <div className='name'>{'Availability'}</div>
-            <div className='param text-warning'>{'100%'}</div>
+            <div className='param text-warning'>{'92%'}</div>
           </div>
           <div className='health'>
             <div className='name'>{'Health (FCI)'}</div>
@@ -89,7 +89,7 @@ export class Region extends Component {
           </div>
           <div className='performance'>
             <div className='name'>{'Performance'}</div>
-            <div className='param text-danger'>{'100%'}</div>
+            <div className='param text-danger'>{'86%'}</div>
           </div>
         </div>
       </div>
