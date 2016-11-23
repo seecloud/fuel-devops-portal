@@ -49,7 +49,6 @@ export default class CloudStatusHealthSingleRegionPage extends Component {
               <button className='btn btn-default'>{'Month'}</button>
             </div>
           </div>
-          <hr />
           {this.services.map((serviceName) => {
             return (
               <div key={serviceName} className='service-status'>

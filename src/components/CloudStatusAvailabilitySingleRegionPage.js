@@ -45,29 +45,30 @@ export default class CloudStatusAvailabilitySingleRegionPage extends Component {
               <button className='btn btn-default'>{'Month'}</button>
             </div>
           </div>
-          <hr />
           {this.services.map((serviceName) => {
             return (
-              <div key={serviceName} className='service-status'>
-                <div className='service-status-container'>
-                  <div className='service-status-entry'>
-                    <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
-                    <div className='service-score text-success'>{'100%'}</div>
+              <div key={serviceName} className='service-status-wrapper'>
+                <div className='service-status'>
+                  <div className='service-status-container'>
+                    <div className='service-status-entry'>
+                      <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
+                      <div className='service-score text-success'>{'100%'}</div>
+                    </div>
+                    {this.charts.map(({title, key}) => {
+                      return (
+                        <div key={title} className='service-status-entry-large'>
+                          <div className='chart-title'>{title}</div>
+                          <LineChart
+                            className='ct-double-octave'
+                            data={{
+                              labels: times(10).map((n) => `${n + 1}:00`),
+                              series: [this.healthData[serviceName][key]]
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
-                  {this.charts.map(({title, key}) => {
-                    return (
-                      <div key={title} className='service-status-entry-large'>
-                        <div className='chart-title'>{title}</div>
-                        <LineChart
-                          className='ct-double-octave'
-                          data={{
-                            labels: times(10).map((n) => `${n + 1}:00`),
-                            series: [this.healthData[serviceName][key]]
-                          }}
-                        />
-                      </div>
-                    );
-                  })}
                 </div>
               </div>
             );
