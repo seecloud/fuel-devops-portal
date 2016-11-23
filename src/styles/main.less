@@ -273,12 +273,15 @@ h1 {
         border-top: 1px solid @item-block-border - 30%;
         color: @item-block-border - 60%;
         .name {
-          width: 30%;
+          width: 50%;
           display: block;
           font-size: 9px;
           text-transform: uppercase;
           float: left;
           margin-top: 8px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
         .param {
           display: block;
@@ -338,10 +341,13 @@ h1 {
       }
     }
     &.region-medium {
-      .make-xs-column(1.5, 10px);
+      .make-xs-column(3, 10px);
+      .make-sm-column(2, 10px);
+      .make-md-column(1.5, 10px);
+      .make-lg-column(1, 10px);
       .sla, .availability, .health, .performance {
         .name {
-          width: 60%;
+          width: 40%;
         }
         .graph {
           display: none;
@@ -349,7 +355,10 @@ h1 {
       }
     }
     &.region-large {
-      .make-xs-column(3, 10px);
+      .make-xs-column(6, 10px);
+      .make-sm-column(4, 10px);
+      .make-md-column(3, 10px);
+      .make-lg-column(2, 10px);
     }
   }
 }
@@ -382,6 +391,7 @@ h1 {
         .icon-box {
           display: inline-block;
           margin: 7px 10px 0px 21px;
+          border-radius: 4px;
         }
         span {
           display: inline-block;
@@ -400,7 +410,7 @@ h1 {
           color: @text-color;
         }
         .icon-box {
-          background-color: @nav-link-bg;
+          background-color: @body-bg;
         }
       }
     }
