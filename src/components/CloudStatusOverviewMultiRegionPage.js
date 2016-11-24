@@ -29,6 +29,11 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
               {' '}
               {'Error: X'}
             </div>
+            <StatusDataPeriodPicker className='pull-right' />
+            <div className='btn-group pull-right'>
+              <button className='btn btn-default active'>{'All'}</button>
+              <button className='btn btn-default'>{'Errors'}</button>
+            </div>
             <div className='btn-group pull-right'>
               {this.regionSizes.map((size) => {
                 return (
@@ -45,11 +50,6 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
                 );
               })}
             </div>
-            <div className='btn-group pull-right'>
-              <button className='btn btn-default active'>{'All'}</button>
-              <button className='btn btn-default'>{'Errors'}</button>
-            </div>
-            <StatusDataPeriodPicker className='pull-right' />
           </div>
           <div className='region-list'>
             {this.props.regions.items.map((region) => {
