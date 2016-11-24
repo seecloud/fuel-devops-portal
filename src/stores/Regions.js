@@ -1,10 +1,11 @@
 import {observable} from 'mobx';
 
 export class Region {
-  @observable name
+  @observable name = null
+  @observable services = []
 
-  constructor({name}) {
-    Object.assign(this, {name});
+  constructor({name, services}) {
+    Object.assign(this, {name, services});
   }
 }
 
