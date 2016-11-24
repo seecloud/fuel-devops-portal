@@ -84,8 +84,6 @@ export default class Navbar extends Component {
             })}
           </ul>
           <ul className='nav navbar-nav navbar-right'>
-            <li><div className='icon-box user-icon' /></li>
-            <li><div className='icon-box notification-icon' /></li>
             <li><Link to='/logout'><div className='icon-box logout-icon' /></Link></li>
           </ul>
         </div>
