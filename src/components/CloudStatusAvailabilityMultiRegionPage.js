@@ -9,6 +9,14 @@ import {generateAvailability} from '../fakeDataUtils';
 
 @inject('uiState', 'regions')
 export default class CloudStatusAvailabilityMultiRegionPage extends Component {
+  static async fetchData({uiState}) {
+    const url = `/api/v1/status/availability/${
+      encodeURIComponent(uiState.activeStatusDataPeriod)
+    }`;
+    const response = await fetch(url);
+    await response.json();
+  }
+
   charts = [
     {title: 'Availability', key: 'availability'}
   ]

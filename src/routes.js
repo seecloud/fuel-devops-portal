@@ -62,14 +62,23 @@ export default function createRoutes(stores) {
         <Route path='cloud-status'>
           <IndexRoute
             component={CloudStatusOverviewSingleRegionPage}
+            onEnter={
+              fetchDataHook.bind(null, stores, CloudStatusOverviewSingleRegionPage.fetchData)
+            }
           />
           <Route
             path='availability'
             component={CloudStatusAvailabilitySingleRegionPage}
+            onEnter={
+              fetchDataHook.bind(null, stores, CloudStatusAvailabilitySingleRegionPage.fetchData)
+            }
           />
           <Route
             path='health'
             component={CloudStatusHealthSingleRegionPage}
+            onEnter={
+              fetchDataHook.bind(null, stores, CloudStatusHealthSingleRegionPage.fetchData)
+            }
           />
         </Route>
         <Route
@@ -99,14 +108,23 @@ export default function createRoutes(stores) {
         >
           <IndexRoute
             component={CloudStatusOverviewMultiRegionPage}
+            onEnter={
+              fetchDataHook.bind(null, stores, CloudStatusOverviewMultiRegionPage.fetchData)
+            }
           />
           <Route
             path='availability'
             component={CloudStatusAvailabilityMultiRegionPage}
+            onEnter={
+              fetchDataHook.bind(null, stores, CloudStatusAvailabilityMultiRegionPage.fetchData)
+            }
           />
           <Route
             path='health'
             component={CloudStatusHealthMultiRegionPage}
+            onEnter={
+              fetchDataHook.bind(null, stores, CloudStatusHealthMultiRegionPage.fetchData)
+            }
           />
         </Route>
         <Route

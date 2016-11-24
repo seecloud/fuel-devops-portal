@@ -14,6 +14,16 @@ import {
 @inject('uiState', 'regions')
 @observer
 export default class CloudStatusOverviewSingleRegionPage extends Component {
+  static async fetchData({uiState}) {
+    const url = `/api/v1/region/${
+      encodeURIComponent(uiState.activeRegionName)
+    }/status/${
+      encodeURIComponent(uiState.activeStatusDataPeriod)
+    }`;
+    const response = await fetch(url);
+    await response.json();
+  }
+
   charts = [
     {title: 'FCI score', key: 'fciScore'},
     {title: 'Availability', key: 'availability'},

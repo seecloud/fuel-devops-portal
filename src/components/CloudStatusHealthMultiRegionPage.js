@@ -9,6 +9,14 @@ import {generateFCIScore, generateResponseTime, generateResponseSize} from '../f
 
 @inject('uiState', 'regions')
 export default class CloudStatusHealthMultiRegionPage extends Component {
+  static async fetchData({uiState}) {
+    const url = `/api/v1/status/health/${
+      encodeURIComponent(uiState.activeStatusDataPeriod)
+    }`;
+    const response = await fetch(url);
+    await response.json();
+  }
+
   charts = [
     {title: 'FCI score', key: 'fciScore'},
     {title: 'Response Time (ms)', key: 'responseTime'},

@@ -9,6 +9,14 @@ import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 @inject('regions')
 @observer
 export default class CloudStatusOverviewMultiRegionPage extends Component {
+  static async fetchData({uiState}) {
+    const url = `/api/v1/status/${
+      encodeURIComponent(uiState.activeStatusDataPeriod)
+    }`;
+    const response = await fetch(url);
+    await response.json();
+  }
+
   @observable regionSize = 'large'
   regionSizes = ['small', 'medium', 'large']
 
