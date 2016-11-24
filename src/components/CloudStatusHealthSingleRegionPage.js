@@ -3,6 +3,7 @@ import {inject} from 'mobx-react';
 import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
+import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import {generateFCIScore, generateResponseTime, generateResponseSize} from '../fakeDataUtils';
 
@@ -47,11 +48,7 @@ export default class CloudStatusHealthSingleRegionPage extends Component {
         <div className='container-fluid'>
           <h1>{'Cloud Status Health: ' + regionName}</h1>
           <div className='btn-toolbar'>
-            <div className='btn-group pull-right'>
-              <button className='btn btn-default active'>{'Day'}</button>
-              <button className='btn btn-default'>{'Week'}</button>
-              <button className='btn btn-default'>{'Month'}</button>
-            </div>
+            <StatusDataPeriodPicker className='pull-right' />
           </div>
           {this.services.map((serviceName) => {
             return (

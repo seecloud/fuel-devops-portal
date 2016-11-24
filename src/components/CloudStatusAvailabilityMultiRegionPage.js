@@ -3,6 +3,7 @@ import {inject} from 'mobx-react';
 import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
+import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import {generateAvailability} from '../fakeDataUtils';
 
@@ -35,11 +36,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
         <div className='container-fluid'>
           <h1>{'Cloud Status Availability: All Regions'}</h1>
           <div className='btn-toolbar'>
-            <div className='btn-group pull-right'>
-              <button className='btn btn-default active'>{'Day'}</button>
-              <button className='btn btn-default'>{'Week'}</button>
-              <button className='btn btn-default'>{'Month'}</button>
-            </div>
+            <StatusDataPeriodPicker className='pull-right' />
           </div>
           {this.props.regions.items.map((region) => {
             return (

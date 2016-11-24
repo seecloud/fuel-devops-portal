@@ -4,6 +4,7 @@ import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import LineChart from './LineChart';
+import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import {
   generateFCIScore, generateAvailability,
   generateResponseTime, generateResponseSize,
@@ -51,11 +52,7 @@ export default class CloudStatusOverviewSingleRegionPage extends Component {
         <div className='container-fluid'>
           <h1>{'Cloud Status Overview: ' + regionName}</h1>
           <div className='btn-toolbar'>
-            <div className='btn-group pull-right'>
-              <button className='btn btn-default active'>{'Day'}</button>
-              <button className='btn btn-default'>{'Week'}</button>
-              <button className='btn btn-default'>{'Month'}</button>
-            </div>
+            <StatusDataPeriodPicker className='pull-right' />
           </div>
           <div className='service-status'>
             <div className='service-status-container'>

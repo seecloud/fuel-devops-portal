@@ -4,6 +4,7 @@ import {observer, inject} from 'mobx-react';
 import cx from 'classnames';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
+import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 
 @inject('regions')
 @observer
@@ -48,11 +49,7 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
               <button className='btn btn-default active'>{'All'}</button>
               <button className='btn btn-default'>{'Errors'}</button>
             </div>
-            <div className='btn-group pull-right'>
-              <button className='btn btn-default active'>{'Day'}</button>
-              <button className='btn btn-default'>{'Week'}</button>
-              <button className='btn btn-default'>{'Month'}</button>
-            </div>
+            <StatusDataPeriodPicker className='pull-right' />
           </div>
           <div className='region-list'>
             {this.props.regions.items.map((region) => {
