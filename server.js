@@ -29,8 +29,13 @@ let devServerConfig = {
     assets: false,
     chunks: false
   },
-  historyApiFallback: true,
-  proxy: [{path: '/api', target: ceagleUrl}]
+  proxy: [
+    {path: '/', target: ceagleUrl, bypass(request) {
+      // workaround for historyApiFallback which for some reason doesn't work for paths with "."
+      return request.url.match(/^\/api\//) ? false : '/';
+    }}
+  ],
+  historyApiFallback: true
 };
 
 new WebpackDevServer(webpack(webpackConfig), devServerConfig).listen(
