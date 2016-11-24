@@ -6,13 +6,9 @@ import {Region} from '../stores/Regions';
 
 export default class App extends Component {
   static async fetchData({regions}) {
-    regions.items = [
-      new Region({name: 'Region One'}),
-      new Region({name: 'Region Two'}),
-      new Region({name: 'Region Three'}),
-      new Region({name: 'Region Four'}),
-      new Region({name: 'Region Five'})
-    ];
+    const response = await fetch('/api/v1/regions/');
+    const responseBody = await response.json();
+    regions.items = responseBody.regions.map((regionName) => new Region({name: regionName}));
   }
 
   render() {
