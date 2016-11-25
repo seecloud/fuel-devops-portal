@@ -487,3 +487,73 @@ h1 {
     }
   }
 }
+
+.dark-bg {
+  background-color: @navbar-default-bg;
+  height: 100vh;
+  position: relative;
+}
+
+.login-container {
+  .make-row(10px);
+  width: 50%;
+  min-width: 300px;
+  max-width: 700px;
+  margin-top: 10%;
+  min-height: 350px;
+  //background-color: @body-bg;
+  background: @body-bg url(../media/login-bg.svg) no-repeat top left;
+  background-size: contain;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  .logo-container {
+    .make-xs-column(12, 10px);
+    .make-lg-column(5, 10px);
+    .logo {
+      width: 164px;
+      height: 100px;
+      background-image: url('../media/fuel-devops-logo-black.svg');
+      background-size: cover;
+      margin-top: 40px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: -40px;
+    }
+  }
+  .form-container {
+    .make-xs-column(12, 10px);
+    .make-lg-column(7, 10px);
+    padding: 45px 50px 30px 30px;
+    h1 {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .login-error {
+      font-size: 12px;
+      margin-bottom: 20px;
+      color: @state-danger-text;
+    }
+    + .col-xs-12 {
+      h1 {
+        text-align: center;
+      }
+      .form-container {
+        padding: 20px 40px;
+      }
+    }
+    .submit-button {
+      .make-xs-column(12, 30px);
+      .make-lg-column(6, 30px);
+    }
+  }
+  .col-xs-12 {
+    .logo {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
