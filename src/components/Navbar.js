@@ -11,7 +11,7 @@ export default class Navbar extends Component {
   static defaultProps = {
     navigationItems: [
       {url: 'cloud-status', title: 'Cloud Status'},
-      {url: 'cloud-intelligence', title: 'Cloud Intelligence'},
+      {url: 'intelligence', title: 'Cloud Intelligence'},
       {url: 'capacity-management', title: 'Capacity Management'},
       {url: 'resource-optimization', title: 'Resource Optimization'},
       {url: 'security-monitoring', title: 'Security Monitoring'},
