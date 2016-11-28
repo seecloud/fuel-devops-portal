@@ -7,10 +7,13 @@
 
 html {
   font-size: 14px;
+  min-height: 100%;
+  position: relative;
 }
 
 body {
   overflow-y: scroll;
+  height:100%;
 }
 
 @font-face {
@@ -370,7 +373,9 @@ h1 {
 .side-navbar {
   position: absolute;
   top: 70px;
-  left: 0px;
+  left: 0;
+  bottom: 0;
+  right: 0;
   width: 70px;
   height: 100%;
   display: block;
