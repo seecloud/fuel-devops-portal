@@ -204,9 +204,10 @@ h1 {
     stroke: @brand-primary;
     stroke-width: 2px;
   }
-  .ct-point {
-    stroke: @brand-primary;
-    stroke-width: 2px;
+  &.x-axis-vertical-labels {
+    .ct-label.ct-horizontal {
+      transform: rotate(-90deg);
+    }
   }
 }
 
