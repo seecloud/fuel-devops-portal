@@ -9,10 +9,12 @@ import {Provider} from 'mobx-react';
 import createRoutes from './routes';
 import UIState from './stores/UIState';
 import Regions from './stores/Regions';
+import RegionAvailabilityData from './stores/RegionAvailabilityData';
 
 const stores = {
   uiState: new UIState(),
-  regions: new Regions()
+  regions: new Regions(),
+  regionAvailabilityData: new RegionAvailabilityData()
 };
 
 ReactDOM.render(

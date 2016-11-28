@@ -7,16 +7,19 @@ import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import {generateAvailability} from '../fakeDataUtils';
 
-@inject('uiState', 'regions')
+@inject('uiState', 'regions', 'regionAvailabilityData')
 export default class CloudStatusAvailabilitySingleRegionPage extends Component {
-  static async fetchData({uiState}) {
+  static async fetchData({uiState, regionAvailabilityData}) {
     const url = `/api/v1/region/${
       encodeURIComponent(uiState.activeRegionName)
     }/status/availability/${
       encodeURIComponent(uiState.activeStatusDataPeriod)
     }`;
     const response = await fetch(url);
-    await response.json();
+    const responseBody = await response.json();
+    regionAvailabilityData.update(uiState.activeStatusDataPeriod, {
+      [uiState.activeRegionName]: responseBody.availability[uiState.activeRegionName]
+    });
   }
 
   charts = [
