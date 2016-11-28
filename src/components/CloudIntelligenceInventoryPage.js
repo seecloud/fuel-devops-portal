@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 
 import CloudIntelligenceSidebar from './CloudIntelligenceSidebar';
 
-export default class CloudIntelligencePage extends Component {
+export default class CloudIntelligenceInventoryPage extends Component {
   render() {
     return (
       <div>
         <CloudIntelligenceSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Intelligence Page'}</h1>
-          {'This is a cloud intelligence page.'}
+          <h1>{'Cloud Physical & Virtual Resources Inventory'}</h1>
+          {'This is a cloud resource inventory page.'}
         </div>
       </div>
     );

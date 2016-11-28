@@ -17,6 +17,8 @@ import CloudStatusAvailabilityMultiRegionPage from
 import CloudStatusHealthSingleRegionPage from './components/CloudStatusHealthSingleRegionPage';
 import CloudStatusHealthMultiRegionPage from './components/CloudStatusHealthMultiRegionPage';
 import CloudIntelligencePage from './components/CloudIntelligencePage';
+import CloudIntelligenceInventoryPage from './components/CloudIntelligenceInventoryPage';
+import CloudIntelligenceHistoryPage from './components/CloudIntelligenceHistoryPage';
 import CapacityManagementPage from './components/CapacityManagementPage';
 import ResourceOptimizationPage from './components/ResourceOptimizationPage';
 import SecurityMonitoringPage from './components/SecurityMonitoringPage';
@@ -81,10 +83,19 @@ export default function createRoutes(stores) {
             }
           />
         </Route>
-        <Route
-          path='cloud-intelligence'
-          component={CloudIntelligencePage}
-        />
+        <Route path='intelligence'>
+          <IndexRoute
+            component={CloudIntelligencePage}
+          />
+          <Route
+            path='inventory'
+            component={CloudIntelligenceInventoryPage}
+          />
+          <Route
+            path='history'
+            component={CloudIntelligenceHistoryPage}
+          />
+        </Route>
         <Route
           path='capacity-management'
           component={CapacityManagementPage}
@@ -127,10 +138,19 @@ export default function createRoutes(stores) {
             }
           />
         </Route>
-        <Route
-          path='cloud-intelligence'
-          component={CloudIntelligencePage}
-        />
+        <Route path='intelligence'>
+          <IndexRoute
+            component={CloudIntelligencePage}
+          />
+          <Route
+            path='inventory'
+            component={CloudIntelligenceInventoryPage}
+          />
+          <Route
+            path='history'
+            component={CloudIntelligenceHistoryPage}
+          />
+        </Route>
         <Route
           path='capacity-management'
           component={CapacityManagementPage}
