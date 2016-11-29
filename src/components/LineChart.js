@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Line} from 'chartist';
 import cx from 'classnames';
+import cloneDeep from 'lodash';
 
 export default class LineChart extends Component {
   static defaultProps = {

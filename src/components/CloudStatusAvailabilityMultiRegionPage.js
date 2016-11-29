@@ -59,7 +59,6 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
                     <div className='service-status-entry-large'>
                       <div className='chart-title'>{'Availability'}</div>
                       <LineChart
-                        key={uiState.activeStatusDataPeriod}
                         className='ct-double-octave x-axis-vertical-labels'
                         options={{
                           axisX: {offset: 40}
