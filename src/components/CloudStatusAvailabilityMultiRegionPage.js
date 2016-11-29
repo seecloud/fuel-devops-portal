@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import {observe} from 'mobx';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
@@ -15,6 +16,19 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     const response = await fetch(url);
     const responseBody = await response.json();
     regionAvailabilityData.update(uiState.activeStatusDataPeriod, responseBody.availability);
+  }
+
+  constructor(props) {
+    super();
+    this.disposeActiveStatusDataPeriodWatcher = observe(
+      props.uiState, 'activeStatusDataPeriod', () => {
+        this.constructor.fetchData(props);
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposeActiveStatusDataPeriodWatcher();
   }
 
   render() {
@@ -45,6 +59,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
                     <div className='service-status-entry-large'>
                       <div className='chart-title'>{'Availability'}</div>
                       <LineChart
+                        key={uiState.activeStatusDataPeriod}
                         className='ct-double-octave x-axis-vertical-labels'
                         options={{
                           axisX: {offset: 40}
