@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {observer, inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 import cx from 'classnames';
 
 import {PERIODS} from '../consts';
 
-@inject('uiState')
-@observer
+@observer(['uiState'])
 export default class StatusDataPeriodPicker extends Component {
   setPeriod(period) {
     this.props.uiState.activeStatusDataPeriod = period;

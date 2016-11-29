@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 
 import SideNavbar from './SideNavbar';
 
-@inject('uiState', 'regions')
+@observer(['uiState', 'regions'])
 export default class CloudStatusSidebar extends Component {
   render() {
     const activeRegionName = this.props.uiState.activeRegionName;

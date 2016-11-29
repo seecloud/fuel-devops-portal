@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {observer, inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
@@ -11,8 +11,7 @@ import {
   generateAPICalls
 } from '../fakeDataUtils';
 
-@inject('uiState', 'regions')
-@observer
+@observer(['uiState', 'regions'])
 export default class CloudStatusOverviewSingleRegionPage extends Component {
   static async fetchData({uiState}) {
     const url = `/api/v1/region/${

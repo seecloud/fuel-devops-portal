@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import {observable} from 'mobx';
-import {observer, inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 import cx from 'classnames';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 
-@inject('regions')
-@observer
+@observer(['regions'])
 export default class CloudStatusOverviewMultiRegionPage extends Component {
   static async fetchData({uiState}) {
     const url = `/api/v1/status/${

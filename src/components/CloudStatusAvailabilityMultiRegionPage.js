@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import Score from './Score';
 
-@inject('uiState', 'regions', 'regionAvailabilityData')
+@observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class CloudStatusAvailabilityMultiRegionPage extends Component {
   static async fetchData({uiState, regionAvailabilityData}) {
     const url = `/api/v1/status/availability/${

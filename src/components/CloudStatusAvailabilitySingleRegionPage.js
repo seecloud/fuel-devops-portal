@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 import {times} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
@@ -7,7 +7,7 @@ import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import {generateAvailability} from '../fakeDataUtils';
 
-@inject('uiState', 'regions', 'regionAvailabilityData')
+@observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class CloudStatusAvailabilitySingleRegionPage extends Component {
   static async fetchData({uiState, regionAvailabilityData}) {
     const url = `/api/v1/region/${

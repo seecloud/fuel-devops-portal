@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
-import {observer, inject} from 'mobx-react';
+import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import cx from 'classnames';
 
 @withRouter
-@inject('uiState', 'regions')
-@observer
+@observer(['uiState', 'regions'])
 export default class Navbar extends Component {
   static defaultProps = {
     navigationItems: [
