@@ -1,27 +1,33 @@
+import {observable, asMap, action} from 'mobx';
 import {forEach} from 'lodash';
 
 export default class RegionAvailbilityData {
-  dataByRegion = {}
+  @observable dataByRegion = asMap({})
 
+  @action
   initializeRegionData(regionName, period) {
-    if (!this.dataByRegion[regionName]) this.dataByRegion[regionName] = {};
-    if (!this.dataByRegion[regionName][period]) this.dataByRegion[regionName][period] = {};
+    if (!this.dataByRegion.get(regionName)) {
+      this.dataByRegion.set(regionName, asMap({}));
+    }
+    if (!this.dataByRegion.get(regionName).get(period)) {
+      this.dataByRegion.get(regionName).set(period, asMap({}));
+    }
+    return this.dataByRegion.get(regionName).get(period);
   }
 
+  @action
   update(period, dataByRegion) {
     forEach(dataByRegion, ({availability, data}, regionName) => {
-      this.initializeRegionData(regionName, period);
-      Object.assign(this.dataByRegion[regionName][period], {
-        data,
-        score: availability,
-        lastUpdate: new Date()
-      });
+      const regionData = this.initializeRegionData(regionName, period);
+      regionData.set('data', data);
+      regionData.set('score', availability);
+      regionData.set('lastUpdate', new Date());
     });
   }
 
   get(regionName, period) {
     try {
-      return this.dataByRegion[regionName][period];
+      return this.dataByRegion.get(regionName).get(period).toJS();
     } catch (e) {
       return null;
     }
