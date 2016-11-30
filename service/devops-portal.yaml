@@ -1,0 +1,27 @@
+dsl_version: 0.1.0
+service:
+  name: devops-portal
+  ports:
+    - {{ portal.port }}
+  containers:
+    - name: devops-portal
+      image: devops-portal
+      probes:
+        readiness:
+          type: "httpGet"
+          port: {{ portal.port.cont }}
+          path: "/"
+        liveness:
+          command: "true"
+          type: "exec"
+      daemon:
+        dependencies:
+          - ceagle
+        command: nginx -c /etc/nginx/nginx.conf
+        files:
+          - nginx.conf
+
+files:
+  nginx.conf:
+    path: /etc/nginx/nginx.conf
+    content: nginx.conf.j2

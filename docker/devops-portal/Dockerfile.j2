@@ -1,0 +1,38 @@
+FROM {{ image_spec("base-tools") }}
+MAINTAINER {{ maintainer }}
+
+# Install Nginx
+COPY {{ render('sources.list.debian.j2') }} /etc/apt/sources.list.d/nginx.list
+RUN apt-key adv --keyserver {{ url.nginx.debian.keyserver }} --recv-keys {{ url.nginx.debian.keyid }} \
+    && apt-get update \
+    && apt-get install --yes --no-install-recommends --no-install-suggests \
+        nginx={{ nginx_version }} \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and install pre-built Node.js that includes Npm inside
+RUN curl -SsLo /tmp/node-v{{ nodejs_version }}-linux-x64.tar.gz https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-x64.tar.gz \
+    && tar -vxzf /tmp/node-v{{ nodejs_version }}-linux-x64.tar.gz \
+        --strip-components=1 \
+        --directory=/usr/local \
+        --index-file=/node-v{{ nodejs_version }}.files \
+    && rm -f /tmp/node-v{{ nodejs_version }}-linux-x64.tar.gz \
+    && ln -s /usr/local/bin/node /usr/local/bin/nodejs
+
+{{ copy_sources("seecloud/devops-portal", "/devops-portal") }}
+
+# Setup dirs and access rights, build and install devops-portal, cleanup
+WORKDIR /devops-portal
+RUN npm install \
+    && npm run build \
+    && mkdir -p /opt/devops-portal /var/run/nginx \
+    && cp -r /devops-portal/dist/. /opt/devops-portal/ \
+    && chown -R nginx: /etc/nginx/nginx.conf /var/cache/nginx/ /var/run/nginx \
+    && usermod --home /opt/devops-portal nginx \
+    && npm cache clean \
+    && rm -rf /devops-portal \
+    && cat /node-v{{ nodejs_version }}.files | sed 's/^[^\/]\+\///g; /^$/d; /\/$/d' | xargs -I % rm /usr/local/% \
+    && rm -f /node-v{{ nodejs_version }}.files
+
+WORKDIR /opt/devops-portal
+
+USER nginx

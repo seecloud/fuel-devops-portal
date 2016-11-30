@@ -1,0 +1,24 @@
+configs:
+  portal:
+    port:
+      cont: 5000
+    nginx:
+      workers: 1
+      connections: 1024
+      sendfile: true
+
+sources:
+  seecloud/devops-portal:
+    git_url: https://github.com/seecloud/fuel-devops-portal
+    git_ref: master
+
+versions:
+  nodejs_version: "6.9.1"
+  nginx_version: "1.11.6-1~jessie"
+
+url:
+  nginx:
+    debian:
+      repo: http://nginx.org/packages/mainline/debian/
+      keyserver: hkp://pgp.mit.edu:80
+      keyid: 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
