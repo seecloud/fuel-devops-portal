@@ -1,0 +1,43 @@
+daemon off;
+
+worker_processes {{ portal.nginx.workers }};
+
+error_log /dev/stderr;
+pid /var/run/nginx/nginx.pid;
+
+events {
+    worker_connections {{ portal.nginx.connections }};
+}
+
+http {
+    include mime.types;
+
+{% if portal.nginx.sendfile %}
+    sendfile on;
+{% endif %}
+
+    access_log /dev/stdout;
+
+    server {
+        listen 0.0.0.0:{{ portal.port.cont }} default_server;
+
+        root /opt/devops-portal/;
+
+        gzip on;
+        gzip_min_length 1000;
+        gzip_types
+            text/plain
+            text/css
+            application/json
+            application/javascript
+            application/x-javascript;
+
+        location / {
+            try_files $uri /index.html;
+        }
+
+        location /api/ {
+            proxy_pass http://{{ address("ceagle", port=ceagle.port)}};
+        }
+    }
+}
