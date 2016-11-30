@@ -9,11 +9,11 @@ import {generateFCIScore, generateResponseTime, generateResponseSize} from '../f
 
 @observer(['uiState', 'regions'])
 export default class CloudStatusHealthSingleRegionPage extends Component {
-  static async fetchData({uiState}) {
+  static async fetchData({uiState}, {dataPeriod = uiState.activeStatusDataPeriod} = {}) {
     const url = `/api/v1/region/${
       encodeURIComponent(uiState.activeRegionName)
     }/status/health/${
-      encodeURIComponent(uiState.activeStatusDataPeriod)
+      encodeURIComponent(dataPeriod)
     }`;
     const response = await fetch(url);
     await response.json();

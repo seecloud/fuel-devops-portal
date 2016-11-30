@@ -9,15 +9,18 @@ import {generateAvailability} from '../fakeDataUtils';
 
 @observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class CloudStatusAvailabilitySingleRegionPage extends Component {
-  static async fetchData({uiState, regionAvailabilityData}) {
+  static async fetchData(
+    {uiState, regionAvailabilityData},
+    {dataPeriod = uiState.activeStatusDataPeriod} = {}
+  ) {
     const url = `/api/v1/region/${
       encodeURIComponent(uiState.activeRegionName)
     }/status/availability/${
-      encodeURIComponent(uiState.activeStatusDataPeriod)
+      encodeURIComponent(dataPeriod)
     }`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    regionAvailabilityData.update(uiState.activeStatusDataPeriod, {
+    regionAvailabilityData.update(dataPeriod, {
       [uiState.activeRegionName]: responseBody.availability[uiState.activeRegionName]
     });
   }

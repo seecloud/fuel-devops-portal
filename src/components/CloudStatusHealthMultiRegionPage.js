@@ -9,12 +9,15 @@ import {generateFCIScore, generateResponseTime, generateResponseSize} from '../f
 
 @observer(['uiState', 'regions'])
 export default class CloudStatusHealthMultiRegionPage extends Component {
-  static async fetchData({uiState}) {
-    const url = `/api/v1/status/health/${
-      encodeURIComponent(uiState.activeStatusDataPeriod)
-    }`;
+  static async fetchData({uiState}, {dataPeriod = uiState.activeStatusDataPeriod} = {}) {
+    const url = `/api/v1/status/health/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     await response.json();
+  }
+
+  async changeDataPeriod(dataPeriod) {
+    await this.constructor.fetchData(this.props, dataPeriod);
+    this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
   charts = [
@@ -48,7 +51,10 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
         <div className='container-fluid'>
           <h1>{'Cloud Status Health: All Regions'}</h1>
           <div className='btn-toolbar'>
-            <StatusDataPeriodPicker className='pull-right' />
+            <StatusDataPeriodPicker
+              className='pull-right'
+              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
+            />
           </div>
           {this.props.regions.items.map((region) => {
             return (

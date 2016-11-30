@@ -8,10 +8,8 @@ import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 
 @observer(['regions'])
 export default class CloudStatusOverviewMultiRegionPage extends Component {
-  static async fetchData({uiState}) {
-    const url = `/api/v1/status/${
-      encodeURIComponent(uiState.activeStatusDataPeriod)
-    }`;
+  static async fetchData({uiState}, {dataPeriod = uiState.activeStatusDataPeriod} = {}) {
+    const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     await response.json();
   }

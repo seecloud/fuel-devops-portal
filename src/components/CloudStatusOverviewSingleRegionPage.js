@@ -13,11 +13,11 @@ import {
 
 @observer(['uiState', 'regions'])
 export default class CloudStatusOverviewSingleRegionPage extends Component {
-  static async fetchData({uiState}) {
+  static async fetchData({uiState}, {dataPeriod = uiState.activeStatusDataPeriod} = {}) {
     const url = `/api/v1/region/${
       encodeURIComponent(uiState.activeRegionName)
     }/status/${
-      encodeURIComponent(uiState.activeStatusDataPeriod)
+      encodeURIComponent(dataPeriod)
     }`;
     const response = await fetch(url);
     await response.json();

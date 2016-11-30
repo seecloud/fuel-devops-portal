@@ -10,7 +10,7 @@ import Score from './Score';
 export default class CloudStatusAvailabilityMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionAvailabilityData},
-    dataPeriod = uiState.activeStatusDataPeriod
+    {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
@@ -19,7 +19,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, dataPeriod);
+    await this.constructor.fetchData(this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
