@@ -6,8 +6,12 @@ import {PERIODS} from '../consts';
 
 @observer(['uiState'])
 export default class StatusDataPeriodPicker extends Component {
-  setPeriod(period) {
-    this.props.uiState.activeStatusDataPeriod = period;
+  changePeriod(period) {
+    if (this.props.onPeriodChange) {
+      this.props.onPeriodChange(period);
+    } else {
+      this.props.uiState.activeStatusDataPeriod = period;
+    }
   }
 
   render() {
@@ -19,7 +23,7 @@ export default class StatusDataPeriodPicker extends Component {
             <button
               key={period}
               className={cx('btn btn-default', {active: period === activeStatusDataPeriod})}
-              onClick={() => this.setPeriod(period)}
+              onClick={() => this.changePeriod(period)}
             >
               {period}
             </button>

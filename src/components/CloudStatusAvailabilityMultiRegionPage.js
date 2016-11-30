@@ -18,17 +18,9 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     regionAvailabilityData.update(uiState.activeStatusDataPeriod, responseBody.availability);
   }
 
-  constructor(props) {
-    super();
-    this.disposeActiveStatusDataPeriodWatcher = observe(
-      props.uiState, 'activeStatusDataPeriod', () => {
-        this.constructor.fetchData(props);
-      }
-    );
-  }
-
-  componentWillUnmount() {
-    this.disposeActiveStatusDataPeriodWatcher();
+  changePeriod(period) {
+    this.props.uiState.activeStatusDataPeriod = period;
+    this.constructor.fetchData(this.props);
   }
 
   render() {
@@ -39,7 +31,10 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
         <div className='container-fluid'>
           <h1>{'Cloud Status Availability: All Regions'}</h1>
           <div className='btn-toolbar'>
-            <StatusDataPeriodPicker className='pull-right' />
+            <StatusDataPeriodPicker
+              className='pull-right'
+              onPeriodChange={(period) => this.changePeriod(period)}
+            />
           </div>
           {this.props.regions.items.map((region) => {
             const availability = regionAvailabilityData.get(
