@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import {observable} from 'mobx';
 import cx from 'classnames';
 
 import {PERIODS} from '../consts';
 
 @observer(['uiState'])
 export default class StatusDataPeriodPicker extends Component {
-  changePeriod(period) {
-    if (this.props.onPeriodChange) {
-      this.props.onPeriodChange(period);
+  @observable actionInProgress = false
+
+  async changeDataPeriod(dataPeriod) {
+    if (this.props.onDataPeriodChange) {
+      this.actionInProgress = true;
+      try {
+        await this.props.onDataPeriodChange(dataPeriod);
+      } finally {
+        this.actionInProgress = false;
+      }
     } else {
-      this.props.uiState.activeStatusDataPeriod = period;
+      this.props.uiState.activeStatusDataPeriod = dataPeriod;
     }
   }
 
@@ -22,8 +30,9 @@ export default class StatusDataPeriodPicker extends Component {
           return (
             <button
               key={period}
+              disabled={this.actionInProgress}
               className={cx('btn btn-default', {active: period === activeStatusDataPeriod})}
-              onClick={() => this.changePeriod(period)}
+              onClick={() => this.changeDataPeriod(period)}
             >
               {period}
             </button>

@@ -8,18 +8,19 @@ import Score from './Score';
 
 @observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class CloudStatusAvailabilityMultiRegionPage extends Component {
-  static async fetchData({uiState, regionAvailabilityData}) {
-    const url = `/api/v1/status/availability/${
-      encodeURIComponent(uiState.activeStatusDataPeriod)
-    }`;
+  static async fetchData(
+    {uiState, regionAvailabilityData},
+    dataPeriod = uiState.activeStatusDataPeriod
+  ) {
+    const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    regionAvailabilityData.update(uiState.activeStatusDataPeriod, responseBody.availability);
+    regionAvailabilityData.update(dataPeriod, responseBody.availability);
   }
 
-  changePeriod(period) {
-    this.props.uiState.activeStatusDataPeriod = period;
-    this.constructor.fetchData(this.props);
+  async changeDataPeriod(dataPeriod) {
+    await this.constructor.fetchData(this.props, dataPeriod);
+    this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
   render() {
@@ -32,7 +33,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
           <div className='btn-toolbar'>
             <StatusDataPeriodPicker
               className='pull-right'
-              onPeriodChange={(period) => this.changePeriod(period)}
+              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
           {this.props.regions.items.map((region) => {
@@ -53,6 +54,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
                     <div className='service-status-entry-large'>
                       <div className='chart-title'>{'Availability'}</div>
                       <LineChart
+                        key={uiState.activeStatusDataPeriod}
                         className='ct-double-octave x-axis-vertical-labels'
                         options={{
                           axisX: {offset: 40}
