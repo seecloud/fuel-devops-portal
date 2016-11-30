@@ -12,10 +12,12 @@ export default class StatusDataPeriodPicker extends Component {
   async changeDataPeriod(dataPeriod) {
     if (this.props.onDataPeriodChange) {
       this.actionInProgress = true;
+      this.props.uiState.fetchingData = true;
       try {
         await this.props.onDataPeriodChange(dataPeriod);
       } finally {
         this.actionInProgress = false;
+        this.props.uiState.fetchingData = false;
       }
     } else {
       this.props.uiState.activeStatusDataPeriod = dataPeriod;
