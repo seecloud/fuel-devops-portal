@@ -5,6 +5,7 @@ import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import Score from './Score';
+import {formatTimeAsHoursAndMinutes, formatTimeAsDayAndMonth} from '../chartUtils';
 
 @observer(['uiState', 'regions', 'regionHealthData'])
 export default class CloudStatusHealthMultiRegionPage extends Component {
@@ -31,6 +32,9 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
 
   render() {
     const {uiState, regionHealthData} = this.props;
+    const labelInterpolationFnc = uiState.activeStatusDataPeriod === 'day' ?
+      formatTimeAsHoursAndMinutes :
+      formatTimeAsDayAndMonth;
 
     return (
       <div>
@@ -64,12 +68,11 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
                         <LineChart
                           key={uiState.activeStatusDataPeriod}
                           className='ct-major-twelfth x-axis-vertical-labels'
+                          options={{
+                            axisX: {labelInterpolationFnc}
+                          }}
                           data={health[key].reduce((result, [time, score]) => {
-                            // FIXME(vkramskikh): properly parse time and remove copy-paste
-                            const label = uiState.activeStatusDataPeriod === 'day' ?
-                              time.replace(/^.*?T/, '') :
-                              time.replace(/^\d+-(\d+-\d+)T.*/, '$1');
-                            result.labels.push(label);
+                            result.labels.push(time);
                             result.series[0].push(score);
                             return result;
                           }, {labels: [], series: [[]]})}
