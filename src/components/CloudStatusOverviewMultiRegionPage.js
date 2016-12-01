@@ -26,7 +26,7 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Status Overview: All Regions'}</h1>
+          <h1>{'Overview: All Regions'}</h1>
           <div className='btn-toolbar'>
             <div className='pull-left cloud-overview-summary'>
               {'Total: '}

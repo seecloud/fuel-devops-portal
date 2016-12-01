@@ -40,7 +40,7 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Status Health: All Regions'}</h1>
+          <h1>{'Health: All Regions'}</h1>
           <div className='btn-toolbar'>
             <StatusDataPeriodPicker
               className='pull-right'
