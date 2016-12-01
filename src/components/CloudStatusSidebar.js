@@ -15,17 +15,17 @@ export default class CloudStatusSidebar extends Component {
       <SideNavbar
         navigationItems={[
           {
-            url: urlPrefix + 'cloud-status',
+            url: urlPrefix + 'status',
             title: 'Overview',
             iconClassName: 'overview-icon'
           },
           {
-            url: urlPrefix + 'cloud-status/availability',
+            url: urlPrefix + 'status/availability',
             title: 'Availability',
             iconClassName: 'availability-icon'
           },
           {
-            url: urlPrefix + 'cloud-status/health',
+            url: urlPrefix + 'status/health',
             title: 'Health',
             iconClassName: 'health-icon'
           }
