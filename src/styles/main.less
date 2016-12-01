@@ -85,6 +85,7 @@ h1 {
 }
 
 .navbar {
+  @border-radius: 4px;
   font-family: 'Open Sans Condensed';
   font-weight: 300;
   text-transform: uppercase;
@@ -100,14 +101,14 @@ h1 {
         padding: 6px 12px 7px;
         background: none;
         &:hover {
-          border-radius: 4px;
+          border-radius: @border-radius;
           color: @navbar-default-bg;
           background-color: @nav-link-bg;
         }
       }
       &.active {
-        a {
-          border-radius: 4px;
+        > a {
+          border-radius: @border-radius;
           color: @navbar-default-bg;
           background-color: @nav-link-hover-bg;
           &:hover {
@@ -121,7 +122,7 @@ h1 {
       button {
         box-sizing: border-box;
         background-color: @navbar-default-bg;
-        border-radius: 4px;
+        border-radius:@border-radius;
         border: 1px solid @navbar-default-bg;
         margin-right: 10px;
         text-transform: uppercase;
@@ -141,11 +142,23 @@ h1 {
         li {
           a {
             border-radius: 0;
+            color: #333;
+          }
+          &.active a {
+            font-weight: 600;
           }
         }
         .divider {
           margin: 0;
         }
+      }
+    }
+    .navbar-collapsed {
+      .navbar-nav > li {
+        margin-top: 0;
+      }
+      .dropdown-menu > li {
+        margin: 0;
       }
     }
   }
@@ -167,6 +180,25 @@ h1 {
           background: none;
         }
       }
+    }
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  .navbar-collapsed {
+    button {
+      display: none;
+    }
+  }
+}
+@media (max-width: @screen-md-min) {
+  .navbar-collapsed {
+    .navbar-left > li {
+      float: none;
+    }
+    &:not(.open) .navbar-left {
+      display: none;
     }
   }
 }
