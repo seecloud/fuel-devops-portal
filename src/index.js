@@ -10,11 +10,13 @@ import createRoutes from './routes';
 import UIState from './stores/UIState';
 import Regions from './stores/Regions';
 import RegionAvailabilityData from './stores/RegionAvailabilityData';
+import RegionHealthData from './stores/RegionHealthData';
 
 const stores = {
   uiState: new UIState(),
   regions: new Regions(),
-  regionAvailabilityData: new RegionAvailabilityData()
+  regionAvailabilityData: new RegionAvailabilityData(),
+  regionHealthData: new RegionHealthData()
 };
 
 ReactDOM.render(
