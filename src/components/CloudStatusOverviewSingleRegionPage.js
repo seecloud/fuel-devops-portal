@@ -1,80 +1,95 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {times} from 'lodash';
+import {get} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import LineChart from './LineChart';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
-import {
-  generateFCIScore, generateAvailability,
-  generateResponseTime, generateResponseSize,
-  generateAPICalls
-} from '../fakeDataUtils';
+import {formatTimeAsHoursAndMinutes, formatTimeAsDayAndMonth} from '../chartUtils';
 
-@observer(['uiState', 'regions'])
-export default class CloudStatusOverviewSingleRegionPage extends Component {
-  static async fetchData({uiState}, {dataPeriod = uiState.activeStatusDataPeriod} = {}) {
+@observer(['uiState', 'regions', 'regionAvailabilityData', 'regionHealthData'])
+export default class CloudStatusAvailabilityMultiRegionPage extends Component {
+  static async fetchData(
+    {uiState, regionAvailabilityData, regionHealthData},
+    {dataPeriod = uiState.activeStatusDataPeriod} = {}
+  ) {
     const url = `/api/v1/region/${
       encodeURIComponent(uiState.activeRegionName)
     }/status/${
       encodeURIComponent(dataPeriod)
     }`;
     const response = await fetch(url);
-    await response.json();
+    const responseBody = await response.json();
+    const regionStatusData = responseBody.status[uiState.activeRegionName];
+    if (regionStatusData.availability) {
+      regionAvailabilityData.update(dataPeriod, {
+        [uiState.activeRegionName]: regionStatusData.availability
+      });
+    }
+    if (regionStatusData.health) {
+      regionHealthData.update(dataPeriod, {
+        [uiState.activeRegionName]: regionStatusData.health
+      });
+    }
+  }
+
+  async changeDataPeriod(dataPeriod) {
+    await this.constructor.fetchData(this.props, {dataPeriod});
+    this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
   charts = [
-    {title: 'FCI score', key: 'fciScore'},
-    {title: 'Availability', key: 'availability'},
-    {title: 'Response Time (ms)', key: 'responseTime'},
-    {title: 'Response Size (bytes)', key: 'responseSize'},
-    {title: 'API calls', key: 'apiCalls'},
-    {title: 'Performance', key: ''},
+    {title: 'Availability', key: 'availability.data'},
+    {title: 'FCI Score', key: 'health.fciData'},
+    {title: 'Response Time (ms)', key: 'health.responseSizeData'},
+    {title: 'Response Size (bytes)', key: 'health.responseTimeData'},
+    {title: 'Performance', key: null},
+    {title: 'API Calls', key: null}
   ]
 
-  healthData = {}
-
-  constructor() {
-    super();
-    this.generateFakeData();
-  }
-
-  componentWillReceiveProps() {
-    this.generateFakeData();
-  }
-
-  generateFakeData() {
-    this.healthData = {
-      fciScore: generateFCIScore(),
-      availability: generateAvailability(),
-      responseTime: generateResponseTime(),
-      responseSize: generateResponseSize(),
-      apiCalls: generateAPICalls()
-    };
-  }
-
   render() {
-    const regionName = this.props.uiState.activeRegionName;
+    const {uiState, regionAvailabilityData, regionHealthData} = this.props;
+    const regionName = uiState.activeRegionName;
+    const labelInterpolationFnc = uiState.activeStatusDataPeriod === 'day' ?
+      formatTimeAsHoursAndMinutes :
+      formatTimeAsDayAndMonth;
+
     return (
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
           <h1>{'Overview: ' + regionName}</h1>
           <div className='btn-toolbar'>
-            <StatusDataPeriodPicker className='pull-right' />
+            <StatusDataPeriodPicker
+              className='pull-right'
+              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
+            />
           </div>
           <div className='service-status'>
             <div className='service-status-container'>
               {this.charts.map(({title, key}) => {
+                if (!key) return null;
+                const availability = regionAvailabilityData.get(
+                  regionName, uiState.activeStatusDataPeriod
+                );
+                const health = regionHealthData.get(
+                  regionName, uiState.activeStatusDataPeriod
+                );
+                const chartData = get({availability, health}, key);
+                if (!chartData) return null;
+
                 return (
                   <div key={title} className='service-status-entry'>
                     <div className='chart-title'>{title}</div>
                     <LineChart
-                      className='ct-major-twelfth'
-                      data={{
-                        labels: times(10).map((n) => `${n + 1}:00`),
-                        series: [this.healthData[key] || []]
-                      }}
+                      key={uiState.activeStatusDataPeriod}
+                      className='ct-major-twelfth x-axis-vertical-labels'
+                      options={{axisX: {labelInterpolationFnc}}}
+                      data={chartData.reduce((result, [time, score]) => {
+                        result.labels.push(time);
+                        result.series[0].push(score);
+                        return result;
+                      }, {labels: [], series: [[]]})}
                     />
                   </div>
                 );

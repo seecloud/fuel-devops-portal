@@ -47,16 +47,16 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
-          {this.props.regions.items.map((region) => {
+          {this.props.regions.items.map(({name: regionName}) => {
             const health = regionHealthData.get(
-              region.name, uiState.activeStatusDataPeriod
+              regionName, uiState.activeStatusDataPeriod
             );
             if (!health) return null;
             return (
-              <div key={region.name} className='service-status'>
+              <div key={regionName} className='service-status'>
                 <div className='service-status-container'>
                   <div className='service-status-entry'>
-                    <div className='service-name'>{region.name}</div>
+                    <div className='service-name'>{regionName}</div>
                     <div className='service-score text-success'>
                       <Score score={health.fci} />
                     </div>

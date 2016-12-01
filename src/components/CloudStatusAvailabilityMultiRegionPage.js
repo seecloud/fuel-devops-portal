@@ -40,17 +40,17 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
-          {this.props.regions.items.map((region) => {
+          {this.props.regions.items.map(({name: regionName}) => {
             const availability = regionAvailabilityData.get(
-              region.name, uiState.activeStatusDataPeriod
+              regionName, uiState.activeStatusDataPeriod
             );
             if (!availability) return null;
             return (
-              <div key={region.name} className='service-status-wrapper'>
+              <div key={regionName} className='service-status-wrapper'>
                 <div className='service-status'>
                   <div className='service-status-container'>
                     <div className='service-status-entry'>
-                      <div className='service-name'>{region.name}</div>
+                      <div className='service-name'>{regionName}</div>
                       <div className='service-score'>
                         <Score score={availability.score} />
                       </div>
