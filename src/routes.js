@@ -61,7 +61,7 @@ export default function createRoutes(stores) {
           stores.uiState.activeRegionName = null;
         }}
       >
-        <Route path='cloud-status'>
+        <Route path='status'>
           <IndexRoute
             component={CloudStatusOverviewSingleRegionPage}
             onEnter={
@@ -97,7 +97,7 @@ export default function createRoutes(stores) {
           />
         </Route>
         <Route
-          path='capacity-management'
+          path='capacity'
           component={CapacityManagementPage}
         />
         <Route
@@ -105,7 +105,7 @@ export default function createRoutes(stores) {
           component={ResourceOptimizationPage}
         />
         <Route
-          path='security-monitoring'
+          path='security'
           component={SecurityMonitoringPage}
         />
       </Route>
@@ -115,7 +115,7 @@ export default function createRoutes(stores) {
         onEnter={requireAuthHook.bind(null, stores)}
       >
         <Route
-          path='cloud-status'
+          path='status'
         >
           <IndexRoute
             component={CloudStatusOverviewMultiRegionPage}
@@ -152,7 +152,7 @@ export default function createRoutes(stores) {
           />
         </Route>
         <Route
-          path='capacity-management'
+          path='capacity'
           component={CapacityManagementPage}
         />
         <Route
@@ -160,7 +160,7 @@ export default function createRoutes(stores) {
           component={ResourceOptimizationPage}
         />
         <Route
-          path='security-monitoring'
+          path='security'
           component={SecurityMonitoringPage}
         />
       </Route>

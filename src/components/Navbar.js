@@ -9,11 +9,11 @@ import cx from 'classnames';
 export default class Navbar extends Component {
   static defaultProps = {
     navigationItems: [
-      {url: 'cloud-status', title: 'Cloud Status'},
-      {url: 'intelligence', title: 'Cloud Intelligence'},
-      {url: 'capacity-management', title: 'Capacity Management'},
+      {url: 'status', title: 'Status'},
+      {url: 'intelligence', title: 'Intelligence'},
+      {url: 'capacity', title: 'Capacity'},
       {url: 'resource-optimization', title: 'Resource Optimization'},
-      {url: 'security-monitoring', title: 'Security Monitoring'},
+      {url: 'security', title: 'Security'},
     ]
   }
 

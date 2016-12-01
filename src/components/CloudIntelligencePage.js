@@ -8,7 +8,7 @@ export default class CloudIntelligencePage extends Component {
       <div>
         <CloudIntelligenceSidebar />
         <div className='container-fluid'>
-          <h1>{'Cloud Intelligence Page'}</h1>
+          <h1>{'Intelligence Page'}</h1>
           {'This is a cloud intelligence page.'}
         </div>
       </div>

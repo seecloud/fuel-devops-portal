@@ -8,24 +8,24 @@ export default class DashboardPage extends Component {
         <h1>{'Welcome to Fuel DevOps Portal'}</h1>
         <div className='dashboard-page-links'>
           <DashboardPageLink
-            to='/all-regions/cloud-status'
-            title='Cloud Status'
+            to='/all-regions/status'
+            title='Status'
           />
           <DashboardPageLink
-            to='/all-regions/cloud-intelligence'
-            title='Cloud Intelligence'
+            to='/all-regions/intelligence'
+            title='Intelligence'
           />
           <DashboardPageLink
-            to='/all-regions/capacity-management'
-            title='Capacity Management'
+            to='/all-regions/capacity'
+            title='Capacity'
           />
           <DashboardPageLink
             to='/all-regions/resource-optimization'
             title='Resource Optimization'
           />
           <DashboardPageLink
-            to='/all-regions/security-monitoring'
-            title='Security Monitoring'
+            to='/all-regions/security'
+            title='Security'
           />
         </div>
       </div>
