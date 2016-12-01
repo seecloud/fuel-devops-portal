@@ -14,7 +14,7 @@ export default class DataFetchingProgressBar extends Component {
   @observable progress = this.props.initialProgress
 
   toggleProgressBar = autorun(() => {
-    if (this.props.uiState.fetchingData) {
+    if (this.props.uiState.pendingRequestsCount) {
       this.showProgressBar();
     } else {
       this.hideProgressBar();
@@ -46,7 +46,7 @@ export default class DataFetchingProgressBar extends Component {
     return (
       <div
         className='data-fetching-progress'
-        style={{opacity: this.props.uiState.fetchingData ? 1 : 0}}
+        style={{opacity: this.props.uiState.pendingRequestsCount ? 1 : 0}}
       >
         <div
           className='data-fetching-progress-bar'

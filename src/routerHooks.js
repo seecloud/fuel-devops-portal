@@ -18,13 +18,13 @@ export function composeEnterHooks(...hooks) {
 
 export async function fetchDataHook(stores, fetchData, nextState, replace, callback) {
   try {
-    stores.uiState.fetchingData = true;
+    stores.uiState.pendingRequestsCount++;
     await fetchData(stores);
     return callback();
   } catch (error) {
     return callback(error);
   } finally {
-    stores.uiState.fetchingData = false;
+    stores.uiState.pendingRequestsCount--;
   }
 }
 
