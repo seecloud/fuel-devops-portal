@@ -68,7 +68,7 @@ export default class CloudStatusHealthSingleRegionPage extends Component {
               <div key={serviceName} className='service-status'>
                 <div className='service-status-container'>
                   <div className='service-status-entry'>
-                    <div className='service-name'>{serviceName}{' '}{'FCI'}</div>
+                    <div className='service-name'>{serviceName}</div>
                     <div className='service-score text-success'>
                       <Score score={health.fci} />
                     </div>

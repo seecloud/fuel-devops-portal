@@ -1,4 +1,5 @@
 import {observable, asMap, action} from 'mobx';
+import {without} from 'lodash';
 
 export default class RegionAvailbilityData {
   @observable dataByRegion = asMap({})
@@ -29,6 +30,11 @@ export default class RegionAvailbilityData {
       score,
       lastUpdate: new Date()
     });
+  }
+
+  getRegionServices(regionName, period) {
+    this.initializeRegionData(regionName, period);
+    return without(this.dataByRegion.get(regionName).get(period).keys(), 'aggregated');
   }
 
   get(regionName, period, serviceName = 'aggregated') {
