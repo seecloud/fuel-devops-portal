@@ -1,17 +1,47 @@
 import React, {Component} from 'react';
-import {observable} from 'mobx';
+import {observable, transaction} from 'mobx';
 import {observer} from 'mobx-react';
+import {forEach} from 'lodash';
 import cx from 'classnames';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
+import Score from './Score';
 
-@observer(['regions'])
+@observer(['uiState', 'regions', 'regionAvailabilityData', 'regionHealthData'])
 export default class CloudStatusOverviewMultiRegionPage extends Component {
-  static async fetchData({uiState}, {dataPeriod = uiState.activeStatusDataPeriod} = {}) {
+  static async fetchData(
+    {uiState, regionAvailabilityData, regionHealthData},
+    {dataPeriod = uiState.activeStatusDataPeriod} = {}
+    ) {
     const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
-    await response.json();
+    const responseBody = await response.json();
+    transaction(() => {
+      forEach(responseBody.status, (plainRegionStatusData, regionName) => {
+        if (plainRegionStatusData.availability) {
+          regionAvailabilityData.update(
+            regionName,
+            dataPeriod,
+            undefined,
+            plainRegionStatusData.availability
+          );
+        }
+        if (plainRegionStatusData.health) {
+          regionHealthData.update(
+            regionName,
+            dataPeriod,
+            undefined,
+            plainRegionStatusData.health
+          );
+        }
+      });
+    });
+  }
+
+  async changeDataPeriod(dataPeriod) {
+    await this.constructor.fetchData(this.props, {dataPeriod});
+    this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
   @observable regionSize = 'large'
@@ -32,9 +62,12 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
               {'Total: '}
               {this.props.regions.items.length}
               {' '}
-              {'Error: X'}
+              {'Error: 0'}
             </div>
-            <StatusDataPeriodPicker className='pull-right' />
+            <StatusDataPeriodPicker
+              className='pull-right'
+              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
+            />
             <div className='btn-group pull-right'>
               <button className='btn btn-default active'>{'All'}</button>
               <button className='btn btn-default'>{'Errors'}</button>
@@ -60,7 +93,7 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
             {this.props.regions.items.map((region) => {
               return <Region
                 key={region.name}
-                region={region}
+                regionName={region.name}
                 size={this.regionSize}
               />;
             })}
@@ -71,27 +104,50 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
   }
 }
 
+@observer(['uiState', 'regionAvailabilityData', 'regionHealthData'])
 export class Region extends Component {
   render() {
+    const {size, regionName, uiState, regionAvailabilityData, regionHealthData} = this.props;
+    let health = null;
+    let availability = null;
+    try {
+      health = regionHealthData.get(
+        regionName, uiState.activeStatusDataPeriod
+      ).fci || null;
+    } catch (e) {}
+    try {
+      availability = regionAvailabilityData.get(
+        regionName, uiState.activeStatusDataPeriod
+      ).score || null;
+    } catch (e) {}
+
     return (
-      <div className={cx('region-container', 'region-' + this.props.size)}>
+      <div className={cx('region-container', 'region-' + size)}>
         <div className='region'>
-          <h3>{this.props.region.name}</h3>
+          <h3>{regionName}</h3>
           <div className='sla'>
             <div className='name'>{'SLA'}</div>
-            <div className='param text-success'>{'100%'}</div>
+            <div className='param'>
+              <Score score={1} />
+            </div>
           </div>
           <div className='availability'>
             <div className='name'>{'Availability'}</div>
-            <div className='param text-warning'>{'92%'}</div>
+            <div className='param'>
+              <Score score={availability} />
+            </div>
           </div>
           <div className='health'>
             <div className='name'>{'Health (FCI)'}</div>
-            <div className='param'>{'N/A'}</div>
+            <div className='param'>
+              <Score score={health} />
+            </div>
           </div>
           <div className='performance'>
             <div className='name'>{'Performance'}</div>
-            <div className='param text-danger'>{'86%'}</div>
+            <div className='param'>
+              <Score score={1} />
+            </div>
           </div>
         </div>
       </div>

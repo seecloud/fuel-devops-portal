@@ -9,14 +9,16 @@ export default class Score extends Component {
   render() {
     const {score} = this.props;
     let className;
-    if (score >= this.props.successThreshold) {
+    if (score === null) {
+      className = '';
+    } else if (score >= this.props.successThreshold) {
       className = 'text-success';
     } else if (score >= this.props.warningThreshold) {
       className = 'text-warning';
     } else {
       className = 'text-danger';
     }
-    const percentage = (score * 100).toFixed(1) + '%';
+    const percentage = score !== null ? (score * 100).toFixed(1) + '%' : 'N/A';
 
     return (
       <span className={className}>{percentage}</span>
