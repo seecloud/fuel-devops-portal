@@ -244,44 +244,56 @@ h1 {
 }
 
 .service-status-wrapper {
-  .make-lg-column(6, 10px);
+  .make-row(10px);
 }
 
 .service-status {
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: @item-block-bg;
-  border: 1px solid @item-block-border;
-  border-radius: 6px;
+  .make-xs-column(12, 10px);
+  .make-md-column(6, 10px);
+  .make-lg-column(3, 10px);
+  padding: 0 10px 10px 10px;
   .service-status-container {
     .make-row(10px);
+    background-color: @item-block-bg;
+    border: 1px solid @item-block-border;
     .service-status-entry {
-      .text-center;
       .make-xs-column(12, 10px);
-      .make-md-column(6, 10px);
-      .make-lg-column(3, 10px);
+      .make-md-column(12, 10px);
+      .make-lg-column(12, 10px);
+      display: block;
+      padding: 17px 10px;
+      border-bottom: 1px solid @item-block-border;
+      margin-bottom: 10px;
     }
     .service-status-entry-large {
-      .text-center;
       .make-xs-column(12, 10px);
-      .make-md-column(9, 10px);
-      .make-lg-column(9, 10px);
+      .make-md-column(12, 10px);
+      .make-lg-column(12, 10px);
     }
   }
   .service-name {
+    .make-xs-column(8, 10px);
+    .make-md-column(8, 10px);
+    .make-lg-column(8, 10px);
     font-family: 'open sans';
-    font-size: 20px;
-    margin: 15px 0 0;
+    font-size: 14px;
+    line-height: 14px;
   }
   .service-score {
+    .make-xs-column(4, 10px);
+    .make-md-column(4, 10px);
+    .make-lg-column(4, 10px);
     font-family: 'Open Sans Condensed';
-    font-size: 50px;
+    font-size: 20px;
     font-weight: 700;
+    text-align: right;
+    line-height: 14px;
   }
   .chart-title {
-    font-family: 'Open Sans Condensed';
-    font-size: 14px;
-    font-weight: 700;
+    font-family: 'Open Sans';
+    font-size: 10px;
+    font-weight: 600;
+    margin: 5px 0px 5px 10px;
   }
 }
 

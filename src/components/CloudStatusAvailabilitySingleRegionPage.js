@@ -61,7 +61,7 @@ export default class CloudStatusAvailabilitySingleRegionPage extends Component {
               regionName, uiState.activeStatusDataPeriod, serviceName
             );
             return (
-              <div key={serviceName} className='service-status-wrapper'>
+              <div key={serviceName}>
                 <div className='service-status'>
                   <div className='service-status-container'>
                     <div className='service-status-entry'>

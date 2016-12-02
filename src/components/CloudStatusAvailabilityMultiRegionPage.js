@@ -52,7 +52,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
             );
             if (!availability) return null;
             return (
-              <div key={regionName} className='service-status-wrapper'>
+              <div key={regionName}>
                 <div className='service-status'>
                   <div className='service-status-container'>
                     <div className='service-status-entry'>
