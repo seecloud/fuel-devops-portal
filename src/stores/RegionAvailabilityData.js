@@ -1,5 +1,4 @@
 import {observable, asMap, action} from 'mobx';
-import {forEach} from 'lodash';
 
 export default class RegionAvailbilityData {
   @observable dataByRegion = asMap({})
@@ -23,13 +22,12 @@ export default class RegionAvailbilityData {
   }
 
   @action
-  update(period, serviceName = 'aggregated', dataByRegion) {
-    forEach(dataByRegion, ({availability: score, data}, regionName) => {
-      Object.assign(this.initializeRegionData(regionName, period, serviceName), {
-        data,
-        score,
-        lastUpdate: new Date()
-      });
+  update(regionName, period, serviceName = 'aggregated', plainAvailbilityData) {
+    const {availability: score, data} = plainAvailbilityData;
+    Object.assign(this.initializeRegionData(regionName, period, serviceName), {
+      data,
+      score,
+      lastUpdate: new Date()
     });
   }
 

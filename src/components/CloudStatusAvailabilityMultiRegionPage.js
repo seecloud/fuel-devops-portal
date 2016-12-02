@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import {transaction} from 'mobx';
+import {forEach} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
@@ -16,7 +18,11 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    regionAvailabilityData.update(dataPeriod, undefined, responseBody.availability);
+    transaction(() => {
+      forEach(responseBody.availability, (plainAvailabilityData, regionName) => {
+        regionAvailabilityData.update(regionName, dataPeriod, undefined, plainAvailabilityData);
+      });
+    });
   }
 
   async changeDataPeriod(dataPeriod) {

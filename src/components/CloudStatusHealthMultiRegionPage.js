@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import {transaction} from 'mobx';
+import {forEach} from 'lodash';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
@@ -16,7 +18,11 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
     const url = `/api/v1/status/health/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    regionHealthData.update(dataPeriod, undefined, responseBody.health);
+    transaction(() => {
+      forEach(responseBody.health, (plainHealthData, regionName) => {
+        regionHealthData.update(regionName, dataPeriod, undefined, plainHealthData);
+      });
+    });
   }
 
   async changeDataPeriod(dataPeriod) {
