@@ -22,12 +22,12 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     const responseBody = await response.json();
     const regionStatusData = responseBody.status[uiState.activeRegionName];
     if (regionStatusData.availability) {
-      regionAvailabilityData.update(dataPeriod, {
+      regionAvailabilityData.update(dataPeriod, undefined, {
         [uiState.activeRegionName]: regionStatusData.availability
       });
     }
     if (regionStatusData.health) {
-      regionHealthData.update(dataPeriod, {
+      regionHealthData.update(dataPeriod, undefined, {
         [uiState.activeRegionName]: regionStatusData.health
       });
     }

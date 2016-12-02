@@ -16,7 +16,7 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    regionAvailabilityData.update(dataPeriod, responseBody.availability);
+    regionAvailabilityData.update(dataPeriod, undefined, responseBody.availability);
   }
 
   async changeDataPeriod(dataPeriod) {

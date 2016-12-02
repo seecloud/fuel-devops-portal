@@ -16,7 +16,7 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
     const url = `/api/v1/status/health/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    regionHealthData.update(dataPeriod, responseBody.health);
+    regionHealthData.update(dataPeriod, undefined, responseBody.health);
   }
 
   async changeDataPeriod(dataPeriod) {

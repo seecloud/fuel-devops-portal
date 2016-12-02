@@ -5,24 +5,27 @@ export default class RegionAvailbilityData {
   @observable dataByRegion = asMap({})
 
   @action
-  initializeRegionData(regionName, period) {
+  initializeRegionData(regionName, period, serviceName = 'aggregated') {
     if (!this.dataByRegion.get(regionName)) {
       this.dataByRegion.set(regionName, asMap({}));
     }
     if (!this.dataByRegion.get(regionName).get(period)) {
-      this.dataByRegion.get(regionName).set(period, observable({
+      this.dataByRegion.get(regionName).set(period, asMap({}));
+    }
+    if (!this.dataByRegion.get(regionName).get(period).get(serviceName)) {
+      this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
         data: [],
         score: null,
         lastUpdate: null
       }));
     }
-    return this.dataByRegion.get(regionName).get(period);
+    return this.dataByRegion.get(regionName).get(period).get(serviceName);
   }
 
   @action
-  update(period, dataByRegion) {
+  update(period, serviceName = 'aggregated', dataByRegion) {
     forEach(dataByRegion, ({availability: score, data}, regionName) => {
-      Object.assign(this.initializeRegionData(regionName, period), {
+      Object.assign(this.initializeRegionData(regionName, period, serviceName), {
         data,
         score,
         lastUpdate: new Date()
@@ -30,9 +33,9 @@ export default class RegionAvailbilityData {
     });
   }
 
-  get(regionName, period) {
+  get(regionName, period, serviceName = 'aggregated') {
     try {
-      return this.dataByRegion.get(regionName).get(period);
+      return this.dataByRegion.get(regionName).get(period).get(serviceName);
     } catch (e) {
       return null;
     }
