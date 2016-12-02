@@ -40,6 +40,10 @@ export default class RegionHealthData {
     });
   }
 
+  getRegionServices(regionName, period) {
+    return [...this.dataByRegion.get(regionName).get(period).keys()];
+  }
+
   get(regionName, period, serviceName = 'aggregated') {
     try {
       return this.dataByRegion.get(regionName).get(period).get(serviceName);
