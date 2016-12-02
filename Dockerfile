@@ -1,16 +1,16 @@
-FROM ubuntu:16.04
+FROM nginx
 MAINTAINER Vitaly Kramskikh <vkramskikh@mirantis.com>
 
-RUN apt-get update && apt-get install --yes wget git-core nodejs npm
-RUN apt-get remove node
-
-RUN ln /usr/bin/nodejs /usr/bin/node
+RUN apt-get update && \
+    apt-get install --yes curl git-core npm && \
+    apt-get remove node && \
+    curl -sL https://deb.nodesource.com/setup_6.x | sh && \
+    apt-get install -y nodejs
 
 COPY . /app
 WORKDIR /app
 
-RUN npm install
+RUN npm install && npm run build
 
-EXPOSE 5000
-ENTRYPOINT ["npm"]
-CMD ["start", "--", "--dev-server-host=0.0.0.0", "--dev-server-port=5000"] 
+RUN cp -r /app/dist/* /usr/share/nginx/html && \
+    cp /app/etc/nginx/fuel-devops-portal.conf /etc/nginx/conf.d/default.conf

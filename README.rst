@@ -32,3 +32,16 @@ The production version of Fuel DevOps Portal can be built by running::
   npm run build
 
 The resulting build will be available in `dist` directory.
+
+Running Portal with Docker
+--------------------------
+
+You have to run 2 docker containers one the same host:
+- nginx that shares static files
+- ceagle - which is portal backend
+
+.. code-block:: sh
+
+  docker run --name devops -d --net host seecloud/fuel-devops-portal
+  docker run --name devops -d -p  8080:5000 seecloud/ceagle
+  # UI is available on 80 port
