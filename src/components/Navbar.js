@@ -12,7 +12,7 @@ export default class Navbar extends Component {
       {url: 'status', title: 'Status'},
       {url: 'intelligence', title: 'Intelligence'},
       {url: 'capacity', title: 'Capacity'},
-      {url: 'resource-optimization', title: 'Resource Optimization'},
+      {url: 'runbooks', title: 'Runbooks'},
       {url: 'security', title: 'Security'},
     ]
   }

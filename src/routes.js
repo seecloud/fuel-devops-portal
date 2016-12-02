@@ -20,7 +20,7 @@ import CloudIntelligencePage from './components/CloudIntelligencePage';
 import CloudIntelligenceInventoryPage from './components/CloudIntelligenceInventoryPage';
 import CloudIntelligenceHistoryPage from './components/CloudIntelligenceHistoryPage';
 import CapacityManagementPage from './components/CapacityManagementPage';
-import ResourceOptimizationPage from './components/ResourceOptimizationPage';
+import RunbooksPage from './components/RunbooksPage';
 import SecurityMonitoringPage from './components/SecurityMonitoringPage';
 
 export default function createRoutes(stores) {
@@ -101,8 +101,8 @@ export default function createRoutes(stores) {
           component={CapacityManagementPage}
         />
         <Route
-          path='resource-optimization'
-          component={ResourceOptimizationPage}
+          path='runbooks'
+          component={RunbooksPage}
         />
         <Route
           path='security'
@@ -156,8 +156,8 @@ export default function createRoutes(stores) {
           component={CapacityManagementPage}
         />
         <Route
-          path='resource-optimization'
-          component={ResourceOptimizationPage}
+          path='runbooks'
+          component={RunbooksPage}
         />
         <Route
           path='security'
