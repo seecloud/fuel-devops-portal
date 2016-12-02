@@ -69,7 +69,7 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
                   </div>
                   {this.charts.map(({title, key}) => {
                     return (
-                      <div key={title} className='service-status-entry'>
+                      <div key={title} className='service-status-entry-large'>
                         <div className='chart-title'>{title}</div>
                         <LineChart
                           key={uiState.activeStatusDataPeriod}
