@@ -20,8 +20,8 @@ export default class DashboardPage extends Component {
             title='Capacity'
           />
           <DashboardPageLink
-            to='/all-regions/resource-optimization'
-            title='Resource Optimization'
+            to='/all-regions/runbooks'
+            title='Runbooks'
           />
           <DashboardPageLink
             to='/all-regions/security'
