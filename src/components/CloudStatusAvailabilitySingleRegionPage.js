@@ -7,7 +7,7 @@ import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import Score from './Score';
-import {formatTimeAsHoursAndMinutes, formatTimeAsDayAndMonth} from '../chartUtils';
+import {getFormatTime} from '../chartUtils';
 
 @observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class CloudStatusAvailabilitySingleRegionPage extends Component {
@@ -41,9 +41,7 @@ export default class CloudStatusAvailabilitySingleRegionPage extends Component {
     const services = regionAvailabilityData.getRegionServices(
       regionName, uiState.activeStatusDataPeriod
     );
-    const labelInterpolationFnc = uiState.activeStatusDataPeriod === 'day' ?
-      formatTimeAsHoursAndMinutes :
-      formatTimeAsDayAndMonth;
+    const labelInterpolationFnc = getFormatTime(uiState.activeStatusDataPeriod);
 
     return (
       <div>

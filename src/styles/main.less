@@ -236,10 +236,12 @@ h1 {
     stroke: @brand-primary;
     stroke-width: 2px;
   }
-  &.x-axis-vertical-labels {
-    .ct-label.ct-horizontal {
-      transform: rotate(-90deg);
-    }
+  .ct-horizontal {
+    stroke-width: 0px;
+  }
+  .ct-vertical {
+    stroke: @item-block-border;
+    stroke-width: 1px;
   }
 }
 
