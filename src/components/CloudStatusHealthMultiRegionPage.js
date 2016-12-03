@@ -7,7 +7,7 @@ import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from './LineChart';
 import Score from './Score';
-import {formatTimeAsHoursAndMinutes, formatTimeAsDayAndMonth} from '../chartUtils';
+import {getFormatTime} from '../chartUtils';
 
 @observer(['uiState', 'regions', 'regionHealthData'])
 export default class CloudStatusHealthMultiRegionPage extends Component {
@@ -38,9 +38,7 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
 
   render() {
     const {uiState, regionHealthData} = this.props;
-    const labelInterpolationFnc = uiState.activeStatusDataPeriod === 'day' ?
-      formatTimeAsHoursAndMinutes :
-      formatTimeAsDayAndMonth;
+    const labelInterpolationFnc = getFormatTime(uiState.activeStatusDataPeriod);
 
     return (
       <div>
