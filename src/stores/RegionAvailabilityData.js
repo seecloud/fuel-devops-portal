@@ -24,7 +24,7 @@ export default class RegionAvailbilityData {
 
   @action
   update(regionName, period, serviceName = 'aggregated', plainAvailbilityData) {
-    const {availability: score, data} = plainAvailbilityData;
+    const {availability: score, availability_data: data} = plainAvailbilityData;
     Object.assign(this.initializeRegionData(regionName, period, serviceName), {
       data,
       score,
