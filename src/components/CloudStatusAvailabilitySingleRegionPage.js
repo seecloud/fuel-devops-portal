@@ -77,10 +77,9 @@ export default class CloudStatusAvailabilitySingleRegionPage extends Component {
                           axisX: {offset: 40, labelInterpolationFnc}
                         }}
                         data={availability.data.reduce((result, [time, score]) => {
-                          result.labels.push(time);
-                          result.series[0].push(score);
+                          result.series[0].push({x: new Date(time), y: score});
                           return result;
-                        }, {labels: [], series: [[]]})}
+                        }, {series: [[]]})}
                       />
                     </div>
                   </div>

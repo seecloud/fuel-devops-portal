@@ -82,10 +82,9 @@ export default class CloudStatusHealthSingleRegionPage extends Component {
                             axisX: {labelInterpolationFnc}
                           }}
                           data={health[key].reduce((result, [time, score]) => {
-                            result.labels.push(time);
-                            result.series[0].push(score);
+                            result.series[0].push({x: new Date(time), y: score});
                             return result;
-                          }, {labels: [], series: [[]]})}
+                          }, {series: [[]]})}
                         />
                       </div>
                     );

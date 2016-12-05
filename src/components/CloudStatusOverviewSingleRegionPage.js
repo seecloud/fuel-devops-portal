@@ -92,10 +92,9 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
                       className='ct-major-twelfth x-axis-vertical-labels'
                       options={{axisX: {labelInterpolationFnc}}}
                       data={chartData.reduce((result, [time, score]) => {
-                        result.labels.push(time);
-                        result.series[0].push(score);
+                        result.series[0].push({x: new Date(time), y: score});
                         return result;
-                      }, {labels: [], series: [[]]})}
+                      }, {series: [[]]})}
                     />
                   </div>
                 );
