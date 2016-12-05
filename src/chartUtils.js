@@ -5,19 +5,17 @@ export function getFormatTime(period) {
   return formatTimeAsDayAndMonth;
 }
 
-export function formatTimeAsHoursAndMinutes(time, index) {
-  if (index % 6) return null;
-  return time.replace(/^.*?T/, '');
+export function formatTimeAsHoursAndMinutes(time) {
+  let d = new Date(time);
+  return ('0' + d.getUTCHours()).substr(-2) + ':' + ('0' + d.getUTCMinutes()).substr(-2);
 }
 
-export function formatTimeAsDayOfWeek(time, index) {
-  if (index % 2) return null;
+export function formatTimeAsDayOfWeek(time) {
   let d = new Date(time);
   return d.getDate() + '/' + d.toLocaleString('en-us', {month: 'short'});
 }
 
-export function formatTimeAsDayAndMonth(time, index) {
-  if (index % 6 && index !== 0) return null;
+export function formatTimeAsDayAndMonth(time) {
   let d = new Date(time);
   return d.getDate() + '/' + d.toLocaleString('en-us', {month: 'short'});
 }

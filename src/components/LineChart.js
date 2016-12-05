@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
-import {Line} from 'chartist';
+import {AutoScaleAxis, Line} from 'chartist';
+import {merge} from 'lodash';
 import cx from 'classnames';
 
 export default class LineChart extends Component {
   static defaultProps = {
     defaultOptions: {
-      showPoint: false
+      showPoint: false,
+      axisX: {
+        type: AutoScaleAxis,
+        scaleMinSpace: 60,
+        onlyInteger: true
+      }
     },
     defaultResponsiveOptions: {}
   }
@@ -14,7 +20,7 @@ export default class LineChart extends Component {
     this.chartist = new Line(
       this.refs.chart,
       this.props.data,
-      {...this.props.defaultOptions, ...this.props.options},
+      merge(this.props.defaultOptions, this.props.options),
       {...this.props.defaultResponsiveOptions, ...this.props.responsiveOptions}
     );
   }
@@ -22,7 +28,7 @@ export default class LineChart extends Component {
   componentWillReceiveProps() {
     this.chartist.update(
       this.props.data,
-      {...this.props.defaultOptions, ...this.props.options},
+      merge(this.props.defaultOptions, this.props.options),
       {...this.props.defaultResponsiveOptions, ...this.props.responsiveOptions}
     );
   }
