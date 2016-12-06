@@ -4,7 +4,7 @@
 @import '~chartist/dist/chartist.css';
 
 
-@grid-float-breakpoint: 400px;
+@grid-float-breakpoint: 500px;
 
 @font-family-sans-serif: 'Open Sans', sans-serif;
 
@@ -17,7 +17,7 @@ html {
 body {
   overflow-y: scroll;
   height:100%;
-  min-width: 500px;
+  min-width: 650px;
 }
 
 @font-face {
@@ -36,6 +36,11 @@ body {
   src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'),
        url('../media/open-sans-condensed-v10-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
        url('../media/open-sans-condensed-v10-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+.box-style {
+  background-color: @item-block-bg;
+  border: 1px solid @item-block-border;
 }
 
 .btn {
@@ -218,11 +223,9 @@ h1 {
 }
 
 .dashboard-page-link {
+  .box-style;
   width: 100%;
   min-height: 150px;
-  background-color: @item-block-bg;
-  border: 1px solid @item-block-border;
-  border-radius: 6px;
   margin-bottom: 10px;
   padding: 16px 20px;
   box-sizing: border-box;
@@ -265,8 +268,7 @@ h1 {
   padding: 0 10px 10px 10px;
   .service-status-container {
     .make-row(10px);
-    background-color: @item-block-bg;
-    border: 1px solid @item-block-border;
+    .box-style;
     .service-status-entry {
       .make-xs-column(12, 10px);
       .make-md-column(12, 10px);
@@ -314,10 +316,8 @@ h1 {
     margin-bottom: 10px;
     overflow: hidden;
     .region {
+      .box-style;
       padding: 10px;
-      background-color: @item-block-bg;
-      border: 1px solid @item-block-border;
-      border-radius: 6px;
       h3 {
         text-align: center;
         display: block;
@@ -407,7 +407,7 @@ h1 {
       .make-xs-column(3, 10px);
       .make-sm-column(2, 10px);
       .make-md-column(1.5, 10px);
-      .make-lg-column(1, 10px);
+      .make-lg-column(1.5, 10px);
       .sla, .availability, .health, .performance {
         .name {
           width: 40%;
