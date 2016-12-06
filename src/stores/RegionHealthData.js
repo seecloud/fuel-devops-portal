@@ -16,7 +16,11 @@ export default class RegionHealthData {
       this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
         fci: null,
         fciData: [],
+        apiCalls: null,
+        apiCallsData: [],
+        responseSize: null,
         responseSizeData: [],
+        responseTime: null,
         responseTimeData: [],
         lastUpdate: null
       }));
@@ -29,13 +33,21 @@ export default class RegionHealthData {
     const {
       fci,
       fci_data: fciData,
-      repsonse_size_data: responseSizeData,
+      api_calls_count: apiCalls,
+      api_calls_count_data: apiCallsData,
+      response_size: responseSize,
+      response_size_data: responseSizeData,
+      response_time: responseTime,
       response_time_data: responseTimeData
     } = plainHealthData;
     Object.assign(this.initializeRegionData(regionName, period, serviceName), {
       fci,
       fciData,
+      apiCalls,
+      apiCallsData,
+      responseSize,
       responseSizeData,
+      responseTime,
       responseTimeData,
       lastUpdate: new Date()
     });
