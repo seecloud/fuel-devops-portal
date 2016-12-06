@@ -32,8 +32,8 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
 
   charts = [
     {title: 'FCI Score', key: 'fciData'},
-    {title: 'Response Time (ms)', key: 'responseSizeData'},
-    {title: 'Response Size (bytes)', key: 'responseTimeData'}
+    {title: 'Response Time (ms)', key: 'responseTimeData'},
+    {title: 'Response Size (bytes)', key: 'responseSizeData'}
   ]
 
   render() {
