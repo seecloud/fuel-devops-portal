@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import {observable, transaction} from 'mobx';
 import {observer} from 'mobx-react';
 import {forEach} from 'lodash';
@@ -108,6 +109,7 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
 export class Region extends Component {
   render() {
     const {size, regionName, uiState, regionAvailabilityData, regionHealthData} = this.props;
+    const urlPrefix = `/region/${encodeURIComponent(regionName)}/`;
     let health = null;
     let availability = null;
     try {
@@ -124,7 +126,9 @@ export class Region extends Component {
     return (
       <div className={cx('region-container', 'region-' + size)}>
         <div className='region'>
-          <h3>{regionName}</h3>
+          <h3>
+            <Link to={urlPrefix + 'status'}>{regionName}</Link>
+          </h3>
           <div className='sla'>
             <div className='name'>{'SLA'}</div>
             <div className='param'>
@@ -132,13 +136,17 @@ export class Region extends Component {
             </div>
           </div>
           <div className='availability'>
-            <div className='name'>{'Availability'}</div>
+            <div className='name'>
+              <Link to={urlPrefix + 'status/availability'}>{'Availability'}</Link>
+            </div>
             <div className='param'>
               <Score score={availability} />
             </div>
           </div>
           <div className='health'>
-            <div className='name'>{'Health (FCI)'}</div>
+            <div className='name'>
+              <Link to={urlPrefix + 'status/health'}>{'Health (FCI)'}</Link>
+            </div>
             <div className='param'>
               <Score score={health} />
             </div>
