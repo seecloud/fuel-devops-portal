@@ -9,33 +9,18 @@ import CloudStatusSidebar from './CloudStatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import Score from './Score';
 
-@observer(['uiState', 'regions', 'regionAvailabilityData', 'regionHealthData'])
+@observer(['uiState', 'regions', 'regionOverviewData'])
 export default class CloudStatusOverviewMultiRegionPage extends Component {
   static async fetchData(
-    {uiState, regionAvailabilityData, regionHealthData},
+    {uiState, regionOverviewData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
     ) {
     const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
     transaction(() => {
-      forEach(responseBody.status, (plainRegionStatusData, regionName) => {
-        if (plainRegionStatusData.availability) {
-          regionAvailabilityData.update(
-            regionName,
-            dataPeriod,
-            undefined,
-            plainRegionStatusData.availability
-          );
-        }
-        if (plainRegionStatusData.health) {
-          regionHealthData.update(
-            regionName,
-            dataPeriod,
-            undefined,
-            plainRegionStatusData.health
-          );
-        }
+      forEach(responseBody.status, (plainRegionOverviewData, regionName) => {
+        regionOverviewData.update(regionName, dataPeriod, undefined, plainRegionOverviewData);
       });
     });
   }
@@ -105,23 +90,17 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
   }
 }
 
-@observer(['uiState', 'regionAvailabilityData', 'regionHealthData'])
+@observer(['uiState', 'regionOverviewData'])
 export class Region extends Component {
   render() {
-    const {size, regionName, uiState, regionAvailabilityData, regionHealthData} = this.props;
+    const {size, regionName, uiState, regionOverviewData} = this.props;
     const urlPrefix = `/region/${encodeURIComponent(regionName)}/`;
-    let health = null;
-    let availability = null;
+
+    let data;
     try {
-      health = regionHealthData.get(
-        regionName, uiState.activeStatusDataPeriod
-      ).fci || null;
+      data = regionOverviewData.get(regionName, uiState.activeStatusDataPeriod);
     } catch (e) {}
-    try {
-      availability = regionAvailabilityData.get(
-        regionName, uiState.activeStatusDataPeriod
-      ).score || null;
-    } catch (e) {}
+    const {sla = null, availability = null, health = null, performance = null} = data;
 
     return (
       <div className={cx('region-container', 'region-' + size)}>
@@ -132,7 +111,7 @@ export class Region extends Component {
           <div className='sla'>
             <div className='name'>{'SLA'}</div>
             <div className='param'>
-              <Score score={1} />
+              <Score score={sla} />
             </div>
           </div>
           <div className='availability'>
@@ -154,7 +133,7 @@ export class Region extends Component {
           <div className='performance'>
             <div className='name'>{'Performance'}</div>
             <div className='param'>
-              <Score score={1} />
+              <Score score={performance} />
             </div>
           </div>
         </div>
