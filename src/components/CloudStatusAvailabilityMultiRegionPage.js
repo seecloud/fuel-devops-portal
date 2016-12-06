@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {forEach} from 'lodash';
@@ -55,7 +56,11 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
                 <div className='service-status'>
                   <div className='service-status-container'>
                     <div className='service-status-entry'>
-                      <div className='service-name'>{regionName}</div>
+                      <div className='service-name'>
+                        <Link to={`/region/${encodeURIComponent(regionName)}/status/availability`}>
+                          {regionName}
+                        </Link>
+                      </div>
                       <div className='service-score'>
                         <Score score={availability.score} />
                       </div>
