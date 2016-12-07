@@ -18,7 +18,7 @@ export default class SideNavbar extends Component {
               <li key={url} className={cx({active: router.isActive(url, true)})}>
                 <Link to={url}>
                   <div className={cx('icon-box', iconClassName)} />
-                  <span>{title}</span>
+                  <div className='tooltip'>{title}</div>
                 </Link>
               </li>
             );
