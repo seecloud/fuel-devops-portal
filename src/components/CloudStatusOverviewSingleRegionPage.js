@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
+import {observable, transaction} from 'mobx';
 import {observer} from 'mobx-react';
-import {get} from 'lodash';
+import {forEach} from 'lodash';
+import cx from 'classnames';
 
 import CloudStatusSidebar from './CloudStatusSidebar';
-import LineChart from './LineChart';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
-import {formatTimeAsHoursAndMinutes, formatTimeAsDayAndMonth} from '../chartUtils';
+import Score from './Score';
 
-@observer(['uiState', 'regions', 'regionAvailabilityData', 'regionHealthData'])
-export default class CloudStatusAvailabilityMultiRegionPage extends Component {
+@observer(['uiState', 'regions', 'regionServicesOverviewData'])
+export default class CloudStatusOverviewSingleRegionPage extends Component {
   static async fetchData(
-    {uiState, regionAvailabilityData, regionHealthData},
+    {uiState, regionServicesOverviewData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/region/${
@@ -20,23 +21,13 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     }`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    const regionStatusData = responseBody.status[uiState.activeRegionName];
-    if (regionStatusData.availability) {
-      regionAvailabilityData.update(
-        uiState.activeRegionName,
-        dataPeriod,
-        undefined,
-        regionStatusData.availability
-      );
-    }
-    if (regionStatusData.health) {
-      regionHealthData.update(
-        uiState.activeRegionName,
-        dataPeriod,
-        undefined,
-        regionStatusData.health
-      );
-    }
+    transaction(() => {
+      forEach(responseBody.status, (plainServiceOverviewData, serviceName) => {
+        regionServicesOverviewData.update(
+          serviceName, dataPeriod, undefined, plainServiceOverviewData
+        );
+      });
+    });
   }
 
   async changeDataPeriod(dataPeriod) {
@@ -44,61 +35,92 @@ export default class CloudStatusAvailabilityMultiRegionPage extends Component {
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
-  charts = [
-    {title: 'Availability', key: 'availability.data'},
-    {title: 'FCI Score', key: 'health.fciData'},
-    {title: 'Response Time (ms)', key: 'health.responseSizeData'},
-    {title: 'Response Size (bytes)', key: 'health.responseTimeData'},
-    {title: 'Performance', key: null},
-    {title: 'API Calls', key: null}
-  ]
+  @observable serviceSize = 'large'
+  serviceSizes = ['small', 'medium', 'large']
+
+  changeServiceSize = (newSize) => {
+    this.serviceSize = newSize;
+  }
 
   render() {
-    const {uiState, regionAvailabilityData, regionHealthData} = this.props;
-    const regionName = uiState.activeRegionName;
-    const labelInterpolationFnc = uiState.activeStatusDataPeriod === 'day' ?
-      formatTimeAsHoursAndMinutes :
-      formatTimeAsDayAndMonth;
-
+    const {uiState, regionServicesOverviewData} = this.props;
+    const services = regionServicesOverviewData.getServiceNames();
     return (
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Overview: ' + regionName}</h1>
+          <h1>{'Overview: ' + uiState.activeRegionName}</h1>
           <div className='btn-toolbar'>
             <StatusDataPeriodPicker
               className='pull-right'
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
-          </div>
-          <div className='service-status'>
-            <div className='service-status-container'>
-              {this.charts.map(({title, key}) => {
-                if (!key) return null;
-                const availability = regionAvailabilityData.get(
-                  regionName, uiState.activeStatusDataPeriod
-                );
-                const health = regionHealthData.get(
-                  regionName, uiState.activeStatusDataPeriod
-                );
-                const chartData = get({availability, health}, key);
-                if (!chartData) return null;
-
+            <div className='btn-group pull-right'>
+              {this.serviceSizes.map((size) => {
                 return (
-                  <div key={title} className='service-status-entry'>
-                    <div className='chart-title'>{title}</div>
-                    <LineChart
-                      key={uiState.activeStatusDataPeriod}
-                      className='ct-major-twelfth x-axis-vertical-labels'
-                      options={{axisX: {labelInterpolationFnc}}}
-                      data={chartData.reduce((result, [time, score]) => {
-                        result.series[0].push({x: new Date(time), y: score});
-                        return result;
-                      }, {series: [[]]})}
-                    />
-                  </div>
+                  <button
+                    key={size}
+                    className={cx('btn btn-default', {active: this.serviceSize === size})}
+                    onClick={() => this.changeServiceSize(size)}
+                  >
+                    {size[0].toUpperCase()}
+                  </button>
                 );
               })}
+            </div>
+          </div>
+          <div className='region-list'>
+            {services.map((service) =>
+              <Service
+                key={service}
+                serviceName={service}
+                size={this.serviceSize}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+@observer(['uiState', 'regionServicesOverviewData'])
+export class Service extends Component {
+  render() {
+    const {size, serviceName, uiState, regionServicesOverviewData} = this.props;
+
+    let data;
+    try {
+      data = regionServicesOverviewData.get(serviceName, uiState.activeStatusDataPeriod);
+    } catch (e) {}
+    const {sla = null, availability = null, health = null, performance = null} = data;
+
+    return (
+      <div className={cx('region-container', 'region-' + size)}>
+        <div className='region'>
+          <h3>{serviceName}</h3>
+          <div className='sla'>
+            <div className='name'>{'SLA'}</div>
+            <div className='param'>
+              <Score score={sla} />
+            </div>
+          </div>
+          <div className='availability'>
+            <div className='name'>{'Availability'}</div>
+            <div className='param'>
+              <Score score={availability} />
+            </div>
+          </div>
+          <div className='health'>
+            <div className='name'>{'Health (FCI)'}</div>
+            <div className='param'>
+              <Score score={health} />
+            </div>
+          </div>
+          <div className='performance'>
+            <div className='name'>{'Performance'}</div>
+            <div className='param'>
+              <Score score={performance} />
             </div>
           </div>
         </div>
