@@ -3,20 +3,24 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
-<path d="M5,7v3v11h18V10V7H5z M22,20H6V10h16V20z"/>
-<rect x="7" y="11" width="2" height="2"/>
-<rect x="10" y="11" width="2" height="2"/>
-<rect x="13" y="11" width="2" height="2"/>
-<rect x="16" y="11" width="2" height="2"/>
-<rect x="19" y="11" width="2" height="2"/>
-<rect x="7" y="14" width="2" height="2"/>
-<rect x="10" y="14" width="2" height="2"/>
-<rect x="13" y="14" width="2" height="2"/>
-<rect x="16" y="14" width="2" height="2"/>
-<rect x="19" y="14" width="2" height="2"/>
-<rect x="7" y="17" width="2" height="2"/>
-<rect x="10" y="17" width="2" height="2"/>
-<rect x="13" y="17" width="2" height="2"/>
-<rect x="16" y="17" width="2" height="2"/>
-<rect x="19" y="17" width="2" height="2"/>
+<g>
+	<path fill="#1C75BC" d="M5,8v3v11h18V11V8H5z M22,21H6V11h16V21z"/>
+	<rect x="6" y="11" fill="#FFFFFF" width="16" height="10"/>
+	<rect x="7" y="12" fill="#939598" width="2" height="2"/>
+	<rect x="10" y="12" fill="#DF961E" width="2" height="2"/>
+	<rect x="13" y="12" fill="#939598" width="2" height="2"/>
+	<rect x="16" y="12" fill="#939598" width="2" height="2"/>
+	<rect x="19" y="12" fill="#939598" width="2" height="2"/>
+	<rect x="7" y="15" fill="#939598" width="2" height="2"/>
+	<rect x="10" y="15" fill="#939598" width="2" height="2"/>
+	<rect x="13" y="15" fill="#939598" width="2" height="2"/>
+	<rect x="16" y="15" fill="#C63926" width="2" height="2"/>
+	<rect x="19" y="15" fill="#939598" width="2" height="2"/>
+	<rect x="7" y="18" fill="#939598" width="2" height="2"/>
+	<rect x="10" y="18" fill="#939598" width="2" height="2"/>
+	<rect x="13" y="18" fill="#DF961E" width="2" height="2"/>
+	<rect x="16" y="18" fill="#939598" width="2" height="2"/>
+	<rect x="19" y="18" fill="#939598" width="2" height="2"/>
+	<polygon fill="#A7A9AC" points="22,23 6,23 5,22 23,22 	"/>
+</g>
 </svg>
