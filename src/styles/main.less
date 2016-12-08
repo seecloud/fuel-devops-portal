@@ -4,9 +4,17 @@
 @import '~chartist/dist/chartist.css';
 
 
-@grid-float-breakpoint: 500px;
+@grid-float-breakpoint: 300px;
 
 @font-family-sans-serif: 'Open Sans', sans-serif;
+
+.break-word() {
+  /* the following code refers to https://css-tricks.com/almanac/properties/w/word-break/ */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  hyphens: auto;
+  word-break: break-word; /* non standard for webkit */
+}
 
 html {
   font-size: 14px;
@@ -44,7 +52,7 @@ body {
 }
 
 .btn {
-  border-radius: 5px;
+  border-radius: @border-radius-base;
   font-weight: 400;
   font-size: 12px;
   text-rendering: optimizeLegibility;
@@ -71,6 +79,7 @@ h1 {
   }
   h1 {
     font-size: 26px;
+    margin: 20px 4px;
   }
 }
 
@@ -570,6 +579,9 @@ h1 {
     font-size: 20px;
   }
   .btn-group {
+    .btn {
+      padding-top: 7px;
+    }
     button {
       font-size: 11px;
       font-weight: 600;
@@ -646,6 +658,115 @@ h1 {
     .logo {
       margin-left: auto;
       margin-right: auto;
+    }
+  }
+}
+
+.filters {
+  display: block;
+  float: left;
+  .data-filter {
+    margin-right: 20px;
+    button.dropdown-toggle {
+      width: 160px;
+      padding: 6px 12px 3px;
+      span:not(.caret) {
+        display: inline-block;
+        width: 110px;
+        overflow: hidden;
+        text-align: left;
+      }
+      i.glyphicon {
+        top: -2px;
+      }
+      span.caret {
+        margin-top: -8px;
+        margin-left: 6px;
+      }
+    }
+  }
+  input {
+    border-radius: @border-radius-base;
+    border: 1px solid @btn-default-border;
+    padding: 4px 8px 4px 8px;
+  }
+  .input-group {
+    input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: none;
+    }
+    button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding-bottom: 5px;
+    }
+  }
+  .popover {
+    display: block;
+    position: absolute;
+    top: 30px;
+    .option-filter {
+      margin-bottom: 5px;
+    }
+    .option-list {
+      > div {
+        padding:4px 5px;
+        margin: 0 -5px;
+        cursor: pointer;
+        line-height: 1;
+        .break-word();
+        &:hover {
+          background: #e6e6e6;
+        }
+      }
+      span.no-matches-found {
+        font-style: italic;
+      }
+    }
+  }
+}
+
+.stats {
+  width: 100%;
+  margin-bottom: 30px;
+  .service-status {
+    width: 100%;
+  }
+}
+
+.data-table-toolbar {
+  .make-row(10px);
+  margin: 0px 0px 10px 0px;
+  .left {
+    .make-xs-column(6, 10px);
+    .make-lg-column(9, 10px);
+    .filter-result-text {
+      font-size: 12px;
+      font-weight: 600;
+      margin: 8px 0 0 8px;
+    }
+  }
+  .right {
+    .make-xs-column(6, 10px);
+    .make-lg-column(3, 10px);
+    .pagination {
+      margin: 0;
+    }
+  }
+}
+
+.data-table {
+  margin: 0 5px;
+  .table {
+    background-color: white;
+    thead > tr {
+      th {
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        border-bottom-width: 1px;
+      }
     }
   }
 }

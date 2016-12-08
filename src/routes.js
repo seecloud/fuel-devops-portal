@@ -18,7 +18,7 @@ import CloudIntelligenceInventoryPage from './components/CloudIntelligenceInvent
 import CloudIntelligenceHistoryPage from './components/CloudIntelligenceHistoryPage';
 import CapacityManagementPage from './components/CapacityManagementPage';
 import RunbooksPage from './components/RunbooksPage';
-import SecurityMonitoringPage from './components/SecurityMonitoringPage';
+import SecurityPage from './components/security/SecurityPage';
 
 export default function createRoutes(stores) {
   return (
@@ -93,7 +93,8 @@ export default function createRoutes(stores) {
         />
         <Route
           path='security'
-          component={SecurityMonitoringPage}
+          component={SecurityPage}
+          onEnter={partial(fetchDataHook, stores)}
         />
       </Route>
 
@@ -142,7 +143,8 @@ export default function createRoutes(stores) {
         />
         <Route
           path='security'
-          component={SecurityMonitoringPage}
+          component={SecurityPage}
+          onEnter={partial(fetchDataHook, stores)}
         />
       </Route>
 

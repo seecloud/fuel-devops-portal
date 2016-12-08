@@ -12,13 +12,15 @@ import Regions from './stores/Regions';
 import RegionAvailabilityData from './stores/RegionAvailabilityData';
 import RegionHealthData from './stores/RegionHealthData';
 import RegionOverviewData from './stores/RegionOverviewData';
+import SecurityData from './stores/SecurityData';
 
 const stores = {
   uiState: new UIState(),
   regions: new Regions(),
   regionAvailabilityData: new RegionAvailabilityData(),
   regionHealthData: new RegionHealthData(),
-  regionOverviewData: new RegionOverviewData()
+  regionOverviewData: new RegionOverviewData(),
+  securityData: new SecurityData()
 };
 
 ReactDOM.render(
