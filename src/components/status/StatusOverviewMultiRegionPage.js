@@ -5,12 +5,12 @@ import {observer} from 'mobx-react';
 import {forEach} from 'lodash';
 import cx from 'classnames';
 
-import CloudStatusSidebar from './CloudStatusSidebar';
+import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
-import Score from './Score';
+import Score from '../Score';
 
 @observer(['uiState', 'regions', 'regionOverviewData'])
-export default class CloudStatusOverviewMultiRegionPage extends Component {
+export default class StatusOverviewMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionOverviewData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
@@ -40,7 +40,7 @@ export default class CloudStatusOverviewMultiRegionPage extends Component {
   render() {
     return (
       <div>
-        <CloudStatusSidebar />
+        <StatusSidebar />
         <div className='container-fluid'>
           <h1>{'Overview: All Regions'}</h1>
           <div className='btn-toolbar'>

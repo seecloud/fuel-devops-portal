@@ -8,14 +8,12 @@ import {
 import App from './components/App';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
-import CloudStatusOverviewSingleRegionPage from './components/CloudStatusOverviewSingleRegionPage';
-import CloudStatusOverviewMultiRegionPage from './components/CloudStatusOverviewMultiRegionPage';
-import CloudStatusAvailabilitySingleRegionPage from
-  './components/CloudStatusAvailabilitySingleRegionPage';
-import CloudStatusAvailabilityMultiRegionPage from
-  './components/CloudStatusAvailabilityMultiRegionPage';
-import CloudStatusHealthSingleRegionPage from './components/CloudStatusHealthSingleRegionPage';
-import CloudStatusHealthMultiRegionPage from './components/CloudStatusHealthMultiRegionPage';
+import StatusOverviewSingleRegionPage from './components/status/StatusOverviewSingleRegionPage';
+import StatusOverviewMultiRegionPage from './components/status/StatusOverviewMultiRegionPage';
+import AvailabilitySingleRegionPage from './components/status/AvailabilitySingleRegionPage';
+import AvailabilityMultiRegionPage from './components/status/AvailabilityMultiRegionPage';
+import HealthSingleRegionPage from './components/status/HealthSingleRegionPage';
+import HealthMultiRegionPage from './components/status/HealthMultiRegionPage';
 import CloudIntelligencePage from './components/CloudIntelligencePage';
 import CloudIntelligenceInventoryPage from './components/CloudIntelligenceInventoryPage';
 import CloudIntelligenceHistoryPage from './components/CloudIntelligenceHistoryPage';
@@ -63,23 +61,23 @@ export default function createRoutes(stores) {
       >
         <Route path='status'>
           <IndexRoute
-            component={CloudStatusOverviewSingleRegionPage}
+            component={StatusOverviewSingleRegionPage}
             onEnter={
-              fetchDataHook.bind(null, stores, CloudStatusOverviewSingleRegionPage.fetchData)
+              fetchDataHook.bind(null, stores, StatusOverviewSingleRegionPage.fetchData)
             }
           />
           <Route
             path='availability'
-            component={CloudStatusAvailabilitySingleRegionPage}
+            component={AvailabilitySingleRegionPage}
             onEnter={
-              fetchDataHook.bind(null, stores, CloudStatusAvailabilitySingleRegionPage.fetchData)
+              fetchDataHook.bind(null, stores, AvailabilitySingleRegionPage.fetchData)
             }
           />
           <Route
             path='health'
-            component={CloudStatusHealthSingleRegionPage}
+            component={HealthSingleRegionPage}
             onEnter={
-              fetchDataHook.bind(null, stores, CloudStatusHealthSingleRegionPage.fetchData)
+              fetchDataHook.bind(null, stores, HealthSingleRegionPage.fetchData)
             }
           />
         </Route>
@@ -118,23 +116,23 @@ export default function createRoutes(stores) {
           path='status'
         >
           <IndexRoute
-            component={CloudStatusOverviewMultiRegionPage}
+            component={StatusOverviewMultiRegionPage}
             onEnter={
-              fetchDataHook.bind(null, stores, CloudStatusOverviewMultiRegionPage.fetchData)
+              fetchDataHook.bind(null, stores, StatusOverviewMultiRegionPage.fetchData)
             }
           />
           <Route
             path='availability'
-            component={CloudStatusAvailabilityMultiRegionPage}
+            component={AvailabilityMultiRegionPage}
             onEnter={
-              fetchDataHook.bind(null, stores, CloudStatusAvailabilityMultiRegionPage.fetchData)
+              fetchDataHook.bind(null, stores, AvailabilityMultiRegionPage.fetchData)
             }
           />
           <Route
             path='health'
-            component={CloudStatusHealthMultiRegionPage}
+            component={HealthMultiRegionPage}
             onEnter={
-              fetchDataHook.bind(null, stores, CloudStatusHealthMultiRegionPage.fetchData)
+              fetchDataHook.bind(null, stores, HealthMultiRegionPage.fetchData)
             }
           />
         </Route>
