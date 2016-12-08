@@ -33,6 +33,7 @@ export default class HealthMultiRegionPage extends Component {
 
   charts = [
     {title: 'FCI Score', key: 'fciData'},
+    {title: 'API calls (per min)', key: 'apiCallsData'},
     {title: 'Response Time (ms)', key: 'responseTimeData'},
     {title: 'Response Size (bytes)', key: 'responseSizeData'}
   ]
