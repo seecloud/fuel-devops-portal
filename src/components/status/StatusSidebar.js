@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 
-import SideNavbar from './SideNavbar';
+import SideNavbar from '../SideNavbar';
 
 @observer(['uiState', 'regions'])
 export default class CloudStatusSidebar extends Component {

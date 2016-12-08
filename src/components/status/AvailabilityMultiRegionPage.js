@@ -1,31 +1,27 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import {observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {forEach} from 'lodash';
 
-import CloudStatusSidebar from './CloudStatusSidebar';
+import CloudStatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
-import LineChart from './LineChart';
-import Score from './Score';
-import {getFormatTime} from '../chartUtils';
+import LineChart from '../LineChart';
+import Score from '../Score';
+import {getFormatTime} from '../../chartUtils';
 
 @observer(['uiState', 'regions', 'regionAvailabilityData'])
-export default class CloudStatusAvailabilitySingleRegionPage extends Component {
+export default class AvailabilityMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionAvailabilityData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
-    const regionName = uiState.activeRegionName;
-    const url = `/api/v1/region/${
-      encodeURIComponent(regionName)
-    }/status/availability/${
-      encodeURIComponent(dataPeriod)
-    }`;
+    const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
     transaction(() => {
-      forEach(responseBody.availability, (plainAvailabilityData, serviceName) => {
-        regionAvailabilityData.update(regionName, dataPeriod, serviceName, plainAvailabilityData);
+      forEach(responseBody.availability, (plainAvailabilityData, regionName) => {
+        regionAvailabilityData.update(regionName, dataPeriod, undefined, plainAvailabilityData);
       });
     });
   }
@@ -37,34 +33,35 @@ export default class CloudStatusAvailabilitySingleRegionPage extends Component {
 
   render() {
     const {uiState, regionAvailabilityData} = this.props;
-    const regionName = uiState.activeRegionName;
-    const services = regionAvailabilityData.getRegionServices(
-      regionName, uiState.activeStatusDataPeriod
-    );
     const labelInterpolationFnc = getFormatTime(uiState.activeStatusDataPeriod);
 
     return (
       <div>
         <CloudStatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Availability: ' + regionName}</h1>
+          <h1>{'Availability: All Regions'}</h1>
           <div className='btn-toolbar'>
             <StatusDataPeriodPicker
               className='pull-right'
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
-          {services.map((serviceName) => {
+          {this.props.regions.items.map(({name: regionName}) => {
             const availability = regionAvailabilityData.get(
-              regionName, uiState.activeStatusDataPeriod, serviceName
+              regionName, uiState.activeStatusDataPeriod
             );
+            if (!availability) return null;
             return (
-              <div key={serviceName}>
+              <div key={regionName}>
                 <div className='service-status'>
                   <div className='service-status-container'>
                     <div className='service-status-entry'>
-                      <div className='service-name'>{serviceName}</div>
-                      <div className='service-score text-success'>
+                      <div className='service-name'>
+                        <Link to={`/region/${encodeURIComponent(regionName)}/status/availability`}>
+                          {regionName}
+                        </Link>
+                      </div>
+                      <div className='service-score'>
                         <Score score={availability.score} />
                       </div>
                     </div>

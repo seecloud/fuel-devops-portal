@@ -4,14 +4,14 @@ import {observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {forEach} from 'lodash';
 
-import CloudStatusSidebar from './CloudStatusSidebar';
+import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
-import LineChart from './LineChart';
-import Score from './Score';
-import {getFormatTime} from '../chartUtils';
+import LineChart from '../LineChart';
+import Score from '../Score';
+import {getFormatTime} from '../../chartUtils';
 
 @observer(['uiState', 'regions', 'regionHealthData'])
-export default class CloudStatusHealthMultiRegionPage extends Component {
+export default class HealthMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionHealthData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
@@ -43,7 +43,7 @@ export default class CloudStatusHealthMultiRegionPage extends Component {
 
     return (
       <div>
-        <CloudStatusSidebar />
+        <StatusSidebar />
         <div className='container-fluid'>
           <h1>{'Health: All Regions'}</h1>
           <div className='btn-toolbar'>

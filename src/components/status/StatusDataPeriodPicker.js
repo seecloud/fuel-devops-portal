@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import cx from 'classnames';
 
-import {PERIODS} from '../consts';
+import {PERIODS} from '../../consts';
 
 @observer(['uiState'])
 export default class StatusDataPeriodPicker extends Component {
