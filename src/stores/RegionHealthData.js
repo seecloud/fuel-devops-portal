@@ -22,14 +22,15 @@ export default class RegionHealthData {
         responseSizeData: [],
         responseTime: null,
         responseTimeData: [],
-        lastUpdate: null
+        lastUpdate: null,
+        responseStatus: 200
       }));
     }
     return this.dataByRegion.get(regionName).get(period).get(serviceName);
   }
 
   @action
-  update(regionName, period, serviceName = 'aggregated', plainHealthData) {
+  update(regionName, period, serviceName = 'aggregated', plainHealthData, responseStatus = 200) {
     const {
       fci,
       fci_data: fciData,
@@ -49,8 +50,14 @@ export default class RegionHealthData {
       responseSizeData,
       responseTime,
       responseTimeData,
-      lastUpdate: new Date()
+      lastUpdate: new Date(),
+      responseStatus
     });
+  }
+
+  getResponseStatus(regionName, period, serviceName = 'aggregated') {
+    this.initializeRegionData(regionName, period, serviceName);
+    return this.dataByRegion.get(regionName).get(period).get(serviceName).responseStatus;
   }
 
   getRegionServices(regionName, period) {
