@@ -3,14 +3,13 @@ import {observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {forEach} from 'lodash';
 
-import ErrorWrapper from '../ErrorWrapper';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from './StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
 
-@observer(['uiState', 'regionAvailabilityData'])
+@observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class AvailabilitySingleRegionPage extends Component {
   static async fetchData(
     {uiState, regionAvailabilityData},
@@ -23,39 +22,14 @@ export default class AvailabilitySingleRegionPage extends Component {
       encodeURIComponent(dataPeriod)
     }`;
     const response = await fetch(url);
-    const responseStatus = response.status;
     const responseBody = await response.json();
     transaction(() => {
       forEach(responseBody.availability, (plainAvailabilityData, serviceName) => {
         regionAvailabilityData.update(regionName, dataPeriod, serviceName, plainAvailabilityData);
       });
-      regionAvailabilityData.update(regionName, dataPeriod, undefined, [], responseStatus);
     });
   }
 
-  render() {
-    const {uiState, regionAvailabilityData} = this.props;
-    const regionName = uiState.activeRegionName;
-    return (
-      <div>
-        <StatusSidebar />
-        <div className='container-fluid'>
-          <h1>{'Availability: ' + regionName}</h1>
-          <ErrorWrapper
-            responseStatus={regionAvailabilityData.getResponseStatus(
-              regionName, uiState.activeStatusDataPeriod
-            )}
-          >
-            <AvailabilitySingleRegionPageContent />
-          </ErrorWrapper>
-        </div>
-      </div>
-    );
-  }
-}
-
-@observer(['uiState', 'regionAvailabilityData'])
-export class AvailabilitySingleRegionPageContent extends Component {
   async changeDataPeriod(dataPeriod) {
     await this.constructor.fetchData(this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
@@ -71,45 +45,49 @@ export class AvailabilitySingleRegionPageContent extends Component {
 
     return (
       <div>
-        <div className='btn-toolbar'>
-          <StatusDataPeriodPicker
-            className='pull-right'
-            onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
-          />
-        </div>
-        {services.map((serviceName) => {
-          const availability = regionAvailabilityData.get(
-            regionName, uiState.activeStatusDataPeriod, serviceName
-          );
-          return (
-            <div key={serviceName}>
-              <div className='service-status'>
-                <div className='service-status-container'>
-                  <div className='service-status-entry'>
-                    <div className='service-name'>{serviceName}</div>
-                    <div className='service-score text-success'>
-                      <Score score={availability.score} />
+        <StatusSidebar />
+        <div className='container-fluid'>
+          <h1>{'Availability: ' + regionName}</h1>
+          <div className='btn-toolbar'>
+            <StatusDataPeriodPicker
+              className='pull-right'
+              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
+            />
+          </div>
+          {services.map((serviceName) => {
+            const availability = regionAvailabilityData.get(
+              regionName, uiState.activeStatusDataPeriod, serviceName
+            );
+            return (
+              <div key={serviceName}>
+                <div className='service-status'>
+                  <div className='service-status-container'>
+                    <div className='service-status-entry'>
+                      <div className='service-name'>{serviceName}</div>
+                      <div className='service-score text-success'>
+                        <Score score={availability.score} />
+                      </div>
                     </div>
-                  </div>
-                  <div className='service-status-entry-large'>
-                    <div className='chart-title'>{'Availability'}</div>
-                    <LineChart
-                      key={uiState.activeStatusDataPeriod}
-                      className='ct-double-octave x-axis-vertical-labels'
-                      options={{
-                        axisX: {offset: 40, labelInterpolationFnc}
-                      }}
-                      data={availability.data.reduce((result, [time, score]) => {
-                        result.series[0].push({x: new Date(time), y: score});
-                        return result;
-                      }, {series: [[]]})}
-                    />
+                    <div className='service-status-entry-large'>
+                      <div className='chart-title'>{'Availability'}</div>
+                      <LineChart
+                        key={uiState.activeStatusDataPeriod}
+                        className='ct-double-octave x-axis-vertical-labels'
+                        options={{
+                          axisX: {offset: 40, labelInterpolationFnc}
+                        }}
+                        data={availability.data.reduce((result, [time, score]) => {
+                          result.series[0].push({x: new Date(time), y: score});
+                          return result;
+                        }, {series: [[]]})}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     );
   }
