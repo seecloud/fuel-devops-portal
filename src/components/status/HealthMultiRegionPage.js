@@ -5,7 +5,7 @@ import {transaction} from 'mobx';
 import {forEach} from 'lodash';
 
 import StatusSidebar from './StatusSidebar';
-import StatusDataPeriodPicker from './StatusDataPeriodPicker';
+import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';

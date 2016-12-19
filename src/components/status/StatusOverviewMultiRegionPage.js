@@ -6,7 +6,7 @@ import {forEach} from 'lodash';
 import cx from 'classnames';
 
 import StatusSidebar from './StatusSidebar';
-import StatusDataPeriodPicker from './StatusDataPeriodPicker';
+import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
 
 @observer(['uiState', 'regions', 'regionOverviewData'])
