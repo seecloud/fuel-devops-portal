@@ -40,7 +40,7 @@ export default class RegionOverviewData {
     try {
       return this.dataByRegion.get(regionName).get(period).get(serviceName);
     } catch (e) {
-      return {sla: null, availability: null, health: null, performance: null};
+      return null;
     }
   }
 }

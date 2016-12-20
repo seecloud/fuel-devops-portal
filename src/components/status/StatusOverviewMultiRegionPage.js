@@ -14,7 +14,7 @@ export default class StatusOverviewMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionOverviewData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
-    ) {
+  ) {
     const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
@@ -96,11 +96,13 @@ export class Region extends Component {
     const {size, regionName, uiState, regionOverviewData} = this.props;
     const urlPrefix = `/region/${encodeURIComponent(regionName)}/`;
 
-    let data;
-    try {
-      data = regionOverviewData.get(regionName, uiState.activeStatusDataPeriod);
-    } catch (e) {}
-    const {sla = null, availability = null, health = null, performance = null} = data;
+    const overviewData = regionOverviewData.get(regionName, uiState.activeStatusDataPeriod);
+    const {
+      sla = null,
+      availability = null,
+      health = null,
+      performance = null
+    } = (overviewData || {});
 
     return (
       <div className={cx('region-container', 'region-' + size)}>
