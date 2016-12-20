@@ -8,14 +8,15 @@ import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
 
-@observer(['uiState', 'regions', 'regionServicesOverviewData'])
+@observer(['uiState', 'regions', 'regionOverviewData'])
 export default class StatusOverviewSingleRegionPage extends Component {
   static async fetchData(
-    {uiState, regionServicesOverviewData},
+    {uiState, regionOverviewData},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
+    const regionName = uiState.activeRegionName;
     const url = `/api/v1/region/${
-      encodeURIComponent(uiState.activeRegionName)
+      encodeURIComponent(regionName)
     }/status/${
       encodeURIComponent(dataPeriod)
     }`;
@@ -23,9 +24,7 @@ export default class StatusOverviewSingleRegionPage extends Component {
     const responseBody = await response.json();
     transaction(() => {
       forEach(responseBody.status, (plainServiceOverviewData, serviceName) => {
-        regionServicesOverviewData.update(
-          serviceName, dataPeriod, undefined, plainServiceOverviewData
-        );
+        regionOverviewData.update(regionName, dataPeriod, serviceName, plainServiceOverviewData);
       });
     });
   }
@@ -43,8 +42,12 @@ export default class StatusOverviewSingleRegionPage extends Component {
   }
 
   render() {
-    const {uiState, regionServicesOverviewData} = this.props;
-    const services = regionServicesOverviewData.getServiceNames();
+    const {uiState, regionOverviewData} = this.props;
+    const regionName = uiState.activeRegionName;
+    const services = regionOverviewData.getRegionServices(
+      regionName, uiState.activeStatusDataPeriod
+    );
+
     return (
       <div>
         <StatusSidebar />
@@ -84,16 +87,21 @@ export default class StatusOverviewSingleRegionPage extends Component {
   }
 }
 
-@observer(['uiState', 'regionServicesOverviewData'])
+@observer(['uiState', 'regionOverviewData'])
 export class Service extends Component {
   render() {
-    const {size, serviceName, uiState, regionServicesOverviewData} = this.props;
+    const {size, serviceName, uiState, regionOverviewData} = this.props;
+    const regionName = uiState.activeRegionName;
 
-    let data;
-    try {
-      data = regionServicesOverviewData.get(serviceName, uiState.activeStatusDataPeriod);
-    } catch (e) {}
-    const {sla = null, availability = null, health = null, performance = null} = data;
+    const overviewData = regionOverviewData.get(
+      regionName, uiState.activeStatusDataPeriod, serviceName
+    );
+    const {
+      sla = null,
+      availability = null,
+      health = null,
+      performance = null
+    } = (overviewData || {});
 
     return (
       <div className={cx('region-container', 'region-' + size)}>
