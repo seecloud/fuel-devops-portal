@@ -1,25 +1,8 @@
-export function composeEnterHooks(...hooks) {
-  return function onEnter(nextState, replace, callback) {
-    let remainingHooks = [...hooks];
-    function replaceAndInterruptProcessing(...args) {
-      remainingHooks = [];
-      replace(...args);
-    }
-    (function processNextHook(error) {
-      if (error || !remainingHooks.length) {
-        callback(error);
-        return;
-      } else {
-        remainingHooks.shift()(nextState, replaceAndInterruptProcessing, processNextHook);
-      }
-    })();
-  };
-}
-
-export async function fetchDataHook(stores, fetchData, nextState, replace, callback) {
+export async function fetchDataHook(stores, nextState, replace, callback) {
+  const dataFetchingRequest = this.component.fetchData(stores, nextState);
+  stores.uiState.pendingRequestsCount++;
   try {
-    stores.uiState.pendingRequestsCount++;
-    await fetchData(stores);
+    await dataFetchingRequest;
     return callback();
   } catch (error) {
     return callback(error);

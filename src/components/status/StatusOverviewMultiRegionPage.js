@@ -13,6 +13,7 @@ import Score from '../Score';
 export default class StatusOverviewMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionOverviewData},
+    nextState,
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
@@ -26,7 +27,7 @@ export default class StatusOverviewMultiRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, {}, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 

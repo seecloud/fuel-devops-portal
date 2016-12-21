@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observable, transaction} from 'mobx';
 import {observer} from 'mobx-react';
+import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
 import cx from 'classnames';
 
@@ -8,13 +9,14 @@ import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
 
+@withRouter
 @observer(['uiState', 'regions', 'regionOverviewData'])
 export default class StatusOverviewSingleRegionPage extends Component {
   static async fetchData(
     {uiState, regionOverviewData},
+    {params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
-    const regionName = uiState.activeRegionName;
     const url = `/api/v1/region/${
       encodeURIComponent(regionName)
     }/status/${
@@ -30,7 +32,7 @@ export default class StatusOverviewSingleRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
@@ -42,8 +44,8 @@ export default class StatusOverviewSingleRegionPage extends Component {
   }
 
   render() {
-    const {uiState, regionOverviewData} = this.props;
-    const regionName = uiState.activeRegionName;
+    const {uiState, regionOverviewData, params} = this.props;
+    const {regionName} = params;
     const services = regionOverviewData.getRegionServices(
       regionName, uiState.activeStatusDataPeriod
     );
@@ -52,7 +54,7 @@ export default class StatusOverviewSingleRegionPage extends Component {
       <div>
         <StatusSidebar />
         <div className='container-fluid'>
-          <h1>{'Overview: ' + uiState.activeRegionName}</h1>
+          <h1>{'Overview: ' + regionName}</h1>
           <div className='btn-toolbar'>
             <StatusDataPeriodPicker
               className='pull-right'
@@ -73,10 +75,11 @@ export default class StatusOverviewSingleRegionPage extends Component {
             </div>
           </div>
           <div className='region-list'>
-            {services.map((service) =>
+            {services.map((serviceName) =>
               <Service
-                key={service}
-                serviceName={service}
+                key={serviceName}
+                serviceName={serviceName}
+                regionName={regionName}
                 size={this.serviceSize}
               />
             )}
@@ -90,8 +93,7 @@ export default class StatusOverviewSingleRegionPage extends Component {
 @observer(['uiState', 'regionOverviewData'])
 export class Service extends Component {
   render() {
-    const {size, serviceName, uiState, regionOverviewData} = this.props;
-    const regionName = uiState.activeRegionName;
+    const {size, serviceName, regionName, uiState, regionOverviewData} = this.props;
 
     const overviewData = regionOverviewData.get(
       regionName, uiState.activeStatusDataPeriod, serviceName
