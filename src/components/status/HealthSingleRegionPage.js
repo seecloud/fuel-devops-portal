@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {transaction} from 'mobx';
+import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
 
 import StatusSidebar from './StatusSidebar';
@@ -9,13 +10,14 @@ import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
 
+@withRouter
 @observer(['uiState', 'regions', 'regionHealthData'])
 export default class HealthSingleRegionPage extends Component {
   static async fetchData(
     {uiState, regionHealthData},
+    {params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
-    const regionName = uiState.activeRegionName;
     const url = `/api/v1/region/${
       encodeURIComponent(regionName)
     }/status/health/${
@@ -31,7 +33,7 @@ export default class HealthSingleRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
@@ -43,8 +45,8 @@ export default class HealthSingleRegionPage extends Component {
   ]
 
   render() {
-    const {uiState, regionHealthData} = this.props;
-    const regionName = uiState.activeRegionName;
+    const {uiState, regionHealthData, params} = this.props;
+    const {regionName} = params;
     const services = regionHealthData.getRegionServices(regionName, uiState.activeStatusDataPeriod);
     const labelInterpolationFnc = getFormatTime(uiState.activeStatusDataPeriod);
 

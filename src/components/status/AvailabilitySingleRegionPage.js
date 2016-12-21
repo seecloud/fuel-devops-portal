@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {transaction} from 'mobx';
+import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
 
 import StatusSidebar from './StatusSidebar';
@@ -9,13 +10,14 @@ import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
 
+@withRouter
 @observer(['uiState', 'regions', 'regionAvailabilityData'])
 export default class AvailabilitySingleRegionPage extends Component {
   static async fetchData(
     {uiState, regionAvailabilityData},
+    {params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
-    const regionName = uiState.activeRegionName;
     const url = `/api/v1/region/${
       encodeURIComponent(regionName)
     }/status/availability/${
@@ -31,13 +33,13 @@ export default class AvailabilitySingleRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
   render() {
-    const {uiState, regionAvailabilityData} = this.props;
-    const regionName = uiState.activeRegionName;
+    const {uiState, regionAvailabilityData, params} = this.props;
+    const {regionName} = params;
     const services = regionAvailabilityData.getRegionServices(
       regionName, uiState.activeStatusDataPeriod
     );

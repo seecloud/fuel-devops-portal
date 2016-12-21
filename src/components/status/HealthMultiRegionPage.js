@@ -14,6 +14,7 @@ import {getFormatTime} from '../../chartUtils';
 export default class HealthMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionHealthData},
+    nextState,
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/health/${encodeURIComponent(dataPeriod)}`;
@@ -27,7 +28,7 @@ export default class HealthMultiRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, {}, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 

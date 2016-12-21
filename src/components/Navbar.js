@@ -77,13 +77,13 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {uiState, regions, router, location, navigationItems} = this.props;
+    const {uiState, regions, router, params, location, navigationItems} = this.props;
     if (!uiState.authenticated) return null;
-    const {activeRegionName} = this.props.uiState;
-    const urlPrefix = activeRegionName ?
-      `/region/${encodeURIComponent(activeRegionName)}/` :
+    const {regionName} = params;
+    const urlPrefix = regionName ?
+      `/region/${encodeURIComponent(regionName)}/` :
       '/all-regions/';
-    const activeRegion = regions.items.find((region) => region.name === activeRegionName);
+    const region = regions.items.find((region) => region.name === regionName);
     let urlSuffix = navigationItems[0].url;
     const regionPrefixMatch = location.pathname.match(/^(?:\/region\/.*?|\/all-regions)\/(.*)/);
     if (regionPrefixMatch) {
@@ -100,14 +100,14 @@ export default class Navbar extends Component {
           <ul className='nav navbar-nav navbar-left'>
             <DropdownMenuItem
               key='regions'
-              label={activeRegion ? activeRegion.name : 'All regions'}
+              label={region ? region.name : 'All regions'}
             >
-              <li key='all' className={cx({active: !activeRegion})}>
+              <li key='all' className={cx({active: !region})}>
                 <Link to={`/all-regions/${urlSuffix}`}>{'All regions'}</Link>
               </li>
               <li key='divider' className='divider' />
               {regions.items.map(({name}) =>
-                <li key={name} className={cx({active: name === (activeRegion || {}).name})}>
+                <li key={name} className={cx({active: name === regionName})}>
                   <Link to={`/region/${encodeURIComponent(name)}/${urlSuffix}`}>{name}</Link>
                 </li>
               )}

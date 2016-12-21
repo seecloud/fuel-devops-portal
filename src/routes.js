@@ -1,9 +1,8 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
 
-import {
-  requireAuthHook, prohibitAuthHook, logoutHook, fetchDataHook, composeEnterHooks
-} from './routerHooks';
+import {requireAuthHook, prohibitAuthHook, logoutHook, fetchDataHook} from './routerHooks';
+import {composeEnterHooks, partial} from './routerHookUtils';
 
 import App from './components/App';
 import LoginPage from './components/LoginPage';
@@ -26,59 +25,49 @@ export default function createRoutes(stores) {
     <Route
       path='/'
       component={App}
-      onEnter={fetchDataHook.bind(null, stores, App.fetchData)}
+      onEnter={partial(fetchDataHook, stores)}
     >
       <IndexRoute
         component={DashboardPage}
-        onEnter={requireAuthHook.bind(null, stores)}
+        onEnter={partial(requireAuthHook, stores)}
       />
 
       <Route
         path='login'
         component={LoginPage}
-        onEnter={prohibitAuthHook.bind(null, stores)}
+        onEnter={partial(prohibitAuthHook, stores)}
       />
       <Route
         path='logout'
-        onEnter={logoutHook.bind(null, stores)}
+        onEnter={partial(logoutHook, stores)}
       />
 
       <Route
         path='region/:regionName'
         onEnter={composeEnterHooks(
-          requireAuthHook.bind(null, stores),
+          partial(requireAuthHook, stores),
           (nextState, replace, callback) => {
             const regionName = nextState.params.regionName;
             const region = stores.regions.items.find((region) => region.name === regionName);
             if (!region) replace('/');
-            stores.uiState.activeRegionName = regionName;
             callback();
           }
         )}
-        onLeave={() => {
-          stores.uiState.activeRegionName = null;
-        }}
       >
         <Route path='status'>
           <IndexRoute
             component={StatusOverviewSingleRegionPage}
-            onEnter={
-              fetchDataHook.bind(null, stores, StatusOverviewSingleRegionPage.fetchData)
-            }
+            onEnter={partial(fetchDataHook, stores)}
           />
           <Route
             path='availability'
             component={AvailabilitySingleRegionPage}
-            onEnter={
-              fetchDataHook.bind(null, stores, AvailabilitySingleRegionPage.fetchData)
-            }
+            onEnter={partial(fetchDataHook, stores)}
           />
           <Route
             path='health'
             component={HealthSingleRegionPage}
-            onEnter={
-              fetchDataHook.bind(null, stores, HealthSingleRegionPage.fetchData)
-            }
+            onEnter={partial(fetchDataHook, stores)}
           />
         </Route>
         <Route path='intelligence'>
@@ -110,30 +99,24 @@ export default function createRoutes(stores) {
 
       <Route
         path='all-regions'
-        onEnter={requireAuthHook.bind(null, stores)}
+        onEnter={partial(requireAuthHook, stores)}
       >
         <Route
           path='status'
         >
           <IndexRoute
             component={StatusOverviewMultiRegionPage}
-            onEnter={
-              fetchDataHook.bind(null, stores, StatusOverviewMultiRegionPage.fetchData)
-            }
+            onEnter={partial(fetchDataHook, stores)}
           />
           <Route
             path='availability'
             component={AvailabilityMultiRegionPage}
-            onEnter={
-              fetchDataHook.bind(null, stores, AvailabilityMultiRegionPage.fetchData)
-            }
+            onEnter={partial(fetchDataHook, stores)}
           />
           <Route
             path='health'
             component={HealthMultiRegionPage}
-            onEnter={
-              fetchDataHook.bind(null, stores, HealthMultiRegionPage.fetchData)
-            }
+            onEnter={partial(fetchDataHook, stores)}
           />
         </Route>
         <Route path='intelligence'>
