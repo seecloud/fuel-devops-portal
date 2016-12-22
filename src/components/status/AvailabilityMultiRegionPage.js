@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {forEach} from 'lodash';
 
@@ -11,7 +11,8 @@ import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
 import {poll} from '../../decorators';
 
-@observer(['uiState', 'regions', 'regionAvailabilityData'])
+@inject('uiState', 'regions', 'regionAvailabilityData')
+@observer
 @poll
 export default class AvailabilityMultiRegionPage extends Component {
   static async fetchData(

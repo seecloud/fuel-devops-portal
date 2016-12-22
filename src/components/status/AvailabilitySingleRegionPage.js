@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
@@ -12,7 +12,8 @@ import {getFormatTime} from '../../chartUtils';
 import {poll} from '../../decorators';
 
 @withRouter
-@observer(['uiState', 'regions', 'regionAvailabilityData'])
+@inject('uiState', 'regions', 'regionAvailabilityData')
+@observer
 @poll
 export default class AvailabilitySingleRegionPage extends Component {
   static async fetchData(

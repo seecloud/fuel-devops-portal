@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {observable} from 'mobx';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {get} from 'lodash';
 
 @withRouter
-@observer(['uiState'])
+@inject('uiState')
+@observer
 export default class LoginPage extends Component {
   @observable actionInProgress = false
 

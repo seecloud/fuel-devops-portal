@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {observable, transaction} from 'mobx';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {forEach} from 'lodash';
 import cx from 'classnames';
 
@@ -10,7 +10,8 @@ import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
 import {poll} from '../../decorators';
 
-@observer(['uiState', 'regions', 'regionOverviewData'])
+@inject('uiState', 'regions', 'regionOverviewData')
+@observer
 @poll
 export default class StatusOverviewMultiRegionPage extends Component {
   static async fetchData(
@@ -97,7 +98,8 @@ export default class StatusOverviewMultiRegionPage extends Component {
   }
 }
 
-@observer(['uiState', 'regionOverviewData'])
+@inject('uiState', 'regionOverviewData')
+@observer
 export class Region extends Component {
   render() {
     const {size, regionName, uiState, regionOverviewData} = this.props;
