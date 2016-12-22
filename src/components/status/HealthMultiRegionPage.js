@@ -9,8 +9,10 @@ import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
+import {poll} from '../../decorators';
 
 @observer(['uiState', 'regions', 'regionHealthData'])
+@poll
 export default class HealthMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionHealthData},
@@ -25,6 +27,10 @@ export default class HealthMultiRegionPage extends Component {
         regionHealthData.update(regionName, dataPeriod, undefined, plainHealthData);
       });
     });
+  }
+
+  fetchData() {
+    return this.constructor.fetchData(this.props);
   }
 
   async changeDataPeriod(dataPeriod) {

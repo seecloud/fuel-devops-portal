@@ -9,9 +9,11 @@ import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
+import {poll} from '../../decorators';
 
 @withRouter
 @observer(['uiState', 'regions', 'regionHealthData'])
+@poll
 export default class HealthSingleRegionPage extends Component {
   static async fetchData(
     {uiState, regionHealthData},
@@ -30,6 +32,10 @@ export default class HealthSingleRegionPage extends Component {
         regionHealthData.update(regionName, dataPeriod, serviceName, plainHealthData);
       });
     });
+  }
+
+  fetchData() {
+    return this.constructor.fetchData(this.props, this.props);
   }
 
   async changeDataPeriod(dataPeriod) {

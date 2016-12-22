@@ -8,8 +8,10 @@ import cx from 'classnames';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
+import {poll} from '../../decorators';
 
 @observer(['uiState', 'regions', 'regionOverviewData'])
+@poll
 export default class StatusOverviewMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionOverviewData},
@@ -24,6 +26,10 @@ export default class StatusOverviewMultiRegionPage extends Component {
         regionOverviewData.update(regionName, dataPeriod, undefined, plainRegionOverviewData);
       });
     });
+  }
+
+  fetchData() {
+    return this.constructor.fetchData(this.props);
   }
 
   async changeDataPeriod(dataPeriod) {
