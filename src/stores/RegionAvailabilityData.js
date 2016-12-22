@@ -33,8 +33,11 @@ export default class RegionAvailbilityData {
   }
 
   getRegionServices(regionName, period) {
-    this.initializeRegionData(regionName, period);
-    return without(this.dataByRegion.get(regionName).get(period).keys(), 'aggregated');
+    try {
+      return without(this.dataByRegion.get(regionName).get(period).keys(), 'aggregated');
+    } catch (e) {
+      return [];
+    }
   }
 
   get(regionName, period, serviceName = 'aggregated') {
