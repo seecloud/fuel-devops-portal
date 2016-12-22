@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observable, transaction} from 'mobx';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
 import cx from 'classnames';
@@ -11,7 +11,8 @@ import Score from '../Score';
 import {poll} from '../../decorators';
 
 @withRouter
-@observer(['uiState', 'regions', 'regionOverviewData'])
+@inject('uiState', 'regions', 'regionOverviewData')
+@observer
 @poll
 export default class StatusOverviewSingleRegionPage extends Component {
   static async fetchData(
@@ -96,7 +97,8 @@ export default class StatusOverviewSingleRegionPage extends Component {
   }
 }
 
-@observer(['uiState', 'regionOverviewData'])
+@inject('uiState', 'regionOverviewData')
+@observer
 export class Service extends Component {
   render() {
     const {size, serviceName, regionName, uiState, regionOverviewData} = this.props;

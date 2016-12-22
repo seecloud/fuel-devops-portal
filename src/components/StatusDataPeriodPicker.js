@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {observable} from 'mobx';
 import cx from 'classnames';
 
 import {PERIODS} from '../consts';
 
-@observer(['uiState'])
+@inject('uiState')
+@observer
 export default class StatusDataPeriodPicker extends Component {
   @observable actionInProgress = false
 

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {observable, autorun} from 'mobx';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 
-@observer(['uiState'])
+@inject('uiState')
+@observer
 export default class DataFetchingProgressBar extends Component {
   static defaultProps = {
     initialProgress: 10,

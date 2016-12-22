@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {Link, withRouter} from 'react-router';
-import {observer} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {observable} from 'mobx';
 import cx from 'classnames';
 
@@ -64,7 +64,8 @@ class DropdownMenuItem extends Component {
 }
 
 @withRouter
-@observer(['uiState', 'regions'])
+@inject('uiState', 'regions')
+@observer
 export default class Navbar extends Component {
   static defaultProps = {
     navigationItems: [
