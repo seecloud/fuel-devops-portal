@@ -9,8 +9,10 @@ import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
 import {getFormatTime} from '../../chartUtils';
+import {poll} from '../../decorators';
 
 @observer(['uiState', 'regions', 'regionAvailabilityData'])
+@poll
 export default class AvailabilityMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionAvailabilityData},
@@ -25,6 +27,10 @@ export default class AvailabilityMultiRegionPage extends Component {
         regionAvailabilityData.update(regionName, dataPeriod, undefined, plainAvailabilityData);
       });
     });
+  }
+
+  fetchData() {
+    return this.constructor.fetchData(this.props);
   }
 
   async changeDataPeriod(dataPeriod) {

@@ -8,9 +8,11 @@ import cx from 'classnames';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
+import {poll} from '../../decorators';
 
 @withRouter
 @observer(['uiState', 'regions', 'regionOverviewData'])
+@poll
 export default class StatusOverviewSingleRegionPage extends Component {
   static async fetchData(
     {uiState, regionOverviewData},
@@ -29,6 +31,10 @@ export default class StatusOverviewSingleRegionPage extends Component {
         regionOverviewData.update(regionName, dataPeriod, serviceName, plainServiceOverviewData);
       });
     });
+  }
+
+  fetchData() {
+    return this.constructor.fetchData(this.props, this.props);
   }
 
   async changeDataPeriod(dataPeriod) {
