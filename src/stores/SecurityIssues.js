@@ -2,13 +2,28 @@ import {observable, computed} from 'mobx';
 import {uniq} from 'lodash';
 
 export class SecurityIssue {
+  @observable id = null
+  @observable confirmedAt = null
   @observable description = null
-  @observable issueType = null
-  @observable regionId = null
-  @observable subject = {}
+  @observable discoveredAt = null
+  @observable tenantId = null
+  @observable userId = null
+  @observable resolvedAt = null
+  @observable region = null
+  @observable type = null
 
-  constructor(data) {
-    Object.assign(this, data);
+  constructor({
+    object_id: id,
+    confirmed_at: confirmedAt,
+    discovered_at: discoveredAt,
+    resolved_at: resolvedAt,
+    tenant_id: tenantId,
+    user_id: userId,
+    ...attrs
+  }) {
+    Object.assign(this,
+      {id, confirmedAt, discoveredAt, resolvedAt, tenantId, userId, ...attrs}
+    );
   }
 }
 
@@ -17,11 +32,11 @@ export class SecurityIssues {
   @observable items = []
 
   @computed get types() {
-    return uniq(this.items.map((issue) => issue.issueType));
+    return uniq(this.items.map((issue) => issue.type));
   }
 
   @computed get tenants() {
-    return uniq(this.items.map((issue) => issue.subject.tenantId));
+    return uniq(this.items.map((issue) => issue.tenantId));
   }
 }
 
