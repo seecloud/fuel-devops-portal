@@ -61,7 +61,9 @@ export default class HealthMultiRegionPage extends Component {
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
-          {this.props.regions.items.map(({name: regionName}) => {
+          {this.props.regions.items.map((region) => {
+            if (!region.hasService('health')) return null;
+            const regionName = region.name;
             const health = regionHealthData.get(
               regionName, uiState.activeStatusDataPeriod
             );

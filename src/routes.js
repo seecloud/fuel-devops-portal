@@ -48,7 +48,7 @@ export default function createRoutes(stores) {
           partial(requireAuthHook, stores),
           (nextState, replace, callback) => {
             const regionName = nextState.params.regionName;
-            const region = stores.regions.items.find((region) => region.name === regionName);
+            const region = stores.regions.get(regionName);
             if (!region) replace('/');
             callback();
           }

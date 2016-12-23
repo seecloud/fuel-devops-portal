@@ -84,7 +84,7 @@ export default class Navbar extends Component {
     const urlPrefix = regionName ?
       `/region/${encodeURIComponent(regionName)}/` :
       '/all-regions/';
-    const region = regions.items.find((region) => region.name === regionName);
+    const region = regions.get(regionName);
     let urlSuffix = navigationItems[0].url;
     const regionPrefixMatch = location.pathname.match(/^(?:\/region\/.*?|\/all-regions)\/(.*)/);
     if (regionPrefixMatch) {
