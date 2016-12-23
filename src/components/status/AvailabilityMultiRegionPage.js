@@ -54,7 +54,9 @@ export default class AvailabilityMultiRegionPage extends Component {
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
-          {this.props.regions.items.map(({name: regionName}) => {
+          {this.props.regions.items.map((region) => {
+            if (!region.hasService('availability')) return null;
+            const regionName = region.name;
             const availability = regionAvailabilityData.get(
               regionName, uiState.activeStatusDataPeriod
             );

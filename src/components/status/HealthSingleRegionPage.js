@@ -17,10 +17,11 @@ import {poll} from '../../decorators';
 @poll
 export default class HealthSingleRegionPage extends Component {
   static async fetchData(
-    {uiState, regionHealthData},
+    {uiState, regions, regionHealthData},
     {params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
+    if (!regions.get(regionName).hasService('health')) return;
     const url = `/api/v1/region/${
       encodeURIComponent(regionName)
     }/status/health/${

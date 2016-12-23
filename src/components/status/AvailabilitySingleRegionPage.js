@@ -17,10 +17,11 @@ import {poll} from '../../decorators';
 @poll
 export default class AvailabilitySingleRegionPage extends Component {
   static async fetchData(
-    {uiState, regionAvailabilityData},
+    {uiState, regions, regionAvailabilityData},
     {params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
+    if (!regions.get(regionName).hasService('availability')) return;
     const url = `/api/v1/region/${
       encodeURIComponent(regionName)
     }/status/availability/${
