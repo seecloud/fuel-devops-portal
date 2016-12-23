@@ -2,12 +2,20 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {action, observable, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
-import {every} from 'lodash';
+import {every, compact} from 'lodash';
 import {poll} from '../../decorators';
 
 import DataFilter from '../DataFilter';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import {SecurityIssue} from '../../stores/SecurityIssues';
+
+function formatDate(date) {
+  let d = new Date(date);
+  return d.toLocaleDateString(
+    'en-US',
+    {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
+  );
+}
 
 @withRouter
 @inject('uiState', 'regions', 'securityIssues')
@@ -15,39 +23,16 @@ import {SecurityIssue} from '../../stores/SecurityIssues';
 @poll
 export default class SecurityPage extends Component {
   static async fetchData(
-    {regions, securityIssues, params: {regionName}}
-    //{uiState, regions, securityIssues, params: {regionName}},
-    //{dataPeriod = uiState.activeStatusDataPeriod} = {}
+    {uiState, regions, securityIssues, params: {regionName}},
+    {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     if (regionName && !regions.get(regionName).hasService('security')) return;
-    //const url = regionName?
-    //    `/api/v1/region/${encodeURIComponent(regionName)}
-    //    /security/issues/${encodeURIComponent(dataPeriod)}`
-    //  :
-    //    `/api/v1/security/issues/${encodeURIComponent(dataPeriod)}`;
-    //const response = await fetch(url);
-    //const responseBody = await response.json();
-    const responseBody = [
-      {
-        issueType: 'type1',
-        description: 'test1',
-        subject: {tenantId: 'tenant1'},
-        regionId: 'region1'
-      },
-      {
-        issueType: 'type2',
-        description: 'test2',
-        subject: {tenantId: 'tenant2'},
-        regionId: 'region2'
-      },
-      {
-        issueType: 'securityGroup',
-        description: 'Security group too open',
-        subject: {tenantId: 'demo'},
-        regionId: 'region1'
-      }
-    ];
-    securityIssues.items = responseBody.map((issue) => new SecurityIssue(issue));
+    const url = `/api/v1${
+        regionName ? '/region/' + encodeURIComponent(regionName) : ''
+      }/security/issues/${encodeURIComponent(dataPeriod)}`;
+    const response = await fetch(url);
+    const responseBody = await response.json();
+    securityIssues.items = responseBody.issues.map((issue) => new SecurityIssue(issue));
   }
 
   fetchData() {
@@ -63,19 +48,18 @@ export default class SecurityPage extends Component {
     {
       name: 'type',
       title: 'Any type',
-      match: (issue, value) => issue.issueType === value
+      match: (issue, value) => issue.type === value
     },
     {
       name: 'tenant',
       title: 'Any tenant',
-      match: (issue, value) => issue.subject.tenantId === value
+      match: (issue, value) => issue.tenantId === value
     },
     {
       name: 'search',
       title: 'Search',
-      match: (issue, value) => issue.issueType.indexOf(value) >= 0 ||
-        issue.subject.tenantId.indexOf(value) >= 0 ||
-        issue.description.indexOf(value) >= 0
+      match: (issue, value) => issue.id.indexOf(value) >= 0 ||
+        issue.description && issue.description.indexOf(value) >= 0
     }
   ];
 
@@ -165,18 +149,30 @@ export default class SecurityPage extends Component {
                 <table className='table table-bordered'>
                   <thead>
                     <tr>
+                      <th>{'ID'}</th>
                       {!regionName && <th>{'Region'}</th>}
-                      <th>{'Issue Type'}</th>
-                      <th>{'Tenant'}</th>
+                      <th>{'Type'}</th>
+                      <th>{'Tenant/User'}</th>
+                      <th>{'Discovered At'}</th>
+                      <th>{'Confirmed At'}</th>
+                      <th>{'Resolved At'}</th>
                       <th>{'Description'}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.filteredIssues.map((issue, index) =>
                       <tr key={index}>
-                        {!regionName && <td>{issue.regionId}</td>}
-                        <td>{issue.issueType}</td>
-                        <td>{issue.subject.tenantId}</td>
+                        <td>{issue.id}</td>
+                        {!regionName && <td>{issue.region}</td>}
+                        <td>{issue.type}</td>
+                        <td>{compact([issue.tenantId, issue.userId]).join('/')}</td>
+                        <td>{formatDate(issue.discoveredAt)}</td>
+                        <td>{
+                          issue.confirmedAt ? formatDate(issue.confirmedAt) : 'Not confirmed'
+                        }</td>
+                        <td>{
+                          issue.resolvedAt ? formatDate(issue.resolvedAt) : 'Not resolved'
+                        }</td>
                         <td>{issue.description}</td>
                       </tr>
                     )}
