@@ -1,10 +1,10 @@
+import hoistStatics from 'hoist-non-react-statics';
+
 const DEFAULT_POLLING_INTERVAL = 60 * 1000;
 
 export function poll(Component) {
-  return class PollingComponent extends Component {
+  class PollingComponent extends Component {
     // FIXME(vkramskikh): there is no automatic inheritance of static props for some reason
-    static fetchData = Component.fetchData
-
     componentDidMount() {
       if (super.componentDidMount) super.componentDidMount();
       this.startPolling();
@@ -28,5 +28,6 @@ export function poll(Component) {
     stopPolling() {
       if (this.activePollingTimeout) clearTimeout(this.activePollingTimeout);
     }
-  };
+  }
+  return hoistStatics(PollingComponent, Component);
 }
