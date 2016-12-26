@@ -17,7 +17,6 @@ import {poll} from '../../decorators';
 export default class AvailabilityMultiRegionPage extends Component {
   static async fetchData(
     {uiState, regionAvailabilityData},
-    nextState,
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
@@ -35,7 +34,7 @@ export default class AvailabilityMultiRegionPage extends Component {
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, {}, {dataPeriod});
+    await this.constructor.fetchData(this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 

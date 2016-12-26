@@ -14,8 +14,7 @@ import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 @poll
 export default class SecurityPage extends Component {
   static async fetchData(
-    {uiState, regions, securityData},
-    {params: {regionName}},
+    {uiState, regions, securityData, params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     if (regionName && !regions.get(regionName).hasService('security')) return;
@@ -50,11 +49,11 @@ export default class SecurityPage extends Component {
   }
 
   fetchData() {
-    return this.constructor.fetchData(this.props, this.props);
+    return this.constructor.fetchData(this.props);
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 

@@ -1,5 +1,5 @@
 export async function fetchDataHook(stores, nextState, replace, callback) {
-  const dataFetchingRequest = this.component.fetchData(stores, nextState);
+  const dataFetchingRequest = this.component.fetchData({...stores, ...nextState});
   stores.uiState.pendingRequestsCount++;
   try {
     await dataFetchingRequest;
