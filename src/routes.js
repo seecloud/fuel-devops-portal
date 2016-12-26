@@ -24,6 +24,7 @@ import InfrastructureMultiRegionPage
   from './components/infrastructure/InfrastructureMultiRegionPage';
 import RunbooksPage from './components/runbooks/RunbooksPage';
 import RunbookRunsPage from './components/runbooks/RunbookRunsPage';
+import RunbookPage from './components/runbooks/RunbookPage';
 
 export default function createRoutes(stores) {
   return (
@@ -104,6 +105,11 @@ export default function createRoutes(stores) {
           />
         </Route>
         <Route
+          path='runbook/:runbookId'
+          component={RunbookPage}
+          onEnter={partial(fetchDataHook, stores)}
+        />
+        <Route
           path='security'
           component={SecurityPage}
           onEnter={partial(fetchDataHook, stores)}
@@ -165,6 +171,11 @@ export default function createRoutes(stores) {
             onEnter={partial(fetchDataHook, stores)}
           />
         </Route>
+        <Route
+          path='runbook/:runbookId'
+          component={RunbookPage}
+          onEnter={partial(fetchDataHook, stores)}
+        />
         <Route
           path='security'
           component={SecurityPage}

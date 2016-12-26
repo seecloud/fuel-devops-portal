@@ -18,7 +18,7 @@ import RunbookSidebar from './RunbookSidebar';
 export default class RunbooksPage extends Component {
   static async fetchData(
     {runbooks}
-    //{params: {regionName}}
+    //{runbooks, params: {regionName}}
   ) {
     //const url = `/api/v1${
     //  regionName ? '/region/' + encodeURIComponent(regionName) : ''
@@ -229,7 +229,13 @@ export default class RunbooksPage extends Component {
                     {this.filteredRunbooks.map((runbook, index) =>
                       <tr key={index}>
                         <td>
-                          <Link to={'/region/' + runbook.regionId + '/runbook/' + runbook.id}>
+                          <Link to={
+                            `/region/${
+                              encodeURIComponent(runbook.regionId)
+                            }/runbook/${
+                              encodeURIComponent(runbook.id)
+                            }`
+                          }>
                             {runbook.name}
                           </Link>
                         </td>
