@@ -11,6 +11,14 @@ import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {RunbookRun} from '../../stores/RunbookRuns';
 import RunbookSidebar from './RunbookSidebar';
 
+function formatDate(date) {
+  let d = new Date(date);
+  return d.toLocaleDateString(
+    'en-US',
+    {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
+  );
+}
+
 @withRouter
 @inject('runbooks', 'runbookRuns')
 @observer
@@ -201,19 +209,22 @@ export default class RunbookRunsPage extends Component {
                         {!regionName && <td>{runbookRun.runbook.regionId}</td>}
                         <td>
                           <Link to={
-                            '/region/' + runbookRun.regionId +
-                            '/runbook/' + runbookRun.runbook.id
+                            `/region/${
+                              encodeURIComponent(runbookRun.runbook.regionId)
+                            }/runbook/${
+                              encodeURIComponent(runbookRun.runbook.id)
+                            }`
                           }>
                             {runbookRun.runbook.name}
                           </Link>
                         </td>
-                        <td>{runbookRun.runbook.tags.join(', ')}</td>
-                        <td>{new Date(runbookRun.createdAt).toLocaleString('en-us')}</td>
                         <td>
-                          {runbookRun.updatedAt &&
-                            new Date(runbookRun.updatedAt).toLocaleString('en-us')
-                          }
+                          {runbookRun.runbook.tags.map((tag) =>
+                            <span key={tag} className='label label-default'>{tag}</span>
+                          )}
                         </td>
+                        <td>{formatDate(runbookRun.createdAt)}</td>
+                        <td>{runbookRun.updatedAt && formatDate(runbookRun.updatedAt)}</td>
                         <td className={cx({
                           'text-success': runbookRun.status === 'finished',
                           'text-danger': runbookRun.status === 'failed'
