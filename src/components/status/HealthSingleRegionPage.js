@@ -53,7 +53,7 @@ export default class HealthSingleRegionPage extends Component {
   ]
 
   render() {
-    const {uiState, regionHealthData, params} = this.props;
+    const {uiState, regions, regionHealthData, params} = this.props;
     const {regionName} = params;
     const services = regionHealthData.getRegionServices(regionName, uiState.activeStatusDataPeriod);
     const labelInterpolationFnc = getFormatTime(uiState.activeStatusDataPeriod);
@@ -69,6 +69,11 @@ export default class HealthSingleRegionPage extends Component {
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
+          {!regions.get(regionName).hasService('health') &&
+            <div className='alert alert-warning'>
+              {`Region ${regionName} doesn't have Health service.`}
+            </div>
+          }
           {services.map((serviceName) => {
             const health = regionHealthData.get(
               regionName, uiState.activeStatusDataPeriod, serviceName
