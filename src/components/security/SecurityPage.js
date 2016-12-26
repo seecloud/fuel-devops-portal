@@ -9,15 +9,16 @@ import DataFilter from '../DataFilter';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 
 @withRouter
-@inject('uiState', 'securityData')
+@inject('uiState', 'regions', 'securityData')
 @observer
 @poll
 export default class SecurityPage extends Component {
   static async fetchData(
-    {uiState, securityData},
+    {uiState, regions, securityData},
     {params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
+    if (regionName && !regions.get(regionName).hasService('security')) return;
     //const url = regionName?
     //    `/api/v1/region/${encodeURIComponent(regionName)}
     //    /security/issues/${encodeURIComponent(dataPeriod)}`
@@ -99,15 +100,28 @@ export default class SecurityPage extends Component {
   }
 
   render() {
-    const {uiState, securityData, params} = this.props;
+    const {uiState, regions, securityData, params} = this.props;
     const {regionName} = params;
+
+    if (regionName && !regions.get(regionName).hasService('security')) {
+      return (
+        <div>
+          <div className='container-fluid'>
+            <h1>{'Security: ' + regionName}</h1>
+            <div className='alert alert-warning'>
+              {`Region ${regionName} doesn't have Security service.`}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     const issues = securityData.get(uiState.activeStatusDataPeriod).issues;
     const filteredIssues = issues.filter(
       (issue) => every(this.filters,
         ({name, match}) => !this.filterValues[name] || match(issue, this.filterValues[name])
       )
     );
-
     return (
       <div>
         <div className='container-fluid'>
