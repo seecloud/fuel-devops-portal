@@ -46,7 +46,7 @@ export default class AvailabilitySingleRegionPage extends Component {
   }
 
   render() {
-    const {uiState, regionAvailabilityData, params} = this.props;
+    const {uiState, regions, regionAvailabilityData, params} = this.props;
     const {regionName} = params;
     const services = regionAvailabilityData.getRegionServices(
       regionName, uiState.activeStatusDataPeriod
@@ -64,6 +64,11 @@ export default class AvailabilitySingleRegionPage extends Component {
               onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
             />
           </div>
+          {!regions.get(regionName).hasService('availability') &&
+            <div className='alert alert-warning'>
+              {`Region ${regionName} doesn't have Availability service.`}
+            </div>
+          }
           {services.map((serviceName) => {
             const availability = regionAvailabilityData.get(
               regionName, uiState.activeStatusDataPeriod, serviceName

@@ -98,11 +98,12 @@ export default class StatusOverviewMultiRegionPage extends Component {
   }
 }
 
-@inject('uiState', 'regionOverviewData')
+@inject('uiState', 'regions', 'regionOverviewData')
 @observer
 export class Region extends Component {
   render() {
-    const {size, regionName, uiState, regionOverviewData} = this.props;
+    const {size, regionName, uiState, regions, regionOverviewData} = this.props;
+    const region = regions.get(regionName);
     const urlPrefix = `/region/${encodeURIComponent(regionName)}/`;
 
     const overviewData = regionOverviewData.get(regionName, uiState.activeStatusDataPeriod);
@@ -127,7 +128,11 @@ export class Region extends Component {
           </div>
           <div className='availability'>
             <div className='name'>
-              <Link to={urlPrefix + 'status/availability'}>{'Availability'}</Link>
+              {region.hasService('availability') ?
+                <Link to={urlPrefix + 'status/availability'}>{'Availability'}</Link>
+              :
+                'Availability'
+              }
             </div>
             <div className='param'>
               <Score score={availability} />
@@ -135,7 +140,11 @@ export class Region extends Component {
           </div>
           <div className='health'>
             <div className='name'>
-              <Link to={urlPrefix + 'status/health'}>{'Health (FCI)'}</Link>
+              {region.hasService('health') ?
+                <Link to={urlPrefix + 'status/health'}>{'Health (FCI)'}</Link>
+              :
+                'Health (FCI)'
+              }
             </div>
             <div className='param'>
               <Score score={health} />
