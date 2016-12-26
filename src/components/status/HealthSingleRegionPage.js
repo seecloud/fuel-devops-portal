@@ -63,13 +63,14 @@ export default class HealthSingleRegionPage extends Component {
         <StatusSidebar />
         <div className='container-fluid'>
           <h1>{'Health: ' + regionName}</h1>
-          <div className='btn-toolbar'>
-            <StatusDataPeriodPicker
-              className='pull-right'
-              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
-            />
-          </div>
-          {!regions.get(regionName).hasService('health') &&
+          {regions.get(regionName).hasService('health') ?
+            <div className='btn-toolbar'>
+              <StatusDataPeriodPicker
+                className='pull-right'
+                onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
+              />
+            </div>
+          :
             <div className='alert alert-warning'>
               {`Region ${regionName} doesn't have Health service.`}
             </div>
