@@ -1,9 +1,4 @@
-
-export function getFormatTime(period) {
-  if (period === 'day') return formatTimeAsHoursAndMinutes;
-  if (period === 'week') return formatTimeAsDayOfWeek;
-  return formatTimeAsDayAndMonth;
-}
+import prettyBytes from 'pretty-bytes';
 
 export function formatTimeAsHoursAndMinutes(time) {
   let d = new Date(time);
@@ -18,4 +13,18 @@ export function formatTimeAsDayOfWeek(time) {
 export function formatTimeAsDayAndMonth(time) {
   let d = new Date(time);
   return d.getDate() + '/' + d.toLocaleString('en-us', {month: 'short'});
+}
+
+export const timeFormattersByPeriod = {
+  day: formatTimeAsHoursAndMinutes,
+  week: formatTimeAsDayOfWeek,
+  month: formatTimeAsDayAndMonth
+};
+
+export function formatResponseSize(size) {
+  return Number.isFinite(size) ? prettyBytes(size) : '';
+}
+
+export function formatResponseTime(time) {
+  return Math.round(time * 1000);
 }
