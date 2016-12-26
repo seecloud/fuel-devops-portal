@@ -79,7 +79,7 @@ export default class RunbooksPage extends Component {
   }
 
   fetchData() {
-    return this.constructor.fetchData(this.props, this.props);
+    return this.constructor.fetchData(this.props);
   }
 
   @observable filters = [

@@ -17,8 +17,7 @@ import {poll} from '../../decorators';
 @poll
 export default class AvailabilitySingleRegionPage extends Component {
   static async fetchData(
-    {uiState, regions, regionAvailabilityData},
-    {params: {regionName}},
+    {uiState, regions, regionAvailabilityData, params: {regionName}},
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     if (!regions.get(regionName).hasService('availability')) return;
@@ -37,11 +36,11 @@ export default class AvailabilitySingleRegionPage extends Component {
   }
 
   fetchData() {
-    return this.constructor.fetchData(this.props, this.props);
+    return this.constructor.fetchData(this.props);
   }
 
   async changeDataPeriod(dataPeriod) {
-    await this.constructor.fetchData(this.props, this.props, {dataPeriod});
+    await this.constructor.fetchData(this.props, {dataPeriod});
     this.props.uiState.activeStatusDataPeriod = dataPeriod;
   }
 
