@@ -13,6 +13,7 @@ import RegionAvailabilityData from './stores/RegionAvailabilityData';
 import RegionHealthData from './stores/RegionHealthData';
 import RegionOverviewData from './stores/RegionOverviewData';
 import SecurityData from './stores/SecurityData';
+import Runbooks from './stores/Runbooks';
 
 const stores = {
   uiState: new UIState(),
@@ -20,7 +21,8 @@ const stores = {
   regionAvailabilityData: new RegionAvailabilityData(),
   regionHealthData: new RegionHealthData(),
   regionOverviewData: new RegionOverviewData(),
-  securityData: new SecurityData()
+  securityData: new SecurityData(),
+  runbooks: new Runbooks()
 };
 
 ReactDOM.render(
