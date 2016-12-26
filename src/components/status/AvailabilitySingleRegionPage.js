@@ -58,13 +58,14 @@ export default class AvailabilitySingleRegionPage extends Component {
         <StatusSidebar />
         <div className='container-fluid'>
           <h1>{'Availability: ' + regionName}</h1>
-          <div className='btn-toolbar'>
-            <StatusDataPeriodPicker
-              className='pull-right'
-              onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
-            />
-          </div>
-          {!regions.get(regionName).hasService('availability') &&
+          {regions.get(regionName).hasService('availability') ?
+            <div className='btn-toolbar'>
+              <StatusDataPeriodPicker
+                className='pull-right'
+                onDataPeriodChange={(dataPeriod) => this.changeDataPeriod(dataPeriod)}
+              />
+            </div>
+          :
             <div className='alert alert-warning'>
               {`Region ${regionName} doesn't have Availability service.`}
             </div>
