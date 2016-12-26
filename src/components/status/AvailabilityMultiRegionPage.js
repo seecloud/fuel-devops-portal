@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {inject, observer} from 'mobx-react';
 import {transaction} from 'mobx';
-import {forEach} from 'lodash';
+import {forEach, identity} from 'lodash';
 
 import CloudStatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
-import {getFormatTime} from '../../chartUtils';
+import {timeFormattersByPeriod} from '../../chartUtils';
 import {poll} from '../../decorators';
 
 @inject('uiState', 'regions', 'regionAvailabilityData')
@@ -41,7 +41,7 @@ export default class AvailabilityMultiRegionPage extends Component {
 
   render() {
     const {uiState, regionAvailabilityData} = this.props;
-    const labelInterpolationFnc = getFormatTime(uiState.activeStatusDataPeriod);
+    const formatTime = timeFormattersByPeriod[uiState.activeStatusDataPeriod];
 
     return (
       <div>
@@ -81,7 +81,8 @@ export default class AvailabilityMultiRegionPage extends Component {
                         key={uiState.activeStatusDataPeriod}
                         className='ct-double-octave x-axis-vertical-labels'
                         options={{
-                          axisX: {offset: 40, labelInterpolationFnc}
+                          axisX: {labelInterpolationFnc: formatTime},
+                          axisY: {labelInterpolationFnc: identity}
                         }}
                         data={availability.data.reduce((result, [time, score]) => {
                           result.series[0].push({x: new Date(time), y: score});

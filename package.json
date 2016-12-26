@@ -50,6 +50,7 @@
     "open-sans-fontface": "1.4.0",
     "postcss": "5.2.4",
     "postcss-loader": "1.0.0",
+    "pretty-bytes": "4.0.2",
     "react": "15.4.1",
     "react-dom": "15.4.1",
     "react-router": "3.0.0",
