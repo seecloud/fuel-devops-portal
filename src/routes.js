@@ -19,6 +19,7 @@ import CloudIntelligenceHistoryPage from './components/CloudIntelligenceHistoryP
 import CapacityManagementPage from './components/CapacityManagementPage';
 import SecurityPage from './components/security/SecurityPage';
 import RunbooksPage from './components/runbooks/RunbooksPage';
+import RunbookRunsPage from './components/runbooks/RunbookRunsPage';
 
 export default function createRoutes(stores) {
   return (
@@ -87,11 +88,17 @@ export default function createRoutes(stores) {
           path='capacity'
           component={CapacityManagementPage}
         />
-        <Route
-          path='runbooks'
-          component={RunbooksPage}
-          onEnter={partial(fetchDataHook, stores)}
-        />
+        <Route path='runbooks' >
+          <IndexRoute
+            component={RunbooksPage}
+            onEnter={partial(fetchDataHook, stores)}
+          />
+          <Route
+            path='runs'
+            component={RunbookRunsPage}
+            onEnter={partial(fetchDataHook, stores)}
+          />
+        </Route>
         <Route
           path='security'
           component={SecurityPage}
@@ -138,11 +145,17 @@ export default function createRoutes(stores) {
           path='capacity'
           component={CapacityManagementPage}
         />
-        <Route
-          path='runbooks'
-          component={RunbooksPage}
-          onEnter={partial(fetchDataHook, stores)}
-        />
+        <Route path='runbooks' >
+          <IndexRoute
+            component={RunbooksPage}
+            onEnter={partial(fetchDataHook, stores)}
+          />
+          <Route
+            path='runs'
+            component={RunbookRunsPage}
+            onEnter={partial(fetchDataHook, stores)}
+          />
+        </Route>
         <Route
           path='security'
           component={SecurityPage}
