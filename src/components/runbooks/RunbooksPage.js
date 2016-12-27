@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
 import {poll} from '../../decorators';
@@ -134,15 +134,17 @@ export default class RunbooksPage extends Component {
     this.filterValues[name] = value;
   }
 
-  render() {
-    const {params: {regionName}} = this.props;
-    const runbooks = this.props.runbooks.items;
-    const filteredRunbooks = runbooks.filter(
+  @computed get filteredRunbooks() {
+    return this.props.runbooks.items.filter(
       (runbook) => every(this.filters,
         ({name, match}) => !this.filterValues[name] || match(runbook, this.filterValues[name])
       )
     );
+  }
 
+  render() {
+    const {params: {regionName}} = this.props;
+    const runbooks = this.props.runbooks.items;
     return (
       <div>
         <RunbookSidebar />
@@ -170,7 +172,7 @@ export default class RunbooksPage extends Component {
               <div className='left'>
                 <div className='filter-result-text'>
                   {runbooks.length ?
-                    `${filteredRunbooks.length} of ${runbooks.length} runbooks shown.`
+                    `${this.filteredRunbooks.length} of ${runbooks.length} runbooks shown.`
                   :
                     'No runbooks found.'
                   }
@@ -178,7 +180,7 @@ export default class RunbooksPage extends Component {
               </div>
               <div className='right' />
             </div>
-            {!!filteredRunbooks.length &&
+            {!!this.filteredRunbooks.length &&
               <div className='data-table'>
                 <table className='table table-bordered table-hover'>
                   <thead>
@@ -193,7 +195,7 @@ export default class RunbooksPage extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRunbooks.map((runbook, index) =>
+                    {this.filteredRunbooks.map((runbook, index) =>
                       <tr key={index}>
                         <td>
                           <Link to={'/region/' + runbook.regionId + '/runbook/' + runbook.id}>

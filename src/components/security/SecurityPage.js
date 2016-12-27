@@ -98,6 +98,15 @@ export default class SecurityPage extends Component {
     this.filterValues[name] = value;
   }
 
+  @computed get filteredIssues() {
+    const {securityData, uiState} = this.props;
+    return securityData.get(uiState.activeStatusDataPeriod).issues.filter(
+      (issue) => every(this.filters,
+        ({name, match}) => !this.filterValues[name] || match(issue, this.filterValues[name])
+      )
+    );
+  }
+
   render() {
     const {uiState, regions, securityData, params} = this.props;
     const {regionName} = params;
@@ -116,11 +125,6 @@ export default class SecurityPage extends Component {
     }
 
     const issues = securityData.get(uiState.activeStatusDataPeriod).issues;
-    const filteredIssues = issues.filter(
-      (issue) => every(this.filters,
-        ({name, match}) => !this.filterValues[name] || match(issue, this.filterValues[name])
-      )
-    );
     return (
       <div>
         <div className='container-fluid'>
@@ -148,7 +152,7 @@ export default class SecurityPage extends Component {
               <div className='left'>
                 <div className='filter-result-text'>
                   {issues.length ?
-                    `${filteredIssues.length} of ${issues.length} issues shown.`
+                    `${this.filteredIssues.length} of ${issues.length} issues shown.`
                   :
                     'No issues found.'
                   }
@@ -156,7 +160,7 @@ export default class SecurityPage extends Component {
               </div>
               <div className='right' />
             </div>
-            {!!filteredIssues.length &&
+            {!!this.filteredIssues.length &&
               <div className='data-table'>
                 <table className='table table-bordered'>
                   <thead>
@@ -168,7 +172,7 @@ export default class SecurityPage extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredIssues.map((issue, index) =>
+                    {this.filteredIssues.map((issue, index) =>
                       <tr key={index}>
                         {!regionName && <td>{issue.regionId}</td>}
                         <td>{issue.issueType}</td>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
 import {poll} from '../../decorators';
@@ -130,15 +130,17 @@ export default class RunbookRunsPage extends Component {
     this.filterValues[name] = value;
   }
 
-  render() {
-    const {params: {regionName}} = this.props;
-    const runbookRuns = this.props.runbookRuns.items;
-    const filteredRunbookRuns = runbookRuns.filter(
+  @computed get filteredRunbookRuns() {
+    return this.props.runbookRuns.items.filter(
       (runbookRun) => every(this.filters,
         ({name, match}) => !this.filterValues[name] || match(runbookRun, this.filterValues[name])
       )
     );
+  }
 
+  render() {
+    const {params: {regionName}} = this.props;
+    const runbookRuns = this.props.runbookRuns.items;
     return (
       <div>
         <RunbookSidebar />
@@ -164,7 +166,9 @@ export default class RunbookRunsPage extends Component {
               <div className='left'>
                 <div className='filter-result-text'>
                   {runbookRuns.length ?
-                    `${filteredRunbookRuns.length} of ${runbookRuns.length} runbook runs shown.`
+                    `${
+                      this.filteredRunbookRuns.length
+                    } of ${runbookRuns.length} runbook runs shown.`
                   :
                     'No runbook runs found.'
                   }
@@ -172,7 +176,7 @@ export default class RunbookRunsPage extends Component {
               </div>
               <div className='right' />
             </div>
-            {!!filteredRunbookRuns.length &&
+            {!!this.filteredRunbookRuns.length &&
               <div className='data-table'>
                 <table className='table table-bordered table-hover'>
                   <thead>
@@ -187,7 +191,7 @@ export default class RunbookRunsPage extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRunbookRuns.map((runbookRun, index) =>
+                    {this.filteredRunbookRuns.map((runbookRun, index) =>
                       <tr key={index}>
                         <td>{runbookRun.id}</td>
                         {!regionName && <td>{runbookRun.runbook.regionId}</td>}
