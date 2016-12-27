@@ -32,7 +32,8 @@ export default class RunbooksPage extends Component {
         type: 'bash',
         tags: ['Monitoring'],
         latest_run: {
-          status: 'scheduled'
+          status: 'scheduled',
+          created_at: '2016-12-20T16:18:42.150736'
         },
         regionId: 'east-3.hooli.net'
       },
@@ -44,7 +45,8 @@ export default class RunbooksPage extends Component {
         type: 'bash',
         tags: ['Monitoring'],
         latest_run: {
-          status: 'in-progress'
+          status: 'in-progress',
+          created_at: '2016-12-20T16:18:42.150736'
         },
         regionId: 'east-3.hooli.net'
       },
@@ -56,7 +58,8 @@ export default class RunbooksPage extends Component {
         type: 'bash',
         tags: ['Monitoring', 'Databases'],
         latest_run: {
-          status: 'finished'
+          status: 'finished',
+          created_at: '2016-12-20T16:18:42.150736'
         },
         regionId: 'east-3.hooli.net'
       },
@@ -68,7 +71,8 @@ export default class RunbooksPage extends Component {
         type: 'bash',
         tags: ['Monitoring', 'Databases'],
         latest_run: {
-          status: 'failed'
+          status: 'failed',
+          created_at: '2016-12-20T16:18:42.150736'
         },
         regionId: 'east-3.hooli.net'
       },
@@ -178,6 +182,7 @@ export default class RunbooksPage extends Component {
                       <th>{'Name'}</th>
                       <th>{'Tags'}</th>
                       {!regionName && <th>{'Region'}</th>}
+                      <th>{'Latest Run'}</th>
                       <th>{'Status'}</th>
                       <th>{'Description'}</th>
                       <th>{'Actions'}</th>
@@ -193,6 +198,7 @@ export default class RunbooksPage extends Component {
                         </td>
                         <td>{runbook.tags.join(', ')}</td>
                         {!regionName && <td>{runbook.regionId}</td>}
+                        <td>{runbook.latestRunDate}</td>
                         <td>{RUNBOOK_RUN_STATUSES[runbook.latestRunStatus]}</td>
                         <td>{runbook.description}</td>
                         <td>

@@ -18,6 +18,11 @@ export class Runbook {
     if (this.latestRun) return this.latestRun.status;
     return null;
   }
+
+  @computed get latestRunDate() {
+    if (this.latestRun) return new Date(this.latestRun.created_at).toLocaleString('en-us');
+    return null;
+  }
 }
 
 export class Runbooks {
