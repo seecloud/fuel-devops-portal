@@ -7,15 +7,17 @@ import {poll} from '../../decorators';
 
 import DataFilter from '../DataFilter';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
+import {SecurityIssue} from '../../stores/SecurityIssues';
 
 @withRouter
-@inject('uiState', 'regions', 'securityData')
+@inject('uiState', 'regions', 'securityIssues')
 @observer
 @poll
 export default class SecurityPage extends Component {
   static async fetchData(
-    {uiState, regions, securityData, params: {regionName}},
-    {dataPeriod = uiState.activeStatusDataPeriod} = {}
+    {regions, securityIssues, params: {regionName}}
+    //{uiState, regions, securityIssues, params: {regionName}},
+    //{dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     if (regionName && !regions.get(regionName).hasService('security')) return;
     //const url = regionName?
@@ -45,7 +47,7 @@ export default class SecurityPage extends Component {
         regionId: 'region1'
       }
     ];
-    securityData.update(dataPeriod, responseBody);
+    securityIssues.items = responseBody.map((issue) => new SecurityIssue(issue));
   }
 
   fetchData() {
@@ -83,12 +85,11 @@ export default class SecurityPage extends Component {
     search: ''
   };
 
-  @computed get filterOptions() {
-    const {securityData, uiState} = this.props;
+  get filterOptions() {
     return {
-      type: securityData.getIssueTypes(uiState.activeStatusDataPeriod)
+      type: this.props.securityIssues.types
         .map((type) => ({value: type, title: type})),
-      tenant: securityData.getTenants(uiState.activeStatusDataPeriod)
+      tenant: this.props.securityIssues.tenants
         .map((tenant) => ({value: tenant, title: tenant}))
     };
   }
@@ -99,8 +100,7 @@ export default class SecurityPage extends Component {
   }
 
   @computed get filteredIssues() {
-    const {securityData, uiState} = this.props;
-    return securityData.get(uiState.activeStatusDataPeriod).issues.filter(
+    return this.props.securityIssues.items.filter(
       (issue) => every(this.filters,
         ({name, match}) => !this.filterValues[name] || match(issue, this.filterValues[name])
       )
@@ -108,7 +108,7 @@ export default class SecurityPage extends Component {
   }
 
   render() {
-    const {uiState, regions, securityData, params} = this.props;
+    const {regions, securityIssues, params} = this.props;
     const {regionName} = params;
 
     if (regionName && !regions.get(regionName).hasService('security')) {
@@ -124,7 +124,7 @@ export default class SecurityPage extends Component {
       );
     }
 
-    const issues = securityData.get(uiState.activeStatusDataPeriod).issues;
+    const issues = securityIssues.items;
     return (
       <div>
         <div className='container-fluid'>

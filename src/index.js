@@ -12,7 +12,7 @@ import Regions from './stores/Regions';
 import RegionAvailabilityData from './stores/RegionAvailabilityData';
 import RegionHealthData from './stores/RegionHealthData';
 import RegionOverviewData from './stores/RegionOverviewData';
-import SecurityData from './stores/SecurityData';
+import SecurityIssues from './stores/SecurityIssues';
 import Runbooks from './stores/Runbooks';
 import RunbookRuns from './stores/RunbookRuns';
 
@@ -22,7 +22,7 @@ const stores = {
   regionAvailabilityData: new RegionAvailabilityData(),
   regionHealthData: new RegionHealthData(),
   regionOverviewData: new RegionOverviewData(),
-  securityData: new SecurityData(),
+  securityIssues: new SecurityIssues(),
   runbooks: new Runbooks(),
   runbookRuns: new RunbookRuns()
 };
