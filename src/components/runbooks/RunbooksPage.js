@@ -8,6 +8,7 @@ import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
+import RunbookSidebar from './RunbookSidebar';
 
 @withRouter
 @inject('runbooks')
@@ -23,71 +24,73 @@ export default class RunbooksPage extends Component {
     //}/runbooks/`;
     //const response = await fetch(url);
     //const responseBody = await response.json();
-    const responseBody = [
-      {
-        id: '602',
-        description: 'Demo runbook description',
-        name: 'Demo runbook',
-        runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-        type: 'bash',
-        tags: ['Monitoring'],
-        latest_run: {
-          status: 'scheduled',
-          created_at: '2016-12-20T16:18:42.150736'
+    const responseBody = {
+      runbooks: [
+        {
+          id: '602',
+          description: 'Demo runbook description',
+          name: 'Demo runbook',
+          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
+          type: 'bash',
+          tags: ['Monitoring'],
+          latest_run: {
+            status: 'scheduled',
+            created_at: '2016-12-20T16:18:42.150736'
+          },
+          regionId: 'east-3.hooli.net'
         },
-        regionId: 'east-3.hooli.net'
-      },
-      {
-        id: '246',
-        description: 'Demo runbook description',
-        name: 'Demo runbook',
-        runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-        type: 'bash',
-        tags: ['Monitoring'],
-        latest_run: {
-          status: 'in-progress',
-          created_at: '2016-12-20T16:18:42.150736'
+        {
+          id: '246',
+          description: 'Demo runbook description',
+          name: 'Demo runbook',
+          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
+          type: 'bash',
+          tags: ['Monitoring'],
+          latest_run: {
+            status: 'in-progress',
+            created_at: '2016-12-20T16:18:42.150736'
+          },
+          regionId: 'east-3.hooli.net'
         },
-        regionId: 'east-3.hooli.net'
-      },
-      {
-        id: '161',
-        description: 'Demo runbook description',
-        name: 'Demo runbook',
-        runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-        type: 'bash',
-        tags: ['Monitoring', 'Databases'],
-        latest_run: {
-          status: 'finished',
-          created_at: '2016-12-20T16:18:42.150736'
+        {
+          id: '161',
+          description: 'Demo runbook description',
+          name: 'Demo runbook',
+          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
+          type: 'bash',
+          tags: ['Monitoring', 'Databases'],
+          latest_run: {
+            status: 'finished',
+            created_at: '2016-12-20T16:18:42.150736'
+          },
+          regionId: 'east-3.hooli.net'
         },
-        regionId: 'east-3.hooli.net'
-      },
-      {
-        id: '622',
-        description: 'Demo runbook description',
-        name: 'Demo runbook',
-        runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-        type: 'bash',
-        tags: ['Monitoring', 'Databases'],
-        latest_run: {
-          status: 'failed',
-          created_at: '2016-12-20T16:18:42.150736'
+        {
+          id: '622',
+          description: 'Demo runbook description',
+          name: 'Demo runbook',
+          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
+          type: 'bash',
+          tags: ['Monitoring', 'Databases'],
+          latest_run: {
+            status: 'failed',
+            created_at: '2016-12-20T16:18:42.150736'
+          },
+          regionId: 'east-3.hooli.net'
         },
-        regionId: 'east-3.hooli.net'
-      },
-      {
-        id: '622',
-        description: 'Demo runbook description',
-        name: 'Demo runbook',
-        runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-        type: 'bash',
-        tags: ['Monitoring', 'Databases'],
-        latest_run: null,
-        regionId: 'east-3.hooli.net'
-      }
-    ];
-    runbooks.items = responseBody.map((runbook) => new Runbook(runbook));
+        {
+          id: '622',
+          description: 'Demo runbook description',
+          name: 'Demo runbook',
+          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
+          type: 'bash',
+          tags: ['Monitoring', 'Databases'],
+          latest_run: null,
+          regionId: 'east-3.hooli.net'
+        }
+      ]
+    };
+    runbooks.items = responseBody.runbooks.map((runbook) => new Runbook(runbook));
   }
 
   fetchData() {
@@ -142,6 +145,7 @@ export default class RunbooksPage extends Component {
 
     return (
       <div>
+        <RunbookSidebar />
         <div className='container-fluid'>
           <h1>{'Runbooks: ' + (regionName || 'All Regions')}</h1>
           <div className='btn-toolbar'>
