@@ -4,7 +4,7 @@ export const PERIODS = [
   'month'
 ];
 
-export const RUNBOOK_STATUSES = {
+export const RUNBOOK_RUN_STATUSES = {
   scheduled: 'Scheduled',
   'in-progress': 'In Progress',
   finished: 'Finished',
