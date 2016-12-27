@@ -47,17 +47,19 @@ export default class SecurityPage extends Component {
   filters = [
     {
       name: 'type',
-      title: 'Any type',
+      title: 'Issue type',
+      placeholder: 'Any type',
       match: (issue, value) => issue.type === value
     },
     {
       name: 'tenant',
-      title: 'Any tenant',
+      title: 'Tenant',
+      placeholder: 'Any tenant',
       match: (issue, value) => issue.tenantId === value
     },
     {
       name: 'search',
-      title: 'Search',
+      placeholder: 'Search',
       match: (issue, value) => issue.id.indexOf(value) >= 0 ||
         issue.description && issue.description.indexOf(value) >= 0
     }

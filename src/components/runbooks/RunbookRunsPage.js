@@ -3,6 +3,7 @@ import {Link, withRouter} from 'react-router';
 import {observable, computed} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
+import cx from 'classnames';
 import {poll} from '../../decorators';
 
 import DataFilter from '../DataFilter';
@@ -98,17 +99,20 @@ export default class RunbookRunsPage extends Component {
   @observable filters = [
     {
       name: 'tag',
-      title: 'Any tag',
+      title: 'Runbook tag',
+      placeholder: 'Any tag',
       match: (runbookRun, value) => includes(runbookRun.runbook.tags, value)
     },
     {
       name: 'status',
-      title: 'Any status',
-      match: (runbookRun, value) => runbookRun.status === value
+      title: 'Latest run status',
+      placeholder: 'Any status',
+      match: (runbookRun, value) => runbookRun.status === value,
+      showOptionsFilter: false
     },
     {
       name: 'search',
-      title: 'Search',
+      placeholder: 'Search',
       match: (runbookRun, value) => runbookRun.runbook.name.indexOf(value) >= 0
     }
   ];
@@ -210,7 +214,12 @@ export default class RunbookRunsPage extends Component {
                             new Date(runbookRun.updatedAt).toLocaleString('en-us')
                           }
                         </td>
-                        <td>{RUNBOOK_RUN_STATUSES[runbookRun.status]}</td>
+                        <td className={cx({
+                          'text-success': runbookRun.status === 'finished',
+                          'text-danger': runbookRun.status === 'failed'
+                        })}>
+                          {RUNBOOK_RUN_STATUSES[runbookRun.status]}
+                        </td>
                       </tr>
                     )}
                   </tbody>

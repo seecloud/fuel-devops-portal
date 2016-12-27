@@ -24,8 +24,8 @@ html {
 
 body {
   overflow-y: scroll;
-  height:100%;
-  min-width: 650px;
+  height: 100%;
+  min-width: 800px;
 }
 
 @font-face {
@@ -57,6 +57,15 @@ body {
   font-size: 12px;
   text-rendering: optimizeLegibility;
   text-transform: uppercase;
+}
+.btn-lg {
+  font-size: 14px;
+}
+.btn-sm {
+  font-size: 11px;
+}
+.btn-xs {
+  font-size: 10px;
 }
 
 h1, h2, h3, h4 {
@@ -591,6 +600,11 @@ h1 {
       color: @text-color;
     }
   }
+  .pull-right {
+    button {
+      margin-top: 21px;
+    }
+  }
 }
 
 .dark-bg {
@@ -667,21 +681,40 @@ h1 {
   float: left;
   .data-filter {
     margin-right: 20px;
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: @gray;
+      height: 16px;
+      overflow: hidden;
+      text-transform: capitalize;
+    }
     button.dropdown-toggle {
       width: 160px;
-      padding: 6px 12px 3px;
+      display: table;
+      line-height: 0;
+      padding: 9px 12px;
+      vertical-align: middle;
+      text-align: left;
+      position: relative;
+      border-radius: @border-radius-base;
       span:not(.caret) {
         display: inline-block;
-        width: 110px;
+        width: 100px;
         overflow: hidden;
         text-align: left;
-      }
-      i.glyphicon {
-        top: -2px;
+        line-height: 1;
       }
       span.caret {
-        margin-top: -8px;
-        margin-left: 6px;
+        position: absolute;
+        right: 14px;
+        top: 13px;
+      }
+      .glyphicon {
+        position: absolute;
+        right: 28px;
+        top: 10px;
       }
     }
   }
@@ -692,37 +725,42 @@ h1 {
   }
   .input-group {
     input {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-right: none;
+      padding: 5px 28px 4px 12px;
     }
     button {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      padding-bottom: 5px;
+      margin-left: -35px;
     }
   }
   .popover {
     display: block;
     position: absolute;
-    top: 30px;
+    top: 53px;
+    .popover-content {
+      max-height: 200px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
     .option-filter {
       margin-bottom: 5px;
     }
     .option-list {
       min-width: 128px;
       > div {
-        padding:4px 5px;
+        padding: 8px 10px;
         margin: 0 -5px;
         cursor: pointer;
         line-height: 1;
+        text-transform: capitalize;
         .break-word();
         &:hover {
           background: #e6e6e6;
         }
       }
       span.no-matches-found {
+        display: block;
+        text-align: center;
         font-style: italic;
+        padding: 15px 0;
       }
     }
   }
@@ -769,5 +807,18 @@ h1 {
         border-bottom-width: 1px;
       }
     }
+    tbody > tr > td {
+      vertical-align: middle;
+      a {
+        text-decoration: underline;
+      }
+    }
   }
+}
+
+.label {
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 100;
+  margin-right: 4px;
 }

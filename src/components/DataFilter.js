@@ -10,11 +10,13 @@ export default class DataFilter extends Component {
     name: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
     title: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
     value: React.PropTypes.string,
     showOptionsFilter: React.PropTypes.bool
   }
 
   static defaultProps = {
+    placeholder: 'Select...',
     value: '',
     showOptionsFilter: true
   }
@@ -58,7 +60,7 @@ export default class DataFilter extends Component {
 
   render() {
     const {
-      name, title, value, options, disabled, onChange, showOptionsFilter
+      name, title, placeholder, value, options, disabled, onChange, showOptionsFilter
     } = this.props;
 
     if (options) {
@@ -70,12 +72,13 @@ export default class DataFilter extends Component {
           tabIndex='-1'
           onKeyDown={this.closeOnEscapeKey}
         >
+          <label>{title}</label>
           <button
             className='btn btn-default dropdown-toggle'
             disabled={disabled}
             onClick={() => this.toggle(!this.isOpen)}
           >
-            <span>{selectedOption ? selectedOption.title : title}</span>
+            <span>{selectedOption ? selectedOption.title : placeholder}</span>
             {selectedOption &&
               <i
                 className='glyphicon glyphicon-remove'
@@ -120,15 +123,16 @@ export default class DataFilter extends Component {
     return (
       <div className={cx('data-filter pull-left', name)}>
         <div className='input-group'>
+          <label>{title}</label>
           <input
             type='text'
             value={value}
-            placeholder={title || name}
+            placeholder={placeholder}
             disabled={disabled}
             onChange={(e) => onChange(name, e.target.value)}
           />
           <button
-            className='btn btn-default pull-right'
+            className='btn btn-link pull-right'
             disabled={!value}
             onClick={() => onChange(name, '')}
           >

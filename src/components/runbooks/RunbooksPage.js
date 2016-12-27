@@ -101,18 +101,20 @@ export default class RunbooksPage extends Component {
   @observable filters = [
     {
       name: 'tag',
-      title: 'Any tag',
+      title: 'Runbook tag',
+      placeholder: 'Any tag',
       match: (runbook, value) => includes(runbook.tags, value)
     },
     {
       name: 'status',
-      title: 'Any status',
+      title: 'Latest run status',
+      placeholder: 'Any status',
       match: (runbook, value) => runbook.latestRunStatus === value,
       showOptionsFilter: false
     },
     {
       name: 'search',
-      title: 'Search',
+      placeholder: 'Search',
       match: (runbook, value) => runbook.name.indexOf(value) >= 0 ||
         runbook.description.indexOf(value) >= 0
     }
@@ -193,7 +195,7 @@ export default class RunbooksPage extends Component {
               )}
             </div>
             <div className='pull-right'>
-              <button className='btn btn-default'>{'Create Runbook'}</button>
+              <button className='btn btn-primary'>{'Create Runbook'}</button>
             </div>
           </div>
           <div className='runbook-list'>
@@ -231,7 +233,11 @@ export default class RunbooksPage extends Component {
                             {runbook.name}
                           </Link>
                         </td>
-                        <td>{runbook.tags.join(', ')}</td>
+                        <td>
+                          {runbook.tags.map((tag) =>
+                            <span key={tag} className='label label-default'>{tag}</span>
+                          )}
+                        </td>
                         {!regionName && <td>{runbook.regionId}</td>}
                         <td>{runbook.latestRunDate}</td>
                         <td className={cx({
@@ -243,7 +249,7 @@ export default class RunbooksPage extends Component {
                         <td>{runbook.description}</td>
                         <td>
                           <button
-                            className='btn btn-default'
+                            className='btn btn-default btn-sm btn-block'
                             onClick={() => this.runRunbook(runbook)}
                             disabled={this.runbookRunInProgress.get(runbook.id)}
                           >
