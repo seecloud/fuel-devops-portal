@@ -6,7 +6,7 @@ import {every, map, includes} from 'lodash';
 import {poll} from '../../decorators';
 
 import DataFilter from '../DataFilter';
-import {RUNBOOK_STATUSES} from '../../consts';
+import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
 
 @withRouter
@@ -31,7 +31,9 @@ export default class RunbooksPage extends Component {
         runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
         type: 'bash',
         tags: ['Monitoring'],
-        status: 'scheduled',
+        latest_run: {
+          status: 'scheduled'
+        },
         regionId: 'east-3.hooli.net'
       },
       {
@@ -41,7 +43,9 @@ export default class RunbooksPage extends Component {
         runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
         type: 'bash',
         tags: ['Monitoring'],
-        status: 'in-progress',
+        latest_run: {
+          status: 'in-progress'
+        },
         regionId: 'east-3.hooli.net'
       },
       {
@@ -51,7 +55,9 @@ export default class RunbooksPage extends Component {
         runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
         type: 'bash',
         tags: ['Monitoring', 'Databases'],
-        status: 'finished',
+        latest_run: {
+          status: 'finished'
+        },
         regionId: 'east-3.hooli.net'
       },
       {
@@ -61,7 +67,9 @@ export default class RunbooksPage extends Component {
         runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
         type: 'bash',
         tags: ['Monitoring', 'Databases'],
-        status: 'failed',
+        latest_run: {
+          status: 'failed'
+        },
         regionId: 'east-3.hooli.net'
       },
       {
@@ -71,7 +79,7 @@ export default class RunbooksPage extends Component {
         runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
         type: 'bash',
         tags: ['Monitoring', 'Databases'],
-        status: null,
+        latest_run: null,
         regionId: 'east-3.hooli.net'
       }
     ];
@@ -91,7 +99,8 @@ export default class RunbooksPage extends Component {
     {
       name: 'status',
       title: 'Any status',
-      match: (runbook, value) => runbook.status === value
+      match: (runbook, value) => runbook.latestRunStatus === value,
+      showOptionsFilter: false
     },
     {
       name: 'search',
@@ -110,7 +119,7 @@ export default class RunbooksPage extends Component {
   get filterOptions() {
     return {
       tag: this.props.runbooks.tags.map((tag) => ({value: tag, title: tag})),
-      status: map(RUNBOOK_STATUSES, (title, status) => ({value: status, title}))
+      status: map(RUNBOOK_RUN_STATUSES, (title, status) => ({value: status, title}))
     };
   }
 
@@ -184,7 +193,7 @@ export default class RunbooksPage extends Component {
                         </td>
                         <td>{runbook.tags.join(', ')}</td>
                         {!regionName && <td>{runbook.regionId}</td>}
-                        <td>{RUNBOOK_STATUSES[runbook.status]}</td>
+                        <td>{RUNBOOK_RUN_STATUSES[runbook.latestRunStatus]}</td>
                         <td>{runbook.description}</td>
                         <td>
                           <button

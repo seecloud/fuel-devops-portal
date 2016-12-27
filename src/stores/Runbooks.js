@@ -6,12 +6,17 @@ export class Runbook {
   @observable name = null
   @observable description = null
   @observable type = null
-  @observable status = null
+  @observable latestRun = {}
   @observable regionId = null
   @observable tags = []
 
-  constructor(data) {
-    Object.assign(this, data);
+  constructor({latest_run: latestRun, ...attrs}) {
+    Object.assign(this, {latestRun, ...attrs});
+  }
+
+  @computed get latestRunStatus() {
+    if (this.latestRun) return this.latestRun.status;
+    return null;
   }
 }
 
