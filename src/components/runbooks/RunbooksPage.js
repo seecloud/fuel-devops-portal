@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
-import {observable, computed} from 'mobx';
+import {observable, computed, asMap} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
+import cx from 'classnames';
 import {poll} from '../../decorators';
 
 import DataFilter from '../DataFilter';
@@ -47,7 +48,7 @@ export default class RunbooksPage extends Component {
           type: 'bash',
           tags: ['Monitoring'],
           latest_run: {
-            status: 'in-progress',
+            status: 'failed',
             created_at: '2016-12-20T16:18:42.150736'
           },
           regionId: 'east-3.hooli.net'
@@ -142,6 +143,34 @@ export default class RunbooksPage extends Component {
     );
   }
 
+  @observable runbookRunInProgress = asMap({});
+
+  runRunbook = async (runbook) => {
+    this.runbookRunInProgress.set(runbook.id, true);
+    runbook.latestRun = {
+      status: 'scheduled',
+      created_at: '2016-12-28T16:18:42.150736'
+    };
+    const runbookUrl = `/api/v1/region/${
+      encodeURIComponent(runbook.regionId)
+    }/runbooks/${encodeURIComponent(runbook.id)}`;
+    await fetch(runbookUrl + '/run', {
+      method: 'POST',
+      body: JSON.stringify({
+        parameters: runbook.parameters.reduce((result, parameter) => {
+          result[parameter.name] = parameter.default;
+        }, {})
+      })
+    });
+    runbook.latestRun.status = 'in-progress';
+    await fetch(runbookUrl);
+    //const response = await fetch(runbookUrl);
+    //const {latest_run: latestRun, ...attrs} = await response.json();
+    //Object.assign(runbook, {latestRun, ...attrs});
+    runbook.latestRun.status = 'finished';
+    this.runbookRunInProgress.set(runbook.id, false);
+  }
+
   render() {
     const {params: {regionName}} = this.props;
     const runbooks = this.props.runbooks.items;
@@ -205,12 +234,18 @@ export default class RunbooksPage extends Component {
                         <td>{runbook.tags.join(', ')}</td>
                         {!regionName && <td>{runbook.regionId}</td>}
                         <td>{runbook.latestRunDate}</td>
-                        <td>{RUNBOOK_RUN_STATUSES[runbook.latestRunStatus]}</td>
+                        <td className={cx({
+                          'text-success': runbook.latestRunStatus === 'finished',
+                          'text-danger': runbook.latestRunStatus === 'failed'
+                        })}>
+                          {RUNBOOK_RUN_STATUSES[runbook.latestRunStatus]}
+                        </td>
                         <td>{runbook.description}</td>
                         <td>
                           <button
                             className='btn btn-default'
-                            onClick={() => this.runRunbook(runbook.id)}
+                            onClick={() => this.runRunbook(runbook)}
+                            disabled={this.runbookRunInProgress.get(runbook.id)}
                           >
                             {'Run'}
                           </button>

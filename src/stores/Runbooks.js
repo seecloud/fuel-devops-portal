@@ -9,6 +9,7 @@ export class Runbook {
   @observable latestRun = {}
   @observable regionId = null
   @observable tags = []
+  @observable parameters = []
 
   constructor({latest_run: latestRun, ...attrs}) {
     Object.assign(this, {latestRun, ...attrs});
@@ -20,7 +21,11 @@ export class Runbook {
   }
 
   @computed get latestRunDate() {
-    if (this.latestRun) return new Date(this.latestRun.created_at).toLocaleString('en-us');
+    if (this.latestRun) {
+      return new Date(this.latestRun.created_at).toLocaleDateString('en-US',
+        {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
+      );
+    }
     return null;
   }
 }
