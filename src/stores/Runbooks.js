@@ -1,19 +1,23 @@
 import {observable, computed} from 'mobx';
-import {uniq, flatMap, forEach, isEmpty} from 'lodash';
+import {uniq, flatMap, forEach, isEmpty, compact} from 'lodash';
 
 export class Runbook {
   @observable id = null
-  @observable name = null
-  @observable description = null
+  @observable name = ''
+  @observable description = ''
   @observable type = null
-  @observable latestRun = {}
+  @observable latestRun = null
   @observable regionId = null
   @observable tags = []
   @observable parameters = []
-  @observable runbook = null
+  @observable runbook = ''
 
   constructor({latest_run: latestRun, ...attrs}) {
     Object.assign(this, {latestRun, ...attrs});
+  }
+
+  @computed get isNew() {
+    return this.id === null;
   }
 
   @computed get latestRunStatus() {
@@ -39,7 +43,7 @@ export class Runbook {
     forEach(this.tags, (tag, index) => {
       tagErrors[index] = tag ? null : 'Empty value';
     });
-    if (tagErrors.length) errors.tags = tagErrors;
+    if (compact(tagErrors).length) errors.tags = tagErrors;
     let parameterErrors = [];
     forEach(this.parameters, (parameter, index) => {
       if (!parameter.name || !parameter.default) {

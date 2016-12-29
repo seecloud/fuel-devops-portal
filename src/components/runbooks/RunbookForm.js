@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import cx from 'classnames';
 import FileSaver from 'file-saver';
 
 import FileInput from '../FileInput';
 
+@inject('regions')
 @observer
 export default class RunbookForm extends Component {
   changeParameter = (index, attr, value) => {
@@ -42,7 +43,7 @@ export default class RunbookForm extends Component {
   }
 
   render() {
-    const {runbook} = this.props;
+    const {runbook, regions} = this.props;
     const errors = runbook.validationErrors || {};
     return (
       <div className='runbook-form'>
@@ -58,6 +59,23 @@ export default class RunbookForm extends Component {
           />
           <p className='help-block'>{errors.name}</p>
         </div>
+        {runbook.isNew &&
+          <div className='form-group'>
+            <label htmlFor='runbook-region' className='control-label'>{'Region'}</label>
+            <select
+              className='form-control'
+              id='runbook-region'
+              name='regionId'
+              defaultValue={runbook.regionId}
+              onChange={this.changeAttribute}
+            >
+              {regions.items.map((region) =>
+                <option key={region.name} value={region.name}>{region.name}</option>
+              )}
+            </select>
+            <p className='help-block' />
+          </div>
+        }
         <div className='form-group'>
           <label className='control-label'>{'Tags'}</label>
           {runbook.tags.map((tag, index) => {
@@ -126,7 +144,7 @@ export default class RunbookForm extends Component {
           onChange={this.uploadRunbook}
           error={errors.runbook}
         />
-        {runbook.runbook &&
+        {!runbook.isNew &&
           <div className='form-group'>
             <button
               className='btn btn-info btn-sm'
