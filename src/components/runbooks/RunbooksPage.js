@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
-import {observable, computed, asMap} from 'mobx';
+import {Modal} from 'react-bootstrap';
+import {observable, computed, asMap, action} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
 import cx from 'classnames';
@@ -10,9 +11,10 @@ import DataFilter from '../DataFilter';
 import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
 import RunbookSidebar from './RunbookSidebar';
+import RunbookForm from './RunbookForm';
 
 @withRouter
-@inject('runbooks')
+@inject('runbooks', 'regions')
 @observer
 @poll
 export default class RunbooksPage extends Component {
@@ -145,6 +147,12 @@ export default class RunbooksPage extends Component {
     );
   }
 
+  @observable isCreateRunbookDialogOpen = false;
+
+  async onRunbookCreate() {
+    await this.constructor.fetchData(this.props);
+  }
+
   @observable runbookRunInProgress = asMap({});
 
   runRunbook = async (runbook) => {
@@ -174,7 +182,7 @@ export default class RunbooksPage extends Component {
   }
 
   render() {
-    const {params: {regionName}} = this.props;
+    const {params: {regionName}, regions} = this.props;
     const runbooks = this.props.runbooks.items;
     return (
       <div>
@@ -195,7 +203,14 @@ export default class RunbooksPage extends Component {
               )}
             </div>
             <div className='pull-right'>
-              <button className='btn btn-primary'>{'Create Runbook'}</button>
+              <button
+                className='btn btn-primary'
+                onClick={() => {
+                  this.isCreateRunbookDialogOpen = true;
+                }}
+              >
+                {'Create Runbook'}
+              </button>
             </div>
           </div>
           <div className='runbook-list'>
@@ -268,9 +283,79 @@ export default class RunbooksPage extends Component {
                 </table>
               </div>
             }
+            {this.isCreateRunbookDialogOpen &&
+              <CreateRunbookDialog
+                regionName={regionName || regions.items[0].name}
+                onRunbookCreate={this.onRunbookCreate.bind(this)}
+                close={() => {
+                  this.isCreateRunbookDialogOpen = false;
+                }}
+              />
+            }
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+@observer
+class CreateRunbookDialog extends Component {
+  @observable formKey = Date.now();
+  @observable actionInProgress = false;
+  @observable newRunbook = null;
+
+  constructor(props) {
+    super(props);
+    this.newRunbook = new Runbook({regionId: props.regionName});
+  }
+
+  @action
+  updateForm = () => {
+    this.formKey = Date.now();
+  }
+
+  createRunbook = async () => {
+    this.actionInProgress = true;
+    const url = `/api/v1/region/${encodeURIComponent(this.newRunbook.regionId)}/runbooks/`;
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(this.newRunbook)
+    });
+    this.actionInProgress = false;
+    this.props.close();
+    this.props.onRunbookCreate();
+  }
+
+  render() {
+    return (
+      <Modal show backdrop='static' onHide={this.props.close}>
+        <Modal.Header closeButton>
+          <Modal.Title>{'Create Runbook'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <RunbookForm
+            key={this.formKey}
+            runbook={this.newRunbook}
+            updateForm={this.updateForm}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className='btn btn-default'
+            onClick={this.props.close}
+          >
+            {'Close'}
+          </button>
+          <button
+            className='btn btn-primary'
+            onClick={this.createRunbook}
+            disabled={!!this.newRunbook.validationErrors || this.actionInProgress}
+          >
+            {'Create'}
+          </button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
