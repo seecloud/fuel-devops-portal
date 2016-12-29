@@ -14,7 +14,7 @@ export default class InfrastructureServicePage extends Component {
 
     return (
       <div className='container-fluid'>
-        <h1>{'Infrastructure: ' + regionName}</h1>
+        <h1>{'Infrastructure: ' + regionName + ': ' + infrastructureService.title}</h1>
         {flattenDeep(toJS(infrastructureService.urls)).map((url) => {
           return (
             <div key={url}>
