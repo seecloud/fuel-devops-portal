@@ -19,8 +19,15 @@ export class InfrastructureServices {
     this.dataByRegion.set(regionName, infrastructureServices);
   }
 
-  get(regionName) {
-    return this.dataByRegion.get(regionName) || [];
+  get(regionName, infrastructureServiceId) {
+    const infrastructureServices = this.dataByRegion.get(regionName) || [];
+    if (infrastructureServiceId) {
+      return infrastructureServices.find((infrastructureService) => {
+        return infrastructureService.id === infrastructureServiceId;
+      }) || null;
+    } else {
+      return infrastructureServices;
+    }
   }
 }
 
