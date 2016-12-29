@@ -10,67 +10,10 @@ import {InfrastructureService} from '../../stores/InfrastructureServices';
 @observer
 export default class InfrastructureMultiRegionPage extends Component {
   static async fetchData({infrastructureServices}) {
-    //const url = `/api/v1/region/${encodeURIComponent(regionName)}/infra`;
-    //const response = await fetch(url);
-    //const responseBody = await response.json();
-    const responseBody = {
-      infra: {
-        'east-3.hooli.net': [
-          {
-            description: 'Web UI that manages OpenStack resources',
-            id: 'horizon',
-            title: 'Horizon',
-            urls: [
-              [
-                'http://none'
-              ]
-            ]
-          },
-          {
-            description: 'Gitlab with Git repositories with all projects source code',
-            id: 'git',
-            title: 'Git Source Control',
-            urls: [
-              [
-                'http://none'
-              ]
-            ]
-          },
-          {
-            description: 'JFrog Artifactory service that contains all cloud packages & images',
-            id: 'packages',
-            title: 'JFrog Artifactory Packages',
-            urls: [
-              [
-                'http://none'
-              ]
-            ]
-          }
-        ],
-        'north-2.piedpiper.net': [
-          {
-            description: 'Web UI that manages OpenStack resources',
-            id: 'horizon',
-            title: 'Horizon',
-            urls: [
-              [
-                'http://none'
-              ]
-            ]
-          },
-          {
-            description: 'Cloud Continues Integration and Deployment.',
-            id: 'jenkins',
-            title: 'Jenkins CI/CD',
-            urls: [
-              [
-                'http://none'
-              ]
-            ]
-          }
-        ]
-      }
-    };
+    const url = '/api/v1/infra';
+    const response = await fetch(url);
+    const responseBody = await response.json();
+
     transaction(() => {
       forEach(responseBody.infra, (plainInfrastructureServices, regionName) => {
         infrastructureServices.update(
