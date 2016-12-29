@@ -15,6 +15,7 @@ import RegionOverviewData from './stores/RegionOverviewData';
 import SecurityIssues from './stores/SecurityIssues';
 import Runbooks from './stores/Runbooks';
 import RunbookRuns from './stores/RunbookRuns';
+import InfrastructureServices from './stores/InfrastructureServices';
 
 const stores = {
   uiState: new UIState(),
@@ -24,7 +25,8 @@ const stores = {
   regionOverviewData: new RegionOverviewData(),
   securityIssues: new SecurityIssues(),
   runbooks: new Runbooks(),
-  runbookRuns: new RunbookRuns()
+  runbookRuns: new RunbookRuns(),
+  infrastructureServices: new InfrastructureServices()
 };
 
 ReactDOM.render(
