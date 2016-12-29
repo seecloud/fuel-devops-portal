@@ -20,6 +20,10 @@ import CapacityManagementPage from './components/CapacityManagementPage';
 import SecurityPage from './components/security/SecurityPage';
 import InfrastructureSingleRegionPage
   from './components/infrastructure/InfrastructureSingleRegionPage';
+import InfrastructureServicesOverviewPage
+  from './components/infrastructure/InfrastructureServicesOverviewPage';
+import InfrastructureServicePage
+  from './components/infrastructure/InfrastructureServicePage';
 import InfrastructureMultiRegionPage
   from './components/infrastructure/InfrastructureMultiRegionPage';
 import RunbooksPage from './components/runbooks/RunbooksPage';
@@ -118,7 +122,25 @@ export default function createRoutes(stores) {
           path='infrastructure'
           component={InfrastructureSingleRegionPage}
           onEnter={partial(fetchDataHook, stores)}
-        />
+        >
+          <IndexRoute
+            component={InfrastructureServicesOverviewPage}
+          />
+          <Route
+            path=':infrastructureServiceId'
+            component={InfrastructureServicePage}
+            onEnter={(nextState, replace, callback) => {
+              const {regionName, infrastructureServiceId} = nextState.params;
+              const infrastructureService = stores.infrastructureServices.get(
+                regionName, infrastructureServiceId
+              );
+              if (!infrastructureService) {
+                replace(`/region/${encodeURIComponent(regionName)}/infrastructure`);
+              }
+              callback();
+            }}
+          />
+        </Route>
       </Route>
 
       <Route
