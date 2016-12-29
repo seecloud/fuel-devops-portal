@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
 
 import {InfrastructureService} from '../../stores/InfrastructureServices';
+import InfrastructureSidebar from './InfrastructureSidebar';
 
 @inject('infrastructureServices')
 @observer
@@ -55,6 +56,7 @@ export default class InfrastructureSingleRegionPage extends Component {
   render() {
     return (
       <div>
+        <InfrastructureSidebar />
         {this.props.children}
       </div>
     );
