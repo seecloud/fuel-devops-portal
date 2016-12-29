@@ -34,6 +34,11 @@ export default class DashboardPage extends Component {
             title='Security'
             text='Monitory Security violations in cloud resources, e.g. wide open security groups'
           />
+          <DashboardPageLink
+            to='/all-regions/infrastructure'
+            title='Infrastructure'
+            text='Access user interfaces of available infrastructure services'
+          />
         </div>
       </div>
     );

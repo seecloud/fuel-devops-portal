@@ -74,6 +74,7 @@ export default class Navbar extends Component {
       {url: 'capacity', title: 'Capacity'},
       {url: 'runbooks', title: 'Runbooks'},
       {url: 'security', title: 'Security'},
+      {url: 'infrastructure', title: 'Infrastructure'}
     ]
   }
 
