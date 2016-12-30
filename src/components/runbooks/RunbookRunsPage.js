@@ -25,78 +25,13 @@ function formatDate(date) {
 @poll
 export default class RunbookRunsPage extends Component {
   static async fetchData(
-    {runbookRuns}
-    //{params: {regionName}}
+    {runbookRuns, params: {regionName}}
   ) {
-    //const url = `/api/v1${
-    //  regionName ? '/region/' + encodeURIComponent(regionName) : ''
-    //}/runbook_runs/`;
-    //const response = await fetch(url);
-    //const responseBody = await response.json();
-    const responseBody = {
-      runs: [
-        {
-          id: 434,
-          updated_at: '2016-12-20T16:27:42.150227',
-          created_at: '2016-12-20T16:18:42.150142',
-          status: 'scheduled',
-          runbook: {
-            id: 602,
-            name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
-            tags: ['Monitoring']
-          }
-        },
-        {
-          id: 435,
-          updated_at: '2016-12-20T16:27:42.150227',
-          created_at: '2016-12-20T16:18:42.150142',
-          status: 'scheduled',
-          runbook: {
-            id: 602,
-            name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
-            tags: ['Monitoring', 'Databases']
-          }
-        },
-        {
-          id: 436,
-          updated_at: null,
-          created_at: '2016-12-20T16:18:42.150142',
-          status: 'in-progress',
-          runbook: {
-            id: 602,
-            name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
-            tags: ['Monitoring', 'Databases']
-          }
-        },
-        {
-          id: 437,
-          updated_at: '2016-12-20T16:27:42.150227',
-          created_at: '2016-12-20T16:18:42.150142',
-          status: 'finished',
-          runbook: {
-            id: 602,
-            name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
-            tags: []
-          }
-        },
-        {
-          id: 438,
-          updated_at: '2016-12-20T16:27:42.150227',
-          created_at: '2016-12-20T16:18:42.150142',
-          status: 'scheduled',
-          runbook: {
-            id: 602,
-            name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
-            tags: ['Databases']
-          }
-        }
-      ]
-    };
+    const url = `/api/v1${
+      regionName ? '/region/' + encodeURIComponent(regionName) : ''
+    }/runbook_runs/`;
+    const response = await fetch(url);
+    const responseBody = await response.json();
     runbookRuns.items = responseBody.runs.map((runbookRun) => new RunbookRun(runbookRun));
   }
 

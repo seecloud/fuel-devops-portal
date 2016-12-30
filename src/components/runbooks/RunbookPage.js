@@ -25,67 +25,14 @@ export default class RunbookPage extends Component {
   static async fetchData(
     {runbooks, runbookRuns, params: {runbookId}}
   ) {
-    //const runbookUrl = `/api/v1/runbooks/${runbookId}`;
-    //const runbookResponse = await fetch(runbookUrl);
-    //const runbookResponseBody = await runbookResponse.json();
-    const runbookResponseBody = {
-      id: runbookId,
-      description: 'Demo runbook description',
-      name: 'Demo runbook',
-      runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-      type: 'bash',
-      tags: ['Monitoring'],
-      status: 'scheduled',
-      regionId: 'east-3.hooli.net'
-    };
+    const runbookUrl = `/api/v1/runbooks/${runbookId}`;
+    const runbookResponse = await fetch(runbookUrl);
+    const runbookResponseBody = await runbookResponse.json();
     runbooks.items = [new Runbook(runbookResponseBody)];
 
-    //const runbookRunsUrl = `/api/v1/runbook_runs?runbook=${runbookId}`;
-    //const runbookRunsResponse = await fetch(runbookRunsUrl);
-    //const runbookRunsResponseBody = await runbookRunsResponse.json();
-    const runbookRunsResponseBody = {
-      runs: [
-        {
-          id: 434,
-          updated_at: null,
-          created_at: '2016-12-20T16:18:42.150142',
-          status: 'scheduled',
-          runbook: {
-            id: '602',
-            name: 'Demo runbook',
-            tags: ['Monitoring']
-          },
-          regionId: 'region_one',
-          user: 'cloud_user'
-        },
-        {
-          id: 251,
-          updated_at: '2016-12-20T16:33:42.150344',
-          created_at: '2016-12-20T16:18:42.150312',
-          status: 'failed',
-          runbook: {
-            id: '602',
-            name: 'Demo runbook',
-            tags: ['Monitoring']
-          },
-          regionId: 'region_one',
-          user: 'cloud_user'
-        },
-        {
-          id: 248,
-          updated_at: '2016-12-20T16:33:42.150344',
-          created_at: '2016-12-20T16:18:42.150385',
-          status: 'finished',
-          runbook: {
-            id: '602',
-            name: 'Demo runbook',
-            tags: ['Monitoring']
-          },
-          regionId: 'region_one',
-          user: 'cloud_user'
-        }
-      ]
-    };
+    const runbookRunsUrl = `/api/v1/runbook_runs?runbook=${runbookId}`;
+    const runbookRunsResponse = await fetch(runbookRunsUrl);
+    const runbookRunsResponseBody = await runbookRunsResponse.json();
     runbookRuns.items = runbookRunsResponseBody.runs.map((run) => new RunbookRun(run));
   }
 
@@ -129,9 +76,9 @@ export default class RunbookPage extends Component {
       body: JSON.stringify(this.newRunbook)
     });
     await fetch(runbookUrl);
-    //const response = await fetch(runbookUrl);
-    //const {latest_run: latestRun, ...attrs} = await response.json();
-    //Object.assign(runbook, {latestRun, ...attrs});
+    const response = await fetch(runbookUrl);
+    const {latest_run: latestRun, ...attrs} = await response.json();
+    Object.assign(runbook, {latestRun, ...attrs});
     this.actionInProgress = false;
   }
 
