@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router';
 import {Modal} from 'react-bootstrap';
-import {observable, computed, asMap, action} from 'mobx';
+import {observable, computed, action} from 'mobx';
 import {observer, inject} from 'mobx-react';
-import {every, map, includes} from 'lodash';
+import {every, map, includes, compact} from 'lodash';
 import cx from 'classnames';
 import {poll} from '../../decorators';
 
@@ -40,7 +40,11 @@ export default class RunbooksPage extends Component {
             status: 'scheduled',
             created_at: '2016-12-20T16:18:42.150736'
           },
-          regionId: 'east-3.hooli.net'
+          regionId: 'east-3.hooli.net',
+          parameters: [
+            {name: 'attr1', default: 'str1', type: 'string'},
+            {name: 'attr2', default: 'str2', type: 'string'}
+          ]
         },
         {
           id: '246',
@@ -153,32 +157,10 @@ export default class RunbooksPage extends Component {
     await this.constructor.fetchData(this.props);
   }
 
-  @observable runbookRunInProgress = asMap({});
+  @observable openRunRunbookDialogId = null;
 
-  runRunbook = async (runbook) => {
-    this.runbookRunInProgress.set(runbook.id, true);
-    runbook.latestRun = {
-      status: 'scheduled',
-      created_at: '2016-12-28T16:18:42.150736'
-    };
-    const runbookUrl = `/api/v1/region/${
-      encodeURIComponent(runbook.regionId)
-    }/runbooks/${encodeURIComponent(runbook.id)}`;
-    await fetch(runbookUrl + '/run', {
-      method: 'POST',
-      body: JSON.stringify({
-        parameters: runbook.parameters.reduce((result, parameter) => {
-          result[parameter.name] = parameter.default;
-        }, {})
-      })
-    });
-    runbook.latestRun.status = 'in-progress';
-    await fetch(runbookUrl);
-    //const response = await fetch(runbookUrl);
-    //const {latest_run: latestRun, ...attrs} = await response.json();
-    //Object.assign(runbook, {latestRun, ...attrs});
-    runbook.latestRun.status = 'finished';
-    this.runbookRunInProgress.set(runbook.id, false);
+  async onRunbookRun() {
+    await this.constructor.fetchData(this.props);
   }
 
   render() {
@@ -271,11 +253,20 @@ export default class RunbooksPage extends Component {
                         <td>
                           <button
                             className='btn btn-default btn-sm btn-block'
-                            onClick={() => this.runRunbook(runbook)}
-                            disabled={this.runbookRunInProgress.get(runbook.id)}
+                            onClick={() => {
+                              this.openRunRunbookDialogId = runbook.id;
+                            }}
                           >
                             {'Run'}
                           </button>
+                          <RunRunbookDialog
+                            show={this.openRunRunbookDialogId === runbook.id}
+                            runbook={runbook}
+                            onRunbookRun={() => this.onRunbookRun()}
+                            close={() => {
+                              this.openRunRunbookDialogId = null;
+                            }}
+                          />
                         </td>
                       </tr>
                     )}
@@ -283,15 +274,14 @@ export default class RunbooksPage extends Component {
                 </table>
               </div>
             }
-            {this.isCreateRunbookDialogOpen &&
-              <CreateRunbookDialog
-                regionName={regionName || regions.items[0].name}
-                onRunbookCreate={this.onRunbookCreate.bind(this)}
-                close={() => {
-                  this.isCreateRunbookDialogOpen = false;
-                }}
-              />
-            }
+            <CreateRunbookDialog
+              show={this.isCreateRunbookDialogOpen}
+              regionName={regionName || regions.items[0].name}
+              onRunbookCreate={() => this.onRunbookCreate()}
+              close={() => {
+                this.isCreateRunbookDialogOpen = false;
+              }}
+            />
           </div>
         </div>
       </div>
@@ -329,7 +319,7 @@ class CreateRunbookDialog extends Component {
 
   render() {
     return (
-      <Modal show backdrop='static' onHide={this.props.close}>
+      <Modal show={this.props.show} backdrop='static' onHide={this.props.close}>
         <Modal.Header closeButton>
           <Modal.Title>{'Create Runbook'}</Modal.Title>
         </Modal.Header>
@@ -353,6 +343,96 @@ class CreateRunbookDialog extends Component {
             disabled={!!this.newRunbook.validationErrors || this.actionInProgress}
           >
             {'Create'}
+          </button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}
+
+@observer
+class RunRunbookDialog extends Component {
+  @observable parameters = [];
+  @observable actionInProgress = false;
+
+  constructor(props) {
+    super(props);
+    this.parameters = props.runbook.parameters.slice();
+  }
+
+  runRunbook = async () => {
+    this.actionInProgress = true;
+    const url = `/api/v1/region/${
+      encodeURIComponent(this.props.runbook.regionId)
+    }/runbooks/${encodeURIComponent(this.props.runbook.id)}/run`;
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        parameters: this.parameters.reduce((result, parameter) => {
+          result[parameter.name] = parameter.default;
+          return result;
+        }, {})
+      })
+    });
+    this.actionInProgress = false;
+    this.props.close();
+    this.props.onRunbookRun();
+  }
+
+  @action
+  changeParameter = (index, value) => {
+    this.parameters[index].default = value;
+  }
+
+  @computed get errors() {
+    return this.parameters.map((parameter) => parameter.default ? null : 'Empty value');
+  }
+
+  render() {
+    return (
+      <Modal show={this.props.show} backdrop='static' onHide={this.props.close}>
+        <Modal.Header closeButton>
+          <Modal.Title>{'Run Runbook: ' + this.props.runbook.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className='runbook-form'>
+            {'Click Run to confirm.'}
+            {!!this.parameters.length &&
+              <div className='runbook-parameters'>
+                <label className='control-label'>{'Parameters'}</label>
+                {this.parameters.map((parameter, index) => {
+                  return (
+                    <div
+                      key={'parameter' + parameter.name}
+                      className={cx('form-group', {'has-error': !!this.errors[index]})}
+                    >
+                      <label className='control-label'>{parameter.name}</label>
+                      <input
+                        type='text'
+                        className='form-control'
+                        defaultValue={parameter.default}
+                        onChange={(e) => this.changeParameter(index, e.target.value)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            }
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className='btn btn-default'
+            onClick={this.props.close}
+          >
+            {'Close'}
+          </button>
+          <button
+            className='btn btn-primary'
+            onClick={this.runRunbook}
+            disabled={this.actionInProgress || !!compact(this.errors).length}
+          >
+            {'Run'}
           </button>
         </Modal.Footer>
       </Modal>
