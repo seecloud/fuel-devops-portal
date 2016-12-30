@@ -194,10 +194,7 @@ class RunbookRuns extends Component {
   render() {
     return (
       <div>
-        <div className='row'>
-          <div className='col-xs-6'>{'Runbook Runs'}</div>
-          <div className='col-xs-6' />
-        </div>
+        <h3>{'Runbook Runs'}</h3>
         <div className='data-table'>
           <table className='table table-bordered table-hover'>
             <thead>

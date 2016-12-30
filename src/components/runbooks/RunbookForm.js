@@ -58,7 +58,7 @@ export default class RunbookForm extends Component {
           />
           <p className='help-block'>{errors.name}</p>
         </div>
-        <div className='runbook-tags'>
+        <div className='form-group'>
           <label className='control-label'>{'Tags'}</label>
           {runbook.tags.map((tag, index) => {
             const error = (errors.tags || [])[index];
@@ -66,27 +66,27 @@ export default class RunbookForm extends Component {
               <div className='row' key={'tag' + index}>
                 <div className='col-xs-5'>
                   <div className={cx('form-group', {'has-error': !!error})}>
-                    <input
-                      type='text'
-                      className='form-control'
-                      defaultValue={tag}
-                      onChange={(e) => this.changeTag(index, e.target.value)}
-                    />
+                    <div className='input-group'>
+                      <input
+                        type='text'
+                        className='form-control'
+                        defaultValue={tag}
+                        onChange={(e) => this.changeTag(index, e.target.value)}
+                      />
+                      <div
+                        className='input-group-addon'
+                        onClick={() => this.removeTag(index)}
+                      >
+                        <i className='glyphicon glyphicon-minus-sign' />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className='col-xs-2'>
-                  <button
-                    className='btn btn-link'
-                    onClick={() => this.removeTag(index)}
-                  >
-                    <i className='glyphicon glyphicon-minus-sign' />
-                  </button>
                 </div>
               </div>
             );
           })}
           <button
-            className='btn btn-default'
+            className='btn btn-info btn-sm'
             onClick={this.addTag}
           >
             {'Add Tag'}
@@ -119,19 +119,6 @@ export default class RunbookForm extends Component {
           />
           <p className='help-block'>{errors.description}</p>
         </div>
-        {runbook.runbook &&
-          <button
-            className='btn btn-default'
-            onClick={() => {
-              FileSaver.saveAs(
-                new Blob([runbook.runbook], {type: 'application/octet-stream'}),
-                runbook.name
-              );
-            }}
-          >
-            {'Download runbook'}
-          </button>
-        }
         <FileInput
           id='runbook-script'
           name='runbook'
@@ -139,7 +126,22 @@ export default class RunbookForm extends Component {
           onChange={this.uploadRunbook}
           error={errors.runbook}
         />
-        <div className='runbook-parameters'>
+        {runbook.runbook &&
+          <div className='form-group'>
+            <button
+              className='btn btn-info btn-sm'
+              onClick={() => {
+                FileSaver.saveAs(
+                  new Blob([runbook.runbook], {type: 'application/octet-stream'}),
+                  runbook.name
+                );
+              }}
+            >
+              {'Download runbook'}
+            </button>
+          </div>
+        }
+        <div className='form-group'>
           <label className='control-label'>{'Parameters'}</label>
           {!!runbook.parameters.length &&
             <div className='row'>
@@ -186,12 +188,14 @@ export default class RunbookForm extends Component {
               </div>
             );
           })}
-          <button
-            className='btn btn-default'
-            onClick={this.addParameter}
-          >
-            {'Add Parameter'}
-          </button>
+          <div>
+            <button
+              className='btn btn-info btn-sm'
+              onClick={this.addParameter}
+              >
+              {'Add Parameter'}
+            </button>
+          </div>
         </div>
       </div>
     );
