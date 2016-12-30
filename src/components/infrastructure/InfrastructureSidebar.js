@@ -12,8 +12,7 @@ export default class InfrastructureSidebar extends Component {
     const urlPrefix = `/region/${encodeURIComponent(regionName)}/infrastructure`;
     const navigationItems = infrastructureServices.get(regionName).map((infrastructureService) => ({
       url: `${urlPrefix}/${encodeURIComponent(infrastructureService.id)}`,
-      title: infrastructureService.title,
-      iconClassName: 'health-icon'
+      title: infrastructureService.title
     }));
 
     return (
