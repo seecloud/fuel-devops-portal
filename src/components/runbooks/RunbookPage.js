@@ -4,6 +4,7 @@ import {observable, computed, action} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {isEqual} from 'lodash';
 import cx from 'classnames';
+import FileSaver from 'file-saver';
 
 import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
@@ -123,7 +124,9 @@ export default class RunbookPage extends Component {
     const runbook = runbooks.get(runbookId);
     const runbookUrl = `/api/v1/region/${
       encodeURIComponent(runbook.regionId)
-    }/runbooks/${encodeURIComponent(runbook.id)}`;
+    }/runbooks/${
+      encodeURIComponent(runbook.id)
+    }`;
     await fetch(runbookUrl, {
       method: 'PUT',
       body: JSON.stringify(this.newRunbook)
@@ -141,46 +144,51 @@ export default class RunbookPage extends Component {
         <div className='container-fluid'>
           <h1>{'Runbook'}</h1>
           <div className='btn-toolbar'>
-            <div className='pull-left'>
-              <Link to='/all-regions/runbooks'>{'Back to runbook list'}</Link>
-            </div>
-            <div className='pull-right'>
-              <button
-                className='btn btn-primary'
-                disabled={!this.hasChanges}
-                onClick={this.cancelChanges}
-              >
-                {'Cancel Changes'}
-              </button>
-              <button
-                className='btn btn-primary'
-                disabled={
-                  !this.hasChanges ||
-                  !!this.newRunbook.validationErrors ||
-                  this.actionInProgress
-                }
-                onClick={this.saveChanges}
-              >
-                {'Update Runbook'}
-              </button>
-            </div>
+            <Link to='/all-regions/runbooks'>
+              <i className='glyphicon glyphicon-chevron-left' />
+              {'Back to runbook list'}
+            </Link>
           </div>
-          <div className='runbook-list'>
-            <div className='data-table-toolbar'>
-              <div className='left' />
-              <div className='right' />
+          <div className='row'>
+            <div className='col-xs-5 runbook-form'>
+              <RunbookForm
+                key={this.formKey}
+                runbook={this.newRunbook}
+                updateForm={this.updateForm}
+              />
+              <div className='form-group form-control-buttons'>
+                <button
+                  className='btn btn-primary'
+                  disabled={
+                    !this.hasChanges ||
+                    !!this.newRunbook.validationErrors ||
+                    this.actionInProgress
+                  }
+                >
+                  {'Update Runbook'}
+                </button>
+                <button
+                  className='btn btn-default'
+                  disabled={!this.hasChanges}
+                  onClick={this.cancelChanges}
+                >
+                  {'Cancel Changes'}
+                </button>
+                <button
+                  className='btn btn-default'
+                  onClick={() => {
+                    FileSaver.saveAs(
+                      new Blob([this.newRunbook.runbook], {type: 'application/octet-stream'}),
+                      this.newRunbook.name
+                    );
+                  }}
+                >
+                  {'Download Runbook'}
+                </button>
+              </div>
             </div>
-            <div className='row'>
-              <div className='col-xs-6 runbook-form'>
-                <RunbookForm
-                  key={this.formKey}
-                  runbook={this.newRunbook}
-                  updateForm={this.updateForm}
-                />
-              </div>
-              <div className='col-xs-6 run-list'>
-                <RunbookRuns />
-              </div>
+            <div className='col-xs-7'>
+              <RunbookRuns />
             </div>
           </div>
         </div>
@@ -193,8 +201,8 @@ export default class RunbookPage extends Component {
 class RunbookRuns extends Component {
   render() {
     return (
-      <div>
-        <h3>{'Runbook Runs'}</h3>
+      <div className='runbook-table'>
+        <h4>{'Runbook Runs'}</h4>
         <div className='data-table'>
           <table className='table table-bordered table-hover'>
             <thead>

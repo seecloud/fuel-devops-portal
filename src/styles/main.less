@@ -88,7 +88,7 @@ h1 {
   }
   h1 {
     font-size: 26px;
-    margin: 20px 4px;
+    margin: 20px 0;
   }
 }
 
@@ -603,11 +603,6 @@ h1 {
       color: @text-color;
     }
   }
-  .pull-right {
-    button {
-      margin-top: 21px;
-    }
-  }
 }
 
 .dark-bg {
@@ -767,6 +762,11 @@ h1 {
       }
     }
   }
+  & + .pull-right {
+    button {
+      margin-top: 21px;
+    }
+  }
 }
 
 .stats {
@@ -826,12 +826,26 @@ h1 {
   margin-right: 4px;
 }
 
+.input-with-action {
+  position: relative;
+  input {
+    position: relative;
+    padding-right: 30px;
+    margin-bottom: 10px;
+  }
+  .btn {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    display: inline-block;
+    z-index: 999;
+    margin: 0;
+  }
+}
+
 input[type=file] {
   display: none;
   position: absolute;
-}
-.input-group-addon {
-  cursor: pointer;
 }
 input.file-name[readonly] {
   background-color: white;
@@ -840,9 +854,47 @@ input.file-name[readonly] {
 
 .runbook-form {
   .form-group {
+    margin-bottom: 20px;
     label {
       font-weight: 400;
+      position: relative;
+      display: block;
+      button {
+        font-family: 'open sans';
+        position: absolute;
+        top: -5px;
+        margin-left: 20px;
+        font-weight: 600;
+      }
     }
+    textarea {
+      resize: none;
+    }
+    .help-block {
+      display: block;
+      font-size: 12px;
+      margin: 6px 14px;
+    }
+    .form-control {
+      &:focus {
+        box-shadow: none;
+      }
+    }
+    .sub-label {
+      font-size: 12px;
+    }
+    &.form-control-buttons {
+      margin-top: 40px;
+      button {
+        margin-right: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+.runbook-table {
+  h4 {
+    margin: 0px 0px 10px 5px;
   }
 }
 

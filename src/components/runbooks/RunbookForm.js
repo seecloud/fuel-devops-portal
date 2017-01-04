@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 import cx from 'classnames';
-import FileSaver from 'file-saver';
 
 import FileInput from '../FileInput';
 
@@ -47,7 +46,7 @@ export default class RunbookForm extends Component {
     const errors = runbook.validationErrors || {};
     return (
       <div className='runbook-form'>
-        <div className={cx('form-group', {'has-error': !!errors.name})}>
+        <div className={cx('form-group', {'has-error': errors.name})}>
           <label htmlFor='runbook-name' className='control-label'>{'Name'}</label>
           <input
             type='text'
@@ -77,40 +76,40 @@ export default class RunbookForm extends Component {
           </div>
         }
         <div className='form-group'>
-          <label className='control-label'>{'Tags'}</label>
-          {runbook.tags.map((tag, index) => {
-            const error = (errors.tags || [])[index];
-            return (
-              <div className='row' key={'tag' + index}>
-                <div className='col-xs-5'>
-                  <div className={cx('form-group', {'has-error': !!error})}>
-                    <div className='input-group'>
-                      <input
-                        type='text'
-                        className='form-control'
-                        defaultValue={tag}
-                        onChange={(e) => this.changeTag(index, e.target.value)}
-                      />
-                      <div
-                        className='input-group-addon'
-                        onClick={() => this.removeTag(index)}
-                      >
-                        <i className='glyphicon glyphicon-minus-sign' />
-                      </div>
+          <label className='control-label'>
+            {'Tags'}
+            <button className='btn btn-link' onClick={this.addTag}>
+              {'Add Tag'}
+            </button>
+          </label>
+          <div className='row'>
+            {runbook.tags.map((tag, index) => {
+              const error = (errors.tags || [])[index];
+              return (
+                <div
+                  key={index}
+                  className='col-xs-12 col-md-6 col-lg-4'
+                >
+                  <div className={cx('form-group input-with-action', {'has-error': error})}>
+                    <input
+                      type='text'
+                      className='form-control'
+                      defaultValue={tag}
+                      onChange={(e) => this.changeTag(index, e.target.value)}
+                    />
+                    <div
+                      className='btn btn-link'
+                      onClick={() => this.removeTag(index)}
+                    >
+                      <i className='glyphicon glyphicon-remove' />
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-          <button
-            className='btn btn-info btn-sm'
-            onClick={this.addTag}
-          >
-            {'Add Tag'}
-          </button>
+              );
+            })}
+          </div>
         </div>
-        <div className={cx('form-group', {'has-error': !!errors.type})}>
+        <div className={cx('form-group', {'has-error': errors.type})}>
           <label htmlFor='runbook-type' className='control-label'>{'Type'}</label>
           <input
             type='text'
@@ -122,9 +121,7 @@ export default class RunbookForm extends Component {
           />
           <p className='help-block'>{errors.type}</p>
         </div>
-        <div className={
-          cx('form-group', {'has-error': !!errors.description})
-        }>
+        <div className={cx('form-group', {'has-error': errors.description})}>
           <label htmlFor='runbook-description' className='control-label'>
             {'Description'}
           </label>
@@ -140,43 +137,33 @@ export default class RunbookForm extends Component {
         <FileInput
           id='runbook-script'
           name='runbook'
-          label='Upload runbook'
+          label='Upload Runbook'
           onChange={this.uploadRunbook}
           error={errors.runbook}
         />
-        {!runbook.isNew &&
-          <div className='form-group'>
-            <button
-              className='btn btn-info btn-sm'
-              onClick={() => {
-                FileSaver.saveAs(
-                  new Blob([runbook.runbook], {type: 'application/octet-stream'}),
-                  runbook.name
-                );
-              }}
-            >
-              {'Download runbook'}
-            </button>
-          </div>
-        }
         <div className='form-group'>
-          <label className='control-label'>{'Parameters'}</label>
+          <label className='control-label'>
+            {'Parameters'}
+            <button className='btn btn-link' onClick={this.addParameter}>
+              {'Add Parameter'}
+            </button>
+          </label>
           {!!runbook.parameters.length &&
             <div className='row'>
               <div className='col-xs-5'>
-                <span className='input-subtitle'>{'Name'}</span>
+                <label className='control-label sub-label'>{'Name'}</label>
               </div>
-              <div className='col-xs-6'>
-                <span className='input-subtitle'>{'Default Value'}</span>
+              <div className='col-xs-5'>
+                <label className='control-label sub-label'>{'Default Value'}</label>
               </div>
             </div>
           }
           {runbook.parameters.map((parameter, index) => {
             const error = (errors.parameters || [])[index] || {};
             return (
-              <div className='row' key={'parameter' + index}>
+              <div className='row' key={index}>
                 <div className='col-xs-5'>
-                  <div className={cx('form-group', {'has-error': !!error.name})}>
+                  <div className={cx('form-group', {'has-error': error.name})}>
                     <input
                       type='text'
                       className='form-control'
@@ -186,7 +173,7 @@ export default class RunbookForm extends Component {
                   </div>
                 </div>
                 <div className='col-xs-5'>
-                  <div className={cx('form-group', {'has-error': !!error.default})}>
+                  <div className={cx('form-group', {'has-error': error.default})}>
                     <input
                       type='text'
                       className='form-control'
@@ -200,20 +187,12 @@ export default class RunbookForm extends Component {
                     className='btn btn-link'
                     onClick={() => this.removeParameter(index)}
                   >
-                    <i className='glyphicon glyphicon-minus-sign' />
+                    <i className='glyphicon glyphicon-remove' />
                   </button>
                 </div>
               </div>
             );
           })}
-          <div>
-            <button
-              className='btn btn-info btn-sm'
-              onClick={this.addParameter}
-              >
-              {'Add Parameter'}
-            </button>
-          </div>
         </div>
       </div>
     );
