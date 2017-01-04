@@ -75,7 +75,7 @@ export default class FileInput extends Component {
               onChange={this.readFile}
               disabled={disabled}
             />
-            <div className='input-group'>
+            <div className='input-with-action'>
               <input
                 className='form-control file-name'
                 type='text'
@@ -87,7 +87,7 @@ export default class FileInput extends Component {
                 readOnly
               />
               <div
-                className='input-group-addon'
+                className='btn btn-link'
                 onClick={this.fileName ? this.removeFile : this.pickFile}
               >
                 <i
