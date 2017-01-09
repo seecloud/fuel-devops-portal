@@ -19,84 +19,13 @@ import RunbookForm from './RunbookForm';
 @poll
 export default class RunbooksPage extends Component {
   static async fetchData(
-    {runbooks}
-    //{runbooks, params: {regionName}}
+    {runbooks, params: {regionName}}
   ) {
-    //const url = `/api/v1${
-    //  regionName ? '/region/' + encodeURIComponent(regionName) : ''
-    //}/runbooks/`;
-    //const response = await fetch(url);
-    //const responseBody = await response.json();
-    const responseBody = {
-      runbooks: [
-        {
-          id: '602',
-          description: 'Demo runbook description',
-          name: 'Demo runbook',
-          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-          type: 'bash',
-          tags: ['Monitoring'],
-          latest_run: {
-            status: 'scheduled',
-            created_at: '2016-12-20T16:18:42.150736'
-          },
-          regionId: 'east-3.hooli.net',
-          parameters: [
-            {name: 'attr1', default: 'str1', type: 'string'},
-            {name: 'attr2', default: 'str2', type: 'string'}
-          ]
-        },
-        {
-          id: '246',
-          description: 'Demo runbook description',
-          name: 'Demo runbook',
-          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-          type: 'bash',
-          tags: ['Monitoring'],
-          latest_run: {
-            status: 'failed',
-            created_at: '2016-12-20T16:18:42.150736'
-          },
-          regionId: 'east-3.hooli.net'
-        },
-        {
-          id: '161',
-          description: 'Demo runbook description',
-          name: 'Demo runbook',
-          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-          type: 'bash',
-          tags: ['Monitoring', 'Databases'],
-          latest_run: {
-            status: 'finished',
-            created_at: '2016-12-20T16:18:42.150736'
-          },
-          regionId: 'east-3.hooli.net'
-        },
-        {
-          id: '622',
-          description: 'Demo runbook description',
-          name: 'Demo runbook',
-          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-          type: 'bash',
-          tags: ['Monitoring', 'Databases'],
-          latest_run: {
-            status: 'failed',
-            created_at: '2016-12-20T16:18:42.150736'
-          },
-          regionId: 'east-3.hooli.net'
-        },
-        {
-          id: '622',
-          description: 'Demo runbook description',
-          name: 'Demo runbook',
-          runbook: 'IyEvYmluL2Jhc2gKCmVjaG8gIkhlbGxvIFdvcmxkISIK',
-          type: 'bash',
-          tags: ['Monitoring', 'Databases'],
-          latest_run: null,
-          regionId: 'east-3.hooli.net'
-        }
-      ]
-    };
+    const url = `/api/v1${
+      regionName ? '/region/' + encodeURIComponent(regionName) : ''
+    }/runbooks/`;
+    const response = await fetch(url);
+    const responseBody = await response.json();
     runbooks.items = responseBody.runbooks.map((runbook) => new Runbook(runbook));
   }
 
