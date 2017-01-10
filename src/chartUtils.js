@@ -1,16 +1,16 @@
 import prettyBytes from 'pretty-bytes';
 import moment from 'moment';
 
-export function formatDateAsHoursAndMinutes(time) {
-  return moment(time).format('HH:mm');
+export function formatDateAsHoursAndMinutes(date) {
+  return moment(date).format('HH:mm');
 }
 
-export function formatDateAsDayOfWeek(time) {
-  return moment(time).format('MMM D');
+export function formatDateAsDayOfWeek(date) {
+  return moment(date).format('MMM D');
 }
 
-export function formatDateAsDayAndMonth(time) {
-  return moment(time).format('MMM D');
+export function formatDateAsDayAndMonth(date) {
+  return moment(date).format('MMM D');
 }
 
 export const dateFormattersByPeriod = {
