@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {observable, transaction} from 'mobx';
+import {observable, runInAction} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
@@ -26,7 +26,7 @@ export default class StatusOverviewSingleRegionPage extends Component {
     }`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    transaction(() => {
+    runInAction(() => {
       forEach(responseBody.status, (plainServiceOverviewData, serviceName) => {
         regionOverviewData.update(regionName, dataPeriod, serviceName, plainServiceOverviewData);
       });

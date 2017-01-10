@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {inject, observer} from 'mobx-react';
-import {transaction} from 'mobx';
+import {runInAction} from 'mobx';
 import {forEach, identity} from 'lodash';
 
 import StatusSidebar from './StatusSidebar';
@@ -22,7 +22,7 @@ export default class HealthMultiRegionPage extends Component {
     const url = `/api/v1/status/health/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    transaction(() => {
+    runInAction(() => {
       forEach(responseBody.health, (plainHealthData, regionName) => {
         regionHealthData.update(regionName, dataPeriod, undefined, plainHealthData);
       });

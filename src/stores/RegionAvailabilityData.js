@@ -1,16 +1,16 @@
-import {observable, asMap, action} from 'mobx';
+import {observable, action} from 'mobx';
 import {without} from 'lodash';
 
 export default class RegionAvailbilityData {
-  @observable dataByRegion = asMap({})
+  dataByRegion = observable.map()
 
   @action
   initializeRegionData(regionName, period, serviceName = 'aggregated') {
     if (!this.dataByRegion.get(regionName)) {
-      this.dataByRegion.set(regionName, asMap({}));
+      this.dataByRegion.set(regionName, observable.map());
     }
     if (!this.dataByRegion.get(regionName).get(period)) {
-      this.dataByRegion.get(regionName).set(period, asMap({}));
+      this.dataByRegion.get(regionName).set(period, observable.map());
     }
     if (!this.dataByRegion.get(regionName).get(period).get(serviceName)) {
       this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
