@@ -97,7 +97,7 @@ export default function createRoutes(stores) {
           path='capacity'
           component={CapacityManagementPage}
         />
-        <Route path='runbooks' >
+        <Route path='runbooks'>
           <IndexRoute
             component={RunbooksPage}
             onEnter={partial(fetchDataHook, stores)}

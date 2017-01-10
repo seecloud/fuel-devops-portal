@@ -5,8 +5,9 @@ import {observable, computed, action} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes, compact} from 'lodash';
 import cx from 'classnames';
-import {poll} from '../../decorators';
+import {deserialize} from 'serializr';
 
+import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
@@ -97,7 +98,9 @@ export default class RunbooksPage extends Component {
         }
       ]
     };
-    runbooks.items = responseBody.runbooks.map((runbook) => new Runbook(runbook));
+    runbooks.items = responseBody.runbooks.map((plainRunbook) => {
+      return deserialize(Runbook, plainRunbook);
+    });
   }
 
   fetchData() {
@@ -293,11 +296,12 @@ export default class RunbooksPage extends Component {
 class CreateRunbookDialog extends Component {
   @observable formKey = Date.now();
   @observable actionInProgress = false;
-  @observable newRunbook = null;
+  @observable newRunbook;
 
   constructor(props) {
     super(props);
-    this.newRunbook = new Runbook({regionId: props.regionName});
+    this.newRunbook = new Runbook();
+    this.newRunbook.regionId = props.regionName;
   }
 
   @action

@@ -1,5 +1,8 @@
 import {observable, computed} from 'mobx';
 import {uniq, flatMap, forEach, isEmpty, compact} from 'lodash';
+import {
+  createModelSchema, createSimpleSchema, alias, primitive, identifier, object, list
+} from 'serializr';
 
 export class Runbook {
   @observable id = null
@@ -12,10 +15,6 @@ export class Runbook {
   @observable parameters = []
   @observable runbook = ''
 
-  constructor({latest_run: latestRun, ...attrs}) {
-    Object.assign(this, {latestRun, ...attrs});
-  }
-
   @computed get isNew() {
     return this.id === null;
   }
@@ -27,7 +26,7 @@ export class Runbook {
 
   @computed get latestRunDate() {
     if (this.latestRun) {
-      return new Date(this.latestRun.created_at).toLocaleDateString('en-US',
+      return new Date(this.latestRun.createdAt).toLocaleDateString('en-US',
         {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
       );
     }
@@ -57,6 +56,25 @@ export class Runbook {
     return isEmpty(errors) ? null : errors;
   }
 }
+
+createModelSchema(Runbook, {
+  id: identifier(),
+  name: primitive(),
+  description: primitive(),
+  type: primitive(),
+  latestRun: alias('latest_run', object(createSimpleSchema({
+    status: primitive(),
+    createdAt: alias('created_at', primitive())
+  }))),
+  regionId: primitive(),
+  tags: list(primitive()),
+  parameters: list(object(createSimpleSchema({
+    name: primitive(),
+    default: primitive(),
+    type: primitive()
+  }))),
+  runbook: primitive()
+});
 
 export class Runbooks {
   model = Runbook
