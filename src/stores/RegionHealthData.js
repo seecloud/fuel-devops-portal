@@ -21,8 +21,7 @@ export default class RegionHealthData {
         responseSize: null,
         responseSizeData: [],
         responseTime: null,
-        responseTimeData: [],
-        lastUpdate: null
+        responseTimeData: []
       }));
     }
     return this.dataByRegion.get(regionName).get(period).get(serviceName);
@@ -48,8 +47,7 @@ export default class RegionHealthData {
       responseSize,
       responseSizeData,
       responseTime,
-      responseTimeData,
-      lastUpdate: new Date()
+      responseTimeData
     });
   }
 

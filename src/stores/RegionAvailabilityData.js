@@ -15,8 +15,7 @@ export default class RegionAvailbilityData {
     if (!this.dataByRegion.get(regionName).get(period).get(serviceName)) {
       this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
         data: [],
-        score: null,
-        lastUpdate: null
+        score: null
       }));
     }
     return this.dataByRegion.get(regionName).get(period).get(serviceName);
@@ -27,8 +26,7 @@ export default class RegionAvailbilityData {
     const {availability: score, availability_data: data} = plainAvailbilityData;
     Object.assign(this.initializeRegionData(regionName, period, serviceName), {
       data,
-      score,
-      lastUpdate: new Date()
+      score
     });
   }
 

@@ -1,7 +1,7 @@
 import {observable, computed} from 'mobx';
 import {uniq, flatMap, forEach, isEmpty, compact} from 'lodash';
 import {
-  createModelSchema, createSimpleSchema, alias, primitive, identifier, object, list
+  createModelSchema, createSimpleSchema, alias, primitive, identifier, date, object, list
 } from 'serializr';
 
 export class Runbook {
@@ -25,11 +25,7 @@ export class Runbook {
   }
 
   @computed get latestRunDate() {
-    if (this.latestRun) {
-      return new Date(this.latestRun.createdAt).toLocaleDateString('en-US',
-        {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-      );
-    }
+    if (this.latestRun) return this.latestRun.createdAt;
     return null;
   }
 
@@ -64,7 +60,7 @@ createModelSchema(Runbook, {
   type: primitive(),
   latestRun: alias('latest_run', object(createSimpleSchema({
     status: primitive(),
-    createdAt: alias('created_at', primitive())
+    createdAt: alias('created_at', date())
   }))),
   regionId: primitive(),
   tags: list(primitive()),

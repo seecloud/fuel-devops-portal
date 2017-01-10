@@ -5,20 +5,13 @@ import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
 import cx from 'classnames';
 import {deserialize} from 'serializr';
+import moment from 'moment';
 
 import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
-import {RUNBOOK_RUN_STATUSES} from '../../consts';
+import {RUNBOOK_RUN_STATUSES, DEFAULT_DATE_FORMAT} from '../../consts';
 import {RunbookRun} from '../../stores/RunbookRuns';
 import RunbookSidebar from './RunbookSidebar';
-
-function formatDate(date) {
-  let d = new Date(date);
-  return d.toLocaleDateString(
-    'en-US',
-    {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-  );
-}
 
 @withRouter
 @inject('runbooks', 'runbookRuns')
@@ -206,8 +199,8 @@ export default class RunbookRunsPage extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.filteredRunbookRuns.map((runbookRun, index) =>
-                      <tr key={index}>
+                    {this.filteredRunbookRuns.map((runbookRun) =>
+                      <tr key={runbookRun.id}>
                         <td>{runbookRun.id}</td>
                         {!regionName && <td>{runbookRun.runbook.regionId}</td>}
                         <td>
@@ -226,8 +219,14 @@ export default class RunbookRunsPage extends Component {
                             <span key={tag} className='label label-default'>{tag}</span>
                           )}
                         </td>
-                        <td>{formatDate(runbookRun.createdAt)}</td>
-                        <td>{runbookRun.updatedAt && formatDate(runbookRun.updatedAt)}</td>
+                        <td>
+                          {moment(runbookRun.createdAt).format(DEFAULT_DATE_FORMAT)}
+                        </td>
+                        <td>
+                          {runbookRun.updatedAt &&
+                            moment(runbookRun.updatedAt).format(DEFAULT_DATE_FORMAT)
+                          }
+                        </td>
                         <td className={cx({
                           'text-success': runbookRun.status === 'finished',
                           'text-danger': runbookRun.status === 'failed'

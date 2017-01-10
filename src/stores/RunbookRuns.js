@@ -1,7 +1,7 @@
 import {observable, computed} from 'mobx';
 import {uniq, flatMap} from 'lodash';
 import {
-  createModelSchema, createSimpleSchema, alias, primitive, identifier, object, list
+  createModelSchema, createSimpleSchema, alias, primitive, identifier, date, object, list
 } from 'serializr';
 
 export class RunbookRun {
@@ -15,8 +15,8 @@ export class RunbookRun {
 createModelSchema(RunbookRun, {
   id: identifier(),
   status: primitive(),
-  createdAt: alias('created_at', primitive()),
-  updatedAt: alias('updated_at', primitive()),
+  createdAt: alias('created_at', date()),
+  updatedAt: alias('updated_at', date()),
   runbook: object(createSimpleSchema({
     id: primitive(),
     name: primitive(),

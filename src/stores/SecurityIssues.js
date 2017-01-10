@@ -1,6 +1,6 @@
 import {observable, computed} from 'mobx';
 import {uniq} from 'lodash';
-import {createModelSchema, alias, primitive, identifier} from 'serializr';
+import {createModelSchema, alias, primitive, identifier, date} from 'serializr';
 
 export class SecurityIssue {
   @observable id = null
@@ -19,9 +19,9 @@ createModelSchema(SecurityIssue, {
   description: primitive(),
   region: primitive(),
   type: primitive(),
-  confirmedAt: alias('confirmed_at', primitive()),
-  discoveredAt: alias('discovered_at', primitive()),
-  resolvedAt: alias('resolved_at', primitive()),
+  confirmedAt: alias('confirmed_at', date()),
+  discoveredAt: alias('discovered_at', date()),
+  resolvedAt: alias('resolved_at', date()),
   tenantId: alias('tenant_id', primitive()),
   userId: alias('user_id', primitive())
 });
