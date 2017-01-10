@@ -9,14 +9,18 @@ export default class SideNavbar extends Component {
   }
 
   render() {
-    const {router, navigationItems} = this.props;
+    const {router, navigationItems, params: {regionName}} = this.props;
+    const urlPrefix = regionName ?
+      `/region/${encodeURIComponent(regionName)}/` :
+      '/all-regions/';
     return (
       <div className='side-navbar'>
         <ul>
           {navigationItems.map(({url, title, iconClassName}) => {
+            const fullUrl = urlPrefix + url;
             return (
-              <li key={url} className={cx({active: router.isActive(url, true)})}>
-                <Link to={url}>
+              <li key={fullUrl} className={cx({active: router.isActive(fullUrl, true)})}>
+                <Link to={fullUrl}>
                   <div className={cx('icon-box', iconClassName)}>
                     {!iconClassName && title[0].toUpperCase()}
                   </div>

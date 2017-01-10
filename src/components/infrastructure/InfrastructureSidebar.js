@@ -9,9 +9,8 @@ import SideNavbar from '../SideNavbar';
 export default class InfrastructureSidebar extends Component {
   render() {
     const {infrastructureServices, params: {regionName}} = this.props;
-    const urlPrefix = `/region/${encodeURIComponent(regionName)}/infrastructure`;
     const navigationItems = infrastructureServices.get(regionName).map((infrastructureService) => ({
-      url: `${urlPrefix}/${encodeURIComponent(infrastructureService.id)}`,
+      url: `infrastructure/${encodeURIComponent(infrastructureService.id)}`,
       title: infrastructureService.title
     }));
 
@@ -19,7 +18,7 @@ export default class InfrastructureSidebar extends Component {
       <SideNavbar
         navigationItems={[
           {
-            url: urlPrefix,
+            url: 'infrastructure',
             title: 'Overview',
             iconClassName: 'overview-icon'
           },
