@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import {inject, observer} from 'mobx-react';
 import {transaction} from 'mobx';
 import {forEach} from 'lodash';
+import {deserialize} from 'serializr';
 
 import {InfrastructureService} from '../../stores/InfrastructureServices';
 
@@ -19,7 +20,7 @@ export default class InfrastructureMultiRegionPage extends Component {
         infrastructureServices.update(
           regionName,
           plainInfrastructureServices.map((plainInfrastructureService) => {
-            return new InfrastructureService(plainInfrastructureService);
+            return deserialize(InfrastructureService, plainInfrastructureService);
           })
         );
       });

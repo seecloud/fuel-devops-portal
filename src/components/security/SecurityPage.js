@@ -3,8 +3,9 @@ import {withRouter} from 'react-router';
 import {action, observable, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import {every, compact} from 'lodash';
-import {poll} from '../../decorators';
+import {deserialize} from 'serializr';
 
+import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import {SecurityIssue} from '../../stores/SecurityIssues';
@@ -28,11 +29,15 @@ export default class SecurityPage extends Component {
   ) {
     if (regionName && !regions.get(regionName).hasService('security')) return;
     const url = `/api/v1${
-        regionName ? '/region/' + encodeURIComponent(regionName) : ''
-      }/security/issues/${encodeURIComponent(dataPeriod)}`;
+      regionName ? '/region/' + encodeURIComponent(regionName) : ''
+    }/security/issues/${
+      encodeURIComponent(dataPeriod)
+    }`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    securityIssues.items = responseBody.issues.map((issue) => new SecurityIssue(issue));
+    securityIssues.items = responseBody.issues.map((plainIssue) => {
+      return deserialize(SecurityIssue, plainIssue);
+    });
   }
 
   fetchData() {

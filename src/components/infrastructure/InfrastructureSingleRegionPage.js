@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
+import {deserialize} from 'serializr';
 
 import {InfrastructureService} from '../../stores/InfrastructureServices';
 import InfrastructureSidebar from './InfrastructureSidebar';
@@ -14,7 +15,7 @@ export default class InfrastructureSingleRegionPage extends Component {
     infrastructureServices.update(
       regionName,
       responseBody.infra.map((plainInfrastructureService) => {
-        return new InfrastructureService(plainInfrastructureService);
+        return deserialize(InfrastructureService, plainInfrastructureService);
       })
     );
   }

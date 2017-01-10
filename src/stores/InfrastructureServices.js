@@ -1,15 +1,19 @@
 import {observable, asMap, action} from 'mobx';
+import {createModelSchema, primitive, list} from 'serializr';
 
 export class InfrastructureService {
   @observable id = null
   @observable title = null
   @observable description = null
   @observable urls = []
-
-  constructor({id, title, description, urls}) {
-    Object.assign(this, {id, title, description, urls});
-  }
 }
+
+createModelSchema(InfrastructureService, {
+  id: primitive(),
+  title: primitive(),
+  description: primitive(),
+  urls: list(list(primitive()))
+});
 
 export class InfrastructureServices {
   @observable dataByRegion = asMap({})

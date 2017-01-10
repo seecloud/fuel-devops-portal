@@ -4,8 +4,9 @@ import {observable, computed} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {every, map, includes} from 'lodash';
 import cx from 'classnames';
-import {poll} from '../../decorators';
+import {deserialize} from 'serializr';
 
+import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import {RUNBOOK_RUN_STATUSES} from '../../consts';
 import {RunbookRun} from '../../stores/RunbookRuns';
@@ -97,7 +98,9 @@ export default class RunbookRunsPage extends Component {
         }
       ]
     };
-    runbookRuns.items = responseBody.runs.map((runbookRun) => new RunbookRun(runbookRun));
+    runbookRuns.items = responseBody.runs.map((plainRunbookRun) => {
+      return deserialize(RunbookRun, plainRunbookRun);
+    });
   }
 
   fetchData() {

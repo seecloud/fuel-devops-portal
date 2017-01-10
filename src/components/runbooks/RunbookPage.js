@@ -4,6 +4,7 @@ import {observable, computed, action} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {isEqual} from 'lodash';
 import cx from 'classnames';
+import {serialize, deserialize, update} from 'serializr';
 import FileSaver from 'file-saver';
 
 import {RUNBOOK_RUN_STATUSES} from '../../consts';
@@ -39,7 +40,7 @@ export default class RunbookPage extends Component {
       status: 'scheduled',
       regionId: 'east-3.hooli.net'
     };
-    runbooks.items = [new Runbook(runbookResponseBody)];
+    runbooks.items = [deserialize(Runbook, runbookResponseBody)];
 
     //const runbookRunsUrl = `/api/v1/runbook_runs?runbook=${runbookId}`;
     //const runbookRunsResponse = await fetch(runbookRunsUrl);
@@ -87,7 +88,9 @@ export default class RunbookPage extends Component {
         }
       ]
     };
-    runbookRuns.items = runbookRunsResponseBody.runs.map((run) => new RunbookRun(run));
+    runbookRuns.items = runbookRunsResponseBody.runs.map((plainRunbookRun) => {
+      return deserialize(RunbookRun, plainRunbookRun);
+    });
   }
 
   @observable formKey = Date.now();
@@ -96,12 +99,12 @@ export default class RunbookPage extends Component {
   constructor(props) {
     super(props);
     const {params: {runbookId}, runbooks} = props;
-    this.newRunbook = new Runbook(runbooks.get(runbookId));
+    this.newRunbook = deserialize(Runbook, serialize(runbooks.get(runbookId)));
   }
 
   @computed get hasChanges() {
     const {params: {runbookId}, runbooks} = this.props;
-    return !isEqual(runbooks.get(runbookId), this.newRunbook);
+    return !isEqual(serialize(runbooks.get(runbookId)), serialize(this.newRunbook));
   }
 
   @action
@@ -112,7 +115,7 @@ export default class RunbookPage extends Component {
   @action
   cancelChanges = () => {
     const {params: {runbookId}, runbooks} = this.props;
-    Object.assign(this.newRunbook, runbooks.get(runbookId));
+    update(this.newRunbook, serialize(runbooks.get(runbookId)));
     this.updateForm();
   }
 
@@ -129,7 +132,7 @@ export default class RunbookPage extends Component {
     }`;
     await fetch(runbookUrl, {
       method: 'PUT',
-      body: JSON.stringify(this.newRunbook)
+      body: serialize(this.newRunbook)
     });
     await fetch(runbookUrl);
     //const response = await fetch(runbookUrl);

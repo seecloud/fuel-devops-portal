@@ -1,31 +1,30 @@
 import {observable, computed} from 'mobx';
 import {uniq} from 'lodash';
+import {createModelSchema, alias, primitive, identifier} from 'serializr';
 
 export class SecurityIssue {
   @observable id = null
-  @observable confirmedAt = null
   @observable description = null
+  @observable type = null
+  @observable region = null
+  @observable confirmedAt = null
   @observable discoveredAt = null
+  @observable resolvedAt = null
   @observable tenantId = null
   @observable userId = null
-  @observable resolvedAt = null
-  @observable region = null
-  @observable type = null
-
-  constructor({
-    object_id: id,
-    confirmed_at: confirmedAt,
-    discovered_at: discoveredAt,
-    resolved_at: resolvedAt,
-    tenant_id: tenantId,
-    user_id: userId,
-    ...attrs
-  }) {
-    Object.assign(this,
-      {id, confirmedAt, discoveredAt, resolvedAt, tenantId, userId, ...attrs}
-    );
-  }
 }
+
+createModelSchema(SecurityIssue, {
+  id: alias('object_id', identifier()),
+  description: primitive(),
+  region: primitive(),
+  type: primitive(),
+  confirmedAt: alias('confirmed_at', primitive()),
+  discoveredAt: alias('discovered_at', primitive()),
+  resolvedAt: alias('resolved_at', primitive()),
+  tenantId: alias('tenant_id', primitive()),
+  userId: alias('user_id', primitive())
+});
 
 export class SecurityIssues {
   model = SecurityIssue
