@@ -8,7 +8,7 @@ import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
-import {timeFormattersByPeriod, formatResponseSize, formatResponseTime} from '../../chartUtils';
+import {dateFormattersByPeriod, formatResponseSize, formatResponseTime} from '../../chartUtils';
 import {poll} from '../../decorators';
 
 @inject('uiState', 'regions', 'regionHealthData')
@@ -47,7 +47,7 @@ export default class HealthMultiRegionPage extends Component {
 
   render() {
     const {uiState, regionHealthData} = this.props;
-    const formatTime = timeFormattersByPeriod[uiState.activeStatusDataPeriod];
+    const formatTime = dateFormattersByPeriod[uiState.activeStatusDataPeriod];
 
     return (
       <div>

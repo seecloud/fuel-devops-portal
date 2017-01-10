@@ -1,24 +1,22 @@
 import prettyBytes from 'pretty-bytes';
+import moment from 'moment';
 
-export function formatTimeAsHoursAndMinutes(time) {
-  let d = new Date(time);
-  return ('0' + d.getUTCHours()).substr(-2) + ':' + ('0' + d.getUTCMinutes()).substr(-2);
+export function formatDateAsHoursAndMinutes(time) {
+  return moment(time).format('HH:mm');
 }
 
-export function formatTimeAsDayOfWeek(time) {
-  let d = new Date(time);
-  return d.getDate() + '/' + d.toLocaleString('en-us', {month: 'short'});
+export function formatDateAsDayOfWeek(time) {
+  return moment(time).format('MMM D');
 }
 
-export function formatTimeAsDayAndMonth(time) {
-  let d = new Date(time);
-  return d.getDate() + '/' + d.toLocaleString('en-us', {month: 'short'});
+export function formatDateAsDayAndMonth(time) {
+  return moment(time).format('MMM D');
 }
 
-export const timeFormattersByPeriod = {
-  day: formatTimeAsHoursAndMinutes,
-  week: formatTimeAsDayOfWeek,
-  month: formatTimeAsDayAndMonth
+export const dateFormattersByPeriod = {
+  day: formatDateAsHoursAndMinutes,
+  week: formatDateAsDayOfWeek,
+  month: formatDateAsDayAndMonth
 };
 
 export function formatResponseSize(size) {
