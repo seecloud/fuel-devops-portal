@@ -6,10 +6,11 @@ import {observer, inject} from 'mobx-react';
 import {every, map, includes, compact} from 'lodash';
 import cx from 'classnames';
 import {deserialize} from 'serializr';
+import moment from 'moment';
 
 import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
-import {RUNBOOK_RUN_STATUSES} from '../../consts';
+import {RUNBOOK_RUN_STATUSES, DEFAULT_DATE_FORMAT} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
 import RunbookSidebar from './RunbookSidebar';
 import RunbookForm from './RunbookForm';
@@ -245,7 +246,11 @@ export default class RunbooksPage extends Component {
                           )}
                         </td>
                         {!regionName && <td>{runbook.regionId}</td>}
-                        <td>{runbook.latestRunDate}</td>
+                        <td>
+                          {runbook.latestRunDate &&
+                            moment(runbook.latestRunDate).format(DEFAULT_DATE_FORMAT)
+                          }
+                        </td>
                         <td className={cx({
                           'text-success': runbook.latestRunStatus === 'finished',
                           'text-danger': runbook.latestRunStatus === 'failed'

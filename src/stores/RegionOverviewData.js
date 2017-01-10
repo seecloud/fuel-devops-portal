@@ -27,7 +27,7 @@ export default class RegionOverviewData {
   update(regionName, period, serviceName = 'aggregated', plainOverviewData) {
     Object.assign(
       this.initializeRegionData(regionName, period, serviceName),
-      {...plainOverviewData, lastUpdate: new Date()}
+      plainOverviewData
     );
   }
 

@@ -4,19 +4,13 @@ import {action, observable, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import {every, compact} from 'lodash';
 import {deserialize} from 'serializr';
+import moment from 'moment';
 
+import {DEFAULT_DATE_FORMAT} from '../../consts';
 import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import {SecurityIssue} from '../../stores/SecurityIssues';
-
-function formatDate(date) {
-  let d = new Date(date);
-  return d.toLocaleDateString(
-    'en-US',
-    {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-  );
-}
 
 @withRouter
 @inject('uiState', 'regions', 'securityIssues')
@@ -167,19 +161,27 @@ export default class SecurityPage extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.filteredIssues.map((issue, index) =>
-                      <tr key={index}>
+                    {this.filteredIssues.map((issue) =>
+                      <tr key={issue.id}>
                         <td>{issue.id}</td>
                         {!regionName && <td>{issue.region}</td>}
                         <td>{issue.type}</td>
                         <td>{compact([issue.tenantId, issue.userId]).join('/')}</td>
-                        <td>{formatDate(issue.discoveredAt)}</td>
-                        <td>{
-                          issue.confirmedAt ? formatDate(issue.confirmedAt) : 'Not confirmed'
-                        }</td>
-                        <td>{
-                          issue.resolvedAt ? formatDate(issue.resolvedAt) : 'Not resolved'
-                        }</td>
+                        <td>{moment(issue.discoveredAt).format(DEFAULT_DATE_FORMAT)}</td>
+                        <td>
+                          {
+                            issue.confirmedAt ?
+                            moment(issue.confirmedAt).format(DEFAULT_DATE_FORMAT) :
+                            'Not confirmed'
+                          }
+                        </td>
+                        <td>
+                          {
+                            issue.resolvedAt ?
+                            moment(issue.resolvedAt).format(DEFAULT_DATE_FORMAT) :
+                            'Not resolved'
+                          }
+                        </td>
                         <td>{issue.description}</td>
                       </tr>
                     )}

@@ -11,3 +11,5 @@ export const RUNBOOK_RUN_STATUSES = {
   failed: 'Failed',
   null: 'Not Started'
 };
+
+export const DEFAULT_DATE_FORMAT = 'MMM D, HH:mm:ss';

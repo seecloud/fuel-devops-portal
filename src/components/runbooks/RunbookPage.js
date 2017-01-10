@@ -6,19 +6,12 @@ import {isEqual} from 'lodash';
 import cx from 'classnames';
 import {serialize, deserialize, update} from 'serializr';
 import FileSaver from 'file-saver';
+import moment from 'moment';
 
-import {RUNBOOK_RUN_STATUSES} from '../../consts';
+import {RUNBOOK_RUN_STATUSES, DEFAULT_DATE_FORMAT} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
 import {RunbookRun} from '../../stores/RunbookRuns';
 import RunbookForm from './RunbookForm';
-
-function formatDate(date) {
-  let d = new Date(date);
-  return d.toLocaleDateString(
-    'en-US',
-    {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-  );
-}
 
 @withRouter
 @inject('runbooks', 'runbookRuns')
@@ -217,11 +210,15 @@ class RunbookRuns extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.props.runbookRuns.items.map((runbookRun, index) =>
-                <tr key={index}>
+              {this.props.runbookRuns.items.map((runbookRun) =>
+                <tr key={runbookRun.id}>
                   <td>{runbookRun.id}</td>
-                  <td>{formatDate(runbookRun.createdAt)}</td>
-                  <td>{runbookRun.updatedAt && formatDate(runbookRun.updatedAt)}</td>
+                  <td>{moment(runbookRun.createdAt).format(DEFAULT_DATE_FORMAT)}</td>
+                  <td>
+                    {runbookRun.updatedAt &&
+                      moment(runbookRun.updatedAt).format(DEFAULT_DATE_FORMAT)
+                    }
+                  </td>
                   <td className={cx({
                     'text-success': runbookRun.status === 'finished',
                     'text-danger': runbookRun.status === 'failed'
