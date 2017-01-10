@@ -8,7 +8,7 @@ import CloudStatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
-import {timeFormattersByPeriod} from '../../chartUtils';
+import {dateFormattersByPeriod} from '../../chartUtils';
 import {poll} from '../../decorators';
 
 @inject('uiState', 'regions', 'regionAvailabilityData')
@@ -40,7 +40,7 @@ export default class AvailabilityMultiRegionPage extends Component {
 
   render() {
     const {uiState, regionAvailabilityData} = this.props;
-    const formatTime = timeFormattersByPeriod[uiState.activeStatusDataPeriod];
+    const formatTime = dateFormattersByPeriod[uiState.activeStatusDataPeriod];
 
     return (
       <div>

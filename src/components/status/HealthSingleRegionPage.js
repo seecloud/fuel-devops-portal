@@ -8,7 +8,7 @@ import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
 import Score from '../Score';
-import {timeFormattersByPeriod, formatResponseSize, formatResponseTime} from '../../chartUtils';
+import {dateFormattersByPeriod, formatResponseSize, formatResponseTime} from '../../chartUtils';
 import {poll} from '../../decorators';
 
 @withRouter
@@ -55,7 +55,7 @@ export default class HealthSingleRegionPage extends Component {
     const {uiState, regions, regionHealthData, params} = this.props;
     const {regionName} = params;
     const services = regionHealthData.getRegionServices(regionName, uiState.activeStatusDataPeriod);
-    const formatTime = timeFormattersByPeriod[uiState.activeStatusDataPeriod];
+    const formatTime = dateFormattersByPeriod[uiState.activeStatusDataPeriod];
 
     return (
       <div>
