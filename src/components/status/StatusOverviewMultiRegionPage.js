@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {observable, transaction} from 'mobx';
+import {observable, runInAction} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import {forEach} from 'lodash';
 import cx from 'classnames';
@@ -21,7 +21,7 @@ export default class StatusOverviewMultiRegionPage extends Component {
     const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    transaction(() => {
+    runInAction(() => {
       forEach(responseBody.status, (plainRegionOverviewData, regionName) => {
         regionOverviewData.update(regionName, dataPeriod, undefined, plainRegionOverviewData);
       });

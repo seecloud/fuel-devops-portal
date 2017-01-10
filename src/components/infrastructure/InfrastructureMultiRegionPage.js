@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {inject, observer} from 'mobx-react';
-import {transaction} from 'mobx';
+import {runInAction} from 'mobx';
 import {forEach} from 'lodash';
 import {deserialize} from 'serializr';
 
@@ -15,7 +15,7 @@ export default class InfrastructureMultiRegionPage extends Component {
     const response = await fetch(url);
     const responseBody = await response.json();
 
-    transaction(() => {
+    runInAction(() => {
       forEach(responseBody.infra, (plainInfrastructureServices, regionName) => {
         infrastructureServices.update(
           regionName,

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
-import {transaction} from 'mobx';
+import {runInAction} from 'mobx';
 import {withRouter} from 'react-router';
 import {forEach, identity} from 'lodash';
 
@@ -28,7 +28,7 @@ export default class HealthSingleRegionPage extends Component {
     }`;
     const response = await fetch(url);
     const responseBody = await response.json();
-    transaction(() => {
+    runInAction(() => {
       forEach(responseBody.health, (plainHealthData, serviceName) => {
         regionHealthData.update(regionName, dataPeriod, serviceName, plainHealthData);
       });

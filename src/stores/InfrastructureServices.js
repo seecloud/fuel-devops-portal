@@ -1,4 +1,4 @@
-import {observable, asMap, action} from 'mobx';
+import {observable, action} from 'mobx';
 import {createModelSchema, primitive, list} from 'serializr';
 
 export class InfrastructureService {
@@ -16,7 +16,7 @@ createModelSchema(InfrastructureService, {
 });
 
 export class InfrastructureServices {
-  @observable dataByRegion = asMap({})
+  dataByRegion = observable.map()
 
   @action
   update(regionName, infrastructureServices) {
