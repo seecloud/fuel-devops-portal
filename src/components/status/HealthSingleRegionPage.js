@@ -78,6 +78,7 @@ export default class HealthSingleRegionPage extends Component {
             const health = regionHealthData.get(
               regionName, uiState.activeStatusDataPeriod, serviceName
             );
+            if (!health) return null;
             return (
               <div key={serviceName} className='service-status'>
                 <div className='service-status-container'>

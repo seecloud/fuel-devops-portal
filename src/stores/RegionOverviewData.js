@@ -1,49 +1,22 @@
-import {observable, action} from 'mobx';
-import {without} from 'lodash';
+import {observable} from 'mobx';
+import {createModelSchema, primitive} from 'serializr';
 
-export default class RegionOverviewData {
-  dataByRegion = observable.map()
+import RegionStatusData from './RegionStatusData';
 
-  @action
-  initializeRegionData(regionName, period, serviceName = 'aggregated') {
-    if (!this.dataByRegion.get(regionName)) {
-      this.dataByRegion.set(regionName, observable.map());
-    }
-    if (!this.dataByRegion.get(regionName).get(period)) {
-      this.dataByRegion.get(regionName).set(period, observable.map());
-    }
-    if (!this.dataByRegion.get(regionName).get(period).get(serviceName)) {
-      this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
-        sla: null,
-        availability: null,
-        health: null,
-        performance: null
-      }));
-    }
-    return this.dataByRegion.get(regionName).get(period).get(serviceName);
-  }
-
-  @action
-  update(regionName, period, serviceName = 'aggregated', plainOverviewData) {
-    Object.assign(
-      this.initializeRegionData(regionName, period, serviceName),
-      plainOverviewData
-    );
-  }
-
-  getRegionServices(regionName, period) {
-    try {
-      return without(this.dataByRegion.get(regionName).get(period).keys(), 'aggregated');
-    } catch (e) {
-      return [];
-    }
-  }
-
-  get(regionName, period, serviceName = 'aggregated') {
-    try {
-      return this.dataByRegion.get(regionName).get(period).get(serviceName);
-    } catch (e) {
-      return null;
-    }
-  }
+export default class RegionOverviewData extends RegionStatusData {
+  DataElement = RegionOverviewDataElement
 }
+
+export class RegionOverviewDataElement {
+  @observable sla = null
+  @observable availability = null
+  @observable health = null
+  @observable performance = null
+}
+
+createModelSchema(RegionOverviewDataElement, {
+  sla: primitive(),
+  availability: primitive(),
+  health: primitive(),
+  performance: primitive()
+});
