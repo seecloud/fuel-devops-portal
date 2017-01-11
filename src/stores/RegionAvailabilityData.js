@@ -1,48 +1,18 @@
-import {observable, action} from 'mobx';
-import {without} from 'lodash';
+import {observable} from 'mobx';
+import {createModelSchema, alias, primitive, list} from 'serializr';
 
-export default class RegionAvailbilityData {
-  dataByRegion = observable.map()
+import RegionStatusData from './RegionStatusData';
 
-  @action
-  initializeRegionData(regionName, period, serviceName = 'aggregated') {
-    if (!this.dataByRegion.get(regionName)) {
-      this.dataByRegion.set(regionName, observable.map());
-    }
-    if (!this.dataByRegion.get(regionName).get(period)) {
-      this.dataByRegion.get(regionName).set(period, observable.map());
-    }
-    if (!this.dataByRegion.get(regionName).get(period).get(serviceName)) {
-      this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
-        data: [],
-        score: null
-      }));
-    }
-    return this.dataByRegion.get(regionName).get(period).get(serviceName);
-  }
-
-  @action
-  update(regionName, period, serviceName = 'aggregated', plainAvailbilityData) {
-    const {availability: score, availability_data: data} = plainAvailbilityData;
-    Object.assign(this.initializeRegionData(regionName, period, serviceName), {
-      data,
-      score
-    });
-  }
-
-  getRegionServices(regionName, period) {
-    try {
-      return without(this.dataByRegion.get(regionName).get(period).keys(), 'aggregated');
-    } catch (e) {
-      return [];
-    }
-  }
-
-  get(regionName, period, serviceName = 'aggregated') {
-    try {
-      return this.dataByRegion.get(regionName).get(period).get(serviceName);
-    } catch (e) {
-      return null;
-    }
-  }
+export default class RegionAvailbilityData extends RegionStatusData {
+  DataElement = RegionAvailbilityDataElement
 }
+
+export class RegionAvailbilityDataElement {
+  @observable score = null
+  @observable data = []
+}
+
+createModelSchema(RegionAvailbilityDataElement, {
+  score: alias('availability', primitive()),
+  data: alias('availability_data', list(list(primitive())))
+});

@@ -73,6 +73,7 @@ export default class AvailabilitySingleRegionPage extends Component {
             const availability = regionAvailabilityData.get(
               regionName, uiState.activeStatusDataPeriod, serviceName
             );
+            if (!availability) return null;
             return (
               <div key={serviceName}>
                 <div className='service-status'>

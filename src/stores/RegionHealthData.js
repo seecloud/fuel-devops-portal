@@ -1,69 +1,30 @@
-import {observable, action} from 'mobx';
-import {without} from 'lodash';
+import {observable} from 'mobx';
+import {createModelSchema, alias, primitive, list} from 'serializr';
 
-export default class RegionHealthData {
-  dataByRegion = observable.map()
+import RegionStatusData from './RegionStatusData';
 
-  @action
-  initializeRegionData(regionName, period, serviceName = 'aggregated') {
-    if (!this.dataByRegion.get(regionName)) {
-      this.dataByRegion.set(regionName, observable.map());
-    }
-    if (!this.dataByRegion.get(regionName).get(period)) {
-      this.dataByRegion.get(regionName).set(period, observable.map());
-    }
-    if (!this.dataByRegion.get(regionName).get(period).get(serviceName)) {
-      this.dataByRegion.get(regionName).get(period).set(serviceName, observable({
-        fci: null,
-        fciData: [],
-        apiCalls: null,
-        apiCallsData: [],
-        responseSize: null,
-        responseSizeData: [],
-        responseTime: null,
-        responseTimeData: []
-      }));
-    }
-    return this.dataByRegion.get(regionName).get(period).get(serviceName);
-  }
-
-  @action
-  update(regionName, period, serviceName = 'aggregated', plainHealthData) {
-    const {
-      fci,
-      fci_data: fciData,
-      api_calls_count: apiCalls,
-      api_calls_count_data: apiCallsData,
-      response_size: responseSize,
-      response_size_data: responseSizeData,
-      response_time: responseTime,
-      response_time_data: responseTimeData
-    } = plainHealthData;
-    Object.assign(this.initializeRegionData(regionName, period, serviceName), {
-      fci,
-      fciData,
-      apiCalls,
-      apiCallsData,
-      responseSize,
-      responseSizeData,
-      responseTime,
-      responseTimeData
-    });
-  }
-
-  getRegionServices(regionName, period) {
-    try {
-      return without(this.dataByRegion.get(regionName).get(period).keys(), 'aggregated');
-    } catch (e) {
-      return [];
-    }
-  }
-
-  get(regionName, period, serviceName = 'aggregated') {
-    try {
-      return this.dataByRegion.get(regionName).get(period).get(serviceName);
-    } catch (e) {
-      return null;
-    }
-  }
+export default class RegionHealthData extends RegionStatusData {
+  DataElement = RegionHealthDataElement
 }
+
+export class RegionHealthDataElement {
+  @observable fci = null
+  @observable fciData = []
+  @observable apiCalls = null
+  @observable apiCallsData = []
+  @observable responseSize = null
+  @observable responseSizeData = []
+  @observable responseTime = null
+  @observable responseTimeData = []
+}
+
+createModelSchema(RegionHealthDataElement, {
+  fci: primitive(),
+  fciData: alias('fci_data', list(list(primitive()))),
+  apiCalls: alias('api_calls_count', primitive()),
+  apiCallsData: alias('api_calls_count_data', list(list(primitive()))),
+  responseSize: alias('response_size', primitive()),
+  responseSizeData: alias('response_size_data', list(list(primitive()))),
+  responseTime: alias('response_time', primitive()),
+  responseTimeData: alias('response_time_data', list(list(primitive())))
+});
