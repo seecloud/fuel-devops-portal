@@ -12,7 +12,7 @@ export async function fetchDataHook(stores, nextState, replace, callback) {
     } else if (nextState.location.pathname !== stores.uiState.previousPathname) {
       replace(stores.uiState.previousPathname);
     }
-    FetchDataErrorDialog.show();
+    FetchDataErrorDialog.show({error: error.message});
     return callback(error);
   } finally {
     stores.uiState.pendingRequestsCount--;
