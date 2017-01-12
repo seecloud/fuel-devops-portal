@@ -4,6 +4,7 @@ import {runInAction} from 'mobx';
 import {withRouter} from 'react-router';
 import {forEach, identity} from 'lodash';
 
+import request from '../../request';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
@@ -26,10 +27,9 @@ export default class AvailabilitySingleRegionPage extends Component {
     }/status/availability/${
       encodeURIComponent(dataPeriod)
     }`;
-    const response = await fetch(url);
-    const responseBody = await response.json();
+    const response = await request(url);
     runInAction(() => {
-      forEach(responseBody.availability, (plainAvailabilityData, serviceName) => {
+      forEach(response.availability, (plainAvailabilityData, serviceName) => {
         regionAvailabilityData.update(regionName, dataPeriod, serviceName, plainAvailabilityData);
       });
     });

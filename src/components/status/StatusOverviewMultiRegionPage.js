@@ -5,6 +5,7 @@ import {inject, observer} from 'mobx-react';
 import {forEach} from 'lodash';
 import cx from 'classnames';
 
+import request from '../../request';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
@@ -19,10 +20,9 @@ export default class StatusOverviewMultiRegionPage extends Component {
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/${encodeURIComponent(dataPeriod)}`;
-    const response = await fetch(url);
-    const responseBody = await response.json();
+    const response = await request(url);
     runInAction(() => {
-      forEach(responseBody.status, (plainRegionOverviewData, regionName) => {
+      forEach(response.status, (plainRegionOverviewData, regionName) => {
         regionOverviewData.update(regionName, dataPeriod, undefined, plainRegionOverviewData);
       });
     });

@@ -7,6 +7,7 @@ import cx from 'classnames';
 import {deserialize} from 'serializr';
 import moment from 'moment';
 
+//import request from '../../request';
 import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import {RUNBOOK_RUN_STATUSES, DEFAULT_DATE_FORMAT} from '../../consts';
@@ -25,9 +26,8 @@ export default class RunbookRunsPage extends Component {
     //const url = `/api/v1${
     //  regionName ? '/region/' + encodeURIComponent(regionName) : ''
     //}/runbook_runs/`;
-    //const response = await fetch(url);
-    //const responseBody = await response.json();
-    const responseBody = {
+    //const response = await request(url);
+    const response = {
       runs: [
         {
           id: 434,
@@ -91,7 +91,7 @@ export default class RunbookRunsPage extends Component {
         }
       ]
     };
-    runbookRuns.items = responseBody.runs.map((plainRunbookRun) => {
+    runbookRuns.items = response.runs.map((plainRunbookRun) => {
       return deserialize(RunbookRun, plainRunbookRun);
     });
   }

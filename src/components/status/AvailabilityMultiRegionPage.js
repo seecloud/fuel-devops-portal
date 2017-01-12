@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react';
 import {runInAction} from 'mobx';
 import {forEach, identity} from 'lodash';
 
+import request from '../../request';
 import CloudStatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
@@ -20,10 +21,9 @@ export default class AvailabilityMultiRegionPage extends Component {
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/availability/${encodeURIComponent(dataPeriod)}`;
-    const response = await fetch(url);
-    const responseBody = await response.json();
+    const response = await request(url);
     runInAction(() => {
-      forEach(responseBody.availability, (plainAvailabilityData, regionName) => {
+      forEach(response.availability, (plainAvailabilityData, regionName) => {
         regionAvailabilityData.update(regionName, dataPeriod, undefined, plainAvailabilityData);
       });
     });

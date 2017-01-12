@@ -5,6 +5,7 @@ import {runInAction} from 'mobx';
 import {forEach} from 'lodash';
 import {deserialize} from 'serializr';
 
+import request from '../../request';
 import {InfrastructureService} from '../../stores/InfrastructureServices';
 
 @inject('regions', 'infrastructureServices')
@@ -12,11 +13,9 @@ import {InfrastructureService} from '../../stores/InfrastructureServices';
 export default class InfrastructureMultiRegionPage extends Component {
   static async fetchData({infrastructureServices}) {
     const url = '/api/v1/infra';
-    const response = await fetch(url);
-    const responseBody = await response.json();
-
+    const response = await request(url);
     runInAction(() => {
-      forEach(responseBody.infra, (plainInfrastructureServices, regionName) => {
+      forEach(response.infra, (plainInfrastructureServices, regionName) => {
         infrastructureServices.update(
           regionName,
           plainInfrastructureServices.map((plainInfrastructureService) => {

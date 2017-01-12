@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react';
 import {runInAction} from 'mobx';
 import {forEach, identity} from 'lodash';
 
+import request from '../../request';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import LineChart from '../LineChart';
@@ -20,10 +21,9 @@ export default class HealthMultiRegionPage extends Component {
     {dataPeriod = uiState.activeStatusDataPeriod} = {}
   ) {
     const url = `/api/v1/status/health/${encodeURIComponent(dataPeriod)}`;
-    const response = await fetch(url);
-    const responseBody = await response.json();
+    const response = await request(url);
     runInAction(() => {
-      forEach(responseBody.health, (plainHealthData, regionName) => {
+      forEach(response.health, (plainHealthData, regionName) => {
         regionHealthData.update(regionName, dataPeriod, undefined, plainHealthData);
       });
     });
