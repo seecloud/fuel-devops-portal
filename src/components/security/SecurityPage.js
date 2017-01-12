@@ -6,6 +6,7 @@ import {every, compact} from 'lodash';
 import {deserialize} from 'serializr';
 import moment from 'moment';
 
+import request from '../../request';
 import {DEFAULT_DATE_FORMAT} from '../../consts';
 import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
@@ -27,9 +28,8 @@ export default class SecurityPage extends Component {
     }/security/issues/${
       encodeURIComponent(dataPeriod)
     }`;
-    const response = await fetch(url);
-    const responseBody = await response.json();
-    securityIssues.items = responseBody.issues.map((plainIssue) => {
+    const response = await request(url);
+    securityIssues.items = response.issues.map((plainIssue) => {
       return deserialize(SecurityIssue, plainIssue);
     });
   }

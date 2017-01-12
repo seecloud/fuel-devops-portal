@@ -8,6 +8,7 @@ import cx from 'classnames';
 import {deserialize} from 'serializr';
 import moment from 'moment';
 
+import request from '../../request';
 import {poll} from '../../decorators';
 import DataFilter from '../DataFilter';
 import {RUNBOOK_RUN_STATUSES, DEFAULT_DATE_FORMAT} from '../../consts';
@@ -27,9 +28,8 @@ export default class RunbooksPage extends Component {
     //const url = `/api/v1${
     //  regionName ? '/region/' + encodeURIComponent(regionName) : ''
     //}/runbooks/`;
-    //const response = await fetch(url);
-    //const responseBody = await response.json();
-    const responseBody = {
+    //const response = await request(url);
+    const response = {
       runbooks: [
         {
           id: '602',
@@ -99,7 +99,7 @@ export default class RunbooksPage extends Component {
         }
       ]
     };
-    runbooks.items = responseBody.runbooks.map((plainRunbook) => {
+    runbooks.items = response.runbooks.map((plainRunbook) => {
       return deserialize(Runbook, plainRunbook);
     });
   }
@@ -317,7 +317,7 @@ class CreateRunbookDialog extends Component {
   createRunbook = async () => {
     this.actionInProgress = true;
     const url = `/api/v1/region/${encodeURIComponent(this.newRunbook.regionId)}/runbooks/`;
-    await fetch(url, {
+    await request(url, {
       method: 'POST',
       body: JSON.stringify(this.newRunbook)
     });
@@ -373,8 +373,10 @@ class RunRunbookDialog extends Component {
     this.actionInProgress = true;
     const url = `/api/v1/region/${
       encodeURIComponent(this.props.runbook.regionId)
-    }/runbooks/${encodeURIComponent(this.props.runbook.id)}/run`;
-    await fetch(url, {
+    }/runbooks/${
+      encodeURIComponent(this.props.runbook.id)
+    }/run`;
+    await request(url, {
       method: 'POST',
       body: JSON.stringify({
         parameters: this.parameters.reduce((result, parameter) => {

@@ -8,6 +8,7 @@ import {serialize, deserialize, update} from 'serializr';
 import FileSaver from 'file-saver';
 import moment from 'moment';
 
+import request from '../../request';
 import {RUNBOOK_RUN_STATUSES, DEFAULT_DATE_FORMAT} from '../../consts';
 import {Runbook} from '../../stores/Runbooks';
 import {RunbookRun} from '../../stores/RunbookRuns';
@@ -21,9 +22,8 @@ export default class RunbookPage extends Component {
     {runbooks, runbookRuns, params: {runbookId}}
   ) {
     //const runbookUrl = `/api/v1/runbooks/${runbookId}`;
-    //const runbookResponse = await fetch(runbookUrl);
-    //const runbookResponseBody = await runbookResponse.json();
-    const runbookResponseBody = {
+    //const runbookResponse = await request(runbookUrl);
+    const runbookResponse = {
       id: runbookId,
       description: 'Demo runbook description',
       name: 'Demo runbook',
@@ -33,12 +33,11 @@ export default class RunbookPage extends Component {
       status: 'scheduled',
       regionId: 'east-3.hooli.net'
     };
-    runbooks.items = [deserialize(Runbook, runbookResponseBody)];
+    runbooks.items = [deserialize(Runbook, runbookResponse)];
 
     //const runbookRunsUrl = `/api/v1/runbook_runs?runbook=${runbookId}`;
-    //const runbookRunsResponse = await fetch(runbookRunsUrl);
-    //const runbookRunsResponseBody = await runbookRunsResponse.json();
-    const runbookRunsResponseBody = {
+    //const runbookRunsResponse = await request(runbookRunsUrl);
+    const runbookRunsResponse = {
       runs: [
         {
           id: 434,
@@ -81,7 +80,7 @@ export default class RunbookPage extends Component {
         }
       ]
     };
-    runbookRuns.items = runbookRunsResponseBody.runs.map((plainRunbookRun) => {
+    runbookRuns.items = runbookRunsResponse.runs.map((plainRunbookRun) => {
       return deserialize(RunbookRun, plainRunbookRun);
     });
   }
@@ -123,12 +122,11 @@ export default class RunbookPage extends Component {
     }/runbooks/${
       encodeURIComponent(runbook.id)
     }`;
-    await fetch(runbookUrl, {
+    await request(runbookUrl, {
       method: 'PUT',
       body: serialize(this.newRunbook)
     });
-    await fetch(runbookUrl);
-    //const response = await fetch(runbookUrl);
+    //const response = await request(runbookUrl);
     //const {latest_run: latestRun, ...attrs} = await response.json();
     //Object.assign(runbook, {latestRun, ...attrs});
     this.actionInProgress = false;

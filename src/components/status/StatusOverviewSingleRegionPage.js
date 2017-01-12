@@ -5,6 +5,7 @@ import {withRouter} from 'react-router';
 import {forEach} from 'lodash';
 import cx from 'classnames';
 
+import request from '../../request';
 import StatusSidebar from './StatusSidebar';
 import StatusDataPeriodPicker from '../StatusDataPeriodPicker';
 import Score from '../Score';
@@ -24,10 +25,9 @@ export default class StatusOverviewSingleRegionPage extends Component {
     }/status/${
       encodeURIComponent(dataPeriod)
     }`;
-    const response = await fetch(url);
-    const responseBody = await response.json();
+    const response = await request(url);
     runInAction(() => {
-      forEach(responseBody.status, (plainServiceOverviewData, serviceName) => {
+      forEach(response.status, (plainServiceOverviewData, serviceName) => {
         regionOverviewData.update(regionName, dataPeriod, serviceName, plainServiceOverviewData);
       });
     });
