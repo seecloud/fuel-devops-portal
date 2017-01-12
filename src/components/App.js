@@ -15,6 +15,13 @@ export default class App extends Component {
     });
   }
 
+  componentDidMount() {
+    const loadingAnimation = document.getElementById('loading-animation');
+    if (loadingAnimation) {
+      loadingAnimation.parentNode.removeChild(loadingAnimation);
+    }
+  }
+
   render() {
     const {children, location} = this.props;
     return (
