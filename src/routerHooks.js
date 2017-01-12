@@ -8,7 +8,9 @@ export async function fetchDataHook(stores, nextState, replace, callback) {
     return callback();
   } catch (error) {
     if (!stores.uiState.previousPathname) {
-      replace('/');
+      if (nextState.location.pathname !== '/') {
+        replace('/');
+      }
     } else if (nextState.location.pathname !== stores.uiState.previousPathname) {
       replace(stores.uiState.previousPathname);
     }
