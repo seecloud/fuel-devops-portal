@@ -20,7 +20,7 @@ createModelSchema(RunbookRun, {
   runbook: object(createSimpleSchema({
     id: primitive(),
     name: primitive(),
-    regionId: primitive(),
+    region: primitive(),
     tags: list(primitive())
   }))
 });

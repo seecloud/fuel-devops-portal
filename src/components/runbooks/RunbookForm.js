@@ -64,8 +64,8 @@ export default class RunbookForm extends Component {
             <select
               className='form-control'
               id='runbook-region'
-              name='regionId'
-              defaultValue={runbook.regionId}
+              name='region'
+              defaultValue={runbook.region}
               onChange={this.changeAttribute}
             >
               {regions.items.map((region) =>

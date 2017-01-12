@@ -10,7 +10,7 @@ export class Runbook {
   @observable description = ''
   @observable type = null
   @observable latestRun = null
-  @observable regionId = null
+  @observable region = null
   @observable tags = []
   @observable parameters = []
   @observable runbook = ''
@@ -62,7 +62,7 @@ createModelSchema(Runbook, {
     status: primitive(),
     createdAt: alias('created_at', date())
   }))),
-  regionId: primitive(),
+  region: primitive(),
   tags: list(primitive()),
   parameters: list(object(createSimpleSchema({
     name: primitive(),

@@ -31,7 +31,7 @@ export default class RunbookPage extends Component {
       type: 'bash',
       tags: ['Monitoring'],
       status: 'scheduled',
-      regionId: 'east-3.hooli.net'
+      region: 'east-3.hooli.net'
     };
     runbooks.items = [deserialize(Runbook, runbookResponse)];
 
@@ -49,7 +49,7 @@ export default class RunbookPage extends Component {
             name: 'Demo runbook',
             tags: ['Monitoring']
           },
-          regionId: 'region_one',
+          region: 'region_one',
           user: 'cloud_user'
         },
         {
@@ -62,7 +62,7 @@ export default class RunbookPage extends Component {
             name: 'Demo runbook',
             tags: ['Monitoring']
           },
-          regionId: 'region_one',
+          region: 'region_one',
           user: 'cloud_user'
         },
         {
@@ -75,7 +75,7 @@ export default class RunbookPage extends Component {
             name: 'Demo runbook',
             tags: ['Monitoring']
           },
-          regionId: 'region_one',
+          region: 'region_one',
           user: 'cloud_user'
         }
       ]
@@ -118,7 +118,7 @@ export default class RunbookPage extends Component {
     const {params: {runbookId}, runbooks} = this.props;
     const runbook = runbooks.get(runbookId);
     const runbookUrl = `/api/v1/region/${
-      encodeURIComponent(runbook.regionId)
+      encodeURIComponent(runbook.region)
     }/runbooks/${
       encodeURIComponent(runbook.id)
     }`;

@@ -42,7 +42,7 @@ export default class RunbooksPage extends Component {
             status: 'scheduled',
             created_at: '2016-12-20T16:18:42.150736'
           },
-          regionId: 'east-3.hooli.net',
+          region: 'east-3.hooli.net',
           parameters: [
             {name: 'attr1', default: 'str1', type: 'string'},
             {name: 'attr2', default: 'str2', type: 'string'}
@@ -59,7 +59,7 @@ export default class RunbooksPage extends Component {
             status: 'failed',
             created_at: '2016-12-20T16:18:42.150736'
           },
-          regionId: 'east-3.hooli.net'
+          region: 'east-3.hooli.net'
         },
         {
           id: '161',
@@ -72,7 +72,7 @@ export default class RunbooksPage extends Component {
             status: 'finished',
             created_at: '2016-12-20T16:18:42.150736'
           },
-          regionId: 'east-3.hooli.net'
+          region: 'east-3.hooli.net'
         },
         {
           id: '622',
@@ -85,7 +85,7 @@ export default class RunbooksPage extends Component {
             status: 'failed',
             created_at: '2016-12-20T16:18:42.150736'
           },
-          regionId: 'east-3.hooli.net'
+          region: 'east-3.hooli.net'
         },
         {
           id: '622',
@@ -95,7 +95,7 @@ export default class RunbooksPage extends Component {
           type: 'bash',
           tags: ['Monitoring', 'Databases'],
           latest_run: null,
-          regionId: 'east-3.hooli.net'
+          region: 'east-3.hooli.net'
         }
       ]
     };
@@ -232,7 +232,7 @@ export default class RunbooksPage extends Component {
                         <td>
                           <Link to={
                             `/region/${
-                              encodeURIComponent(runbook.regionId)
+                              encodeURIComponent(runbook.region)
                             }/runbook/${
                               encodeURIComponent(runbook.id)
                             }`
@@ -245,7 +245,7 @@ export default class RunbooksPage extends Component {
                             <span key={tag} className='label label-default'>{tag}</span>
                           )}
                         </td>
-                        {!regionName && <td>{runbook.regionId}</td>}
+                        {!regionName && <td>{runbook.region}</td>}
                         <td>
                           {runbook.latestRunDate &&
                             moment(runbook.latestRunDate).format(DEFAULT_DATE_FORMAT)
@@ -306,7 +306,7 @@ class CreateRunbookDialog extends Component {
   constructor(props) {
     super(props);
     this.newRunbook = new Runbook();
-    this.newRunbook.regionId = props.regionName;
+    this.newRunbook.region = props.regionName;
   }
 
   @action
@@ -316,7 +316,7 @@ class CreateRunbookDialog extends Component {
 
   createRunbook = async () => {
     this.actionInProgress = true;
-    const url = `/api/v1/region/${encodeURIComponent(this.newRunbook.regionId)}/runbooks/`;
+    const url = `/api/v1/region/${encodeURIComponent(this.newRunbook.region)}/runbooks/`;
     await request(url, {
       method: 'POST',
       body: JSON.stringify(this.newRunbook)
@@ -372,7 +372,7 @@ class RunRunbookDialog extends Component {
   runRunbook = async () => {
     this.actionInProgress = true;
     const url = `/api/v1/region/${
-      encodeURIComponent(this.props.runbook.regionId)
+      encodeURIComponent(this.props.runbook.region)
     }/runbooks/${
       encodeURIComponent(this.props.runbook.id)
     }/run`;

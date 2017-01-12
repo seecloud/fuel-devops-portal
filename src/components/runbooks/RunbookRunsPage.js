@@ -37,7 +37,7 @@ export default class RunbookRunsPage extends Component {
           runbook: {
             id: 602,
             name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
+            region: 'east-3.hooli.net',
             tags: ['Monitoring']
           }
         },
@@ -49,7 +49,7 @@ export default class RunbookRunsPage extends Component {
           runbook: {
             id: 602,
             name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
+            region: 'east-3.hooli.net',
             tags: ['Monitoring', 'Databases']
           }
         },
@@ -61,7 +61,7 @@ export default class RunbookRunsPage extends Component {
           runbook: {
             id: 602,
             name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
+            region: 'east-3.hooli.net',
             tags: ['Monitoring', 'Databases']
           }
         },
@@ -73,7 +73,7 @@ export default class RunbookRunsPage extends Component {
           runbook: {
             id: 602,
             name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
+            region: 'east-3.hooli.net',
             tags: []
           }
         },
@@ -85,7 +85,7 @@ export default class RunbookRunsPage extends Component {
           runbook: {
             id: 602,
             name: 'Demo runbook',
-            regionId: 'east-3.hooli.net',
+            region: 'east-3.hooli.net',
             tags: ['Databases']
           }
         }
@@ -202,11 +202,11 @@ export default class RunbookRunsPage extends Component {
                     {this.filteredRunbookRuns.map((runbookRun) =>
                       <tr key={runbookRun.id}>
                         <td>{runbookRun.id}</td>
-                        {!regionName && <td>{runbookRun.runbook.regionId}</td>}
+                        {!regionName && <td>{runbookRun.runbook.region}</td>}
                         <td>
                           <Link to={
                             `/region/${
-                              encodeURIComponent(runbookRun.runbook.regionId)
+                              encodeURIComponent(runbookRun.runbook.region)
                             }/runbook/${
                               encodeURIComponent(runbookRun.runbook.id)
                             }`
