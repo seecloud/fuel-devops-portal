@@ -7,9 +7,9 @@ import {observer} from 'mobx-react';
 export default class Dialog extends Component {
   @observable visible = true
 
-  static show() {
+  static show(props) {
     ReactDOM.render(
-      React.createElement(this),
+      React.createElement(this, props),
       document.getElementById('modal-container')
     );
   }

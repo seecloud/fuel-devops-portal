@@ -11,7 +11,7 @@ export default class FetchDataErrorDialog extends Dialog {
           <Modal.Title>{'Failed to load page'}</Modal.Title>
         </Modal.Header>
         <Modal.Body className='text-danger'>
-          {'Unable to fetch data.'}
+          {this.props.error || 'Unable to fetch data.'}
         </Modal.Body>
         <Modal.Footer>
           <button
