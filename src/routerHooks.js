@@ -5,6 +5,11 @@ export async function fetchDataHook(stores, nextState, replace, callback) {
     await dataFetchingRequest;
     return callback();
   } catch (error) {
+    if (!stores.uiState.previousPathname) {
+      replace('/');
+    } else if (nextState.location.pathname !== stores.uiState.previousPathname) {
+      replace(stores.uiState.previousPathname);
+    }
     return callback(error);
   } finally {
     stores.uiState.pendingRequestsCount--;

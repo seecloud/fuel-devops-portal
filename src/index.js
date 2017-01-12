@@ -31,7 +31,12 @@ const stores = {
 
 ReactDOM.render(
   <Provider {...stores}>
-    <Router history={browserHistory}>
+    <Router
+      history={browserHistory}
+      onUpdate={() => {
+        stores.uiState.previousPathname = browserHistory.getCurrentLocation().pathname;
+      }}
+    >
       {createRoutes(stores)}
     </Router>
   </Provider>,
