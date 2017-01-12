@@ -1,3 +1,5 @@
+import FetchDataErrorDialog from './components/dialogs/FetchDataErrorDialog';
+
 export async function fetchDataHook(stores, nextState, replace, callback) {
   const dataFetchingRequest = this.component.fetchData({...stores, ...nextState});
   stores.uiState.pendingRequestsCount++;
@@ -10,6 +12,7 @@ export async function fetchDataHook(stores, nextState, replace, callback) {
     } else if (nextState.location.pathname !== stores.uiState.previousPathname) {
       replace(stores.uiState.previousPathname);
     }
+    FetchDataErrorDialog.show();
     return callback(error);
   } finally {
     stores.uiState.pendingRequestsCount--;
