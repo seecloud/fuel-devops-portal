@@ -16,36 +16,48 @@ export default {
   output: {
     path: path.join(__dirname, '/dist/'),
     publicPath: '/',
-    filename: 'static/js/bundle.js',
-    chunkFilename: null
+    filename: 'static/js/bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {cacheDirectory: true}
+        use: {
+          loader: 'babel-loader',
+          options: {cacheDirectory: true}
+        },
+        exclude: /node_modules/
       },
       {
         test: /\.less$/,
-        loaders: ['style', 'css', 'postcss', 'less']
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          'less-loader'
+        ]
       },
       {
         test: /\/loading\.less$/,
-        loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'less'])
+        use: ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader',
+          loader: ['css-loader', 'postcss-loader', 'less-loader']
+        })
       },
       {
         test: /\.(gif|png|jpg)$/,
-        loader: `file?name=static/media/${filenameTemplate}`
+        use: `file-loader?name=static/media/${filenameTemplate}`
       },
       {
         test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: `file?name=static/media/${filenameTemplate}`
+        use: `file-loader?name=static/media/${filenameTemplate}`
       },
       {
         test: /\.svg\?fill=/,
-        loaders: [`file?name=static/media/${filenameTemplate}`, 'svg-fill']
+        use: [
+          `file-loader?name=static/media/${filenameTemplate}`,
+          'svg-fill-loader'
+        ]
       }
     ]
   },
@@ -55,7 +67,15 @@ export default {
       template: 'src/index.html',
       favicon: 'src/media/favicon.ico',
     }),
-    new ExtractTextPlugin('static/styles/layout.css', {allChunks: true}),
+    new ExtractTextPlugin({
+      filename: 'static/styles/layout.css',
+      allChunks: true
+    }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: [autoprefixer]
+      }
+    }),
     ...(
       NODE_ENV === 'production' ? [
         new webpack.optimize.UglifyJsPlugin({
@@ -66,6 +86,5 @@ export default {
       ] : []
     )
   ],
-  postcss: () => [autoprefixer],
   devtool: NODE_ENV === 'production' ? 'source-map' : 'cheap-module-source-map'
 };

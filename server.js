@@ -17,7 +17,7 @@ webpackConfig.entry.push('webpack-dev-server/client?' + devServerUrl);
 if (hotReload) {
   webpackConfig.entry.push('webpack/hot/dev-server');
   webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-  webpackConfig.plugins.push(new webpack.NoErrorsPlugin());
+  webpackConfig.plugins.push(new webpack.NoEmitOnErrorsPlugin());
 }
 
 let devServerConfig = {
